@@ -1,0 +1,137 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,300);
+
+html{margin:0;padding:0;border:0}
+body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,code,del,dfn,em,img,q,dl,dt,dd,ol,
+ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,dialog,figure,footer,header,
+hgroup,nav,section{margin:0;padding:0;border:0;vertical-align:baseline}
+article,aside,details,figcaption,figure,dialog,footer,header,hgroup,menu,nav,section{display:block}
+body{line-height:1.5;background:white}
+table{border-collapse:collapse;border-spacing:0}
+caption,th,td{text-align:left;font-weight:normal;float:none !important}
+table,th,td{vertical-align:middle}
+blockquote:before,blockquote:after,q:before,q:after{content:''}
+blockquote,q{quotes:"" ""}
+a img{border:none}
+:focus{outline:0}
+
+html, body {
+	height: 100%;
+	background-size: cover;
+	min-height: 520px;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
+}
+
+* html .body {
+	height: 100%;
+}
+
+.body {
+	min-height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+
+/* - */
+
+.login_box {
+	display: inline-block;
+	background-color: rgba(0, 144, 255, .6);
+	color: rgba(255, 255, 255, .9);
+	width: 573px;
+	height: 514px;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -286px;
+	margin-top: -252px;
+
+	text-shadow: 0 0 6px rgba(255, 255, 255, .5);
+}
+
+.login_box .title {
+	height: 0;
+	line-height: 0;
+	font-size: 60px;
+	padding: 51px 0;
+	text-align: center;
+	background-color: rgba(255, 255, 255, .25);
+}
+
+.login_box .login_button {
+	display: block;
+	width: 295px;
+	height: 55px;
+	background: #41c8f5 url(/img/social_network.png) 14px 9px no-repeat;
+	margin: 26px auto 0;
+	line-height: 0;
+	text-align: center;
+	padding: 27px 0 27px 45px;
+	font-size: 22px;
+	box-sizing: border-box;
+	color: #fff;
+	text-decoration: none;
+}
+.login_box .login_button.fb {
+	background: #2870f4 url(/img/social_network.png) 14px -69px no-repeat;
+}
+.login_box .login_button.gp {
+	background: #e44258 url(/img/social_network.png) 14px -145px no-repeat;
+}
+.login_box .login_button.tw {
+	background: #4bcce6 url(/img/social_network.png) 14px -221px no-repeat;
+}
+
+.signup {
+	text-decoration: none;
+	color: #fff;
+	display: block;
+	font-size: 22px;
+	line-height: 0;
+	text-align: center;
+	width: 295px;
+	margin: 30px auto 0;
+}
+
+.colors {
+	width: 100%;
+	height: 29px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	position: absolute;
+}
+.colors td {
+	width: 9.09%;
+}
+.color {
+	cursor: pointer;
+	position: relative;
+}
+.color.active:before {
+	display: block;
+	content: "";
+	width: 8px;
+	height: 8px;
+	background-color: #fff;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -4px;
+	margin-top: -4px;
+}
+
+.c00 { background-color: rgba(  0, 156, 255, .8); }
+.c01 { background-color: rgba(  6,   0, 255, .8); }
+.c02 { background-color: rgba(121,  43, 244, .8); }
+.c03 { background-color: rgba(255,   0, 240, .8); }
+.c04 { background-color: rgba(255,   0,   0, .8); }
+.c05 { background-color: rgba(255, 138,   0, .8); }
+.c06 { background-color: rgba(255, 234,   0, .8); }
+.c07 { background-color: rgba( 30, 255,   0, .8); }
+.c08 { background-color: rgba(  0, 234, 255, .8); }
+.c09 { background-color: rgba(255, 255, 255, .8); }
+.c10 { background-color: rgba(  0,   0,   0, .8); }
+
+/*  */
