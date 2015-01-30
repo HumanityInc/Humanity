@@ -1,5 +1,7 @@
 package scgi
 
+// https://bitbucket.org/mjl/scgi/src
+
 import (
 	"bytes"
 	"fmt"

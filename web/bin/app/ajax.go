@@ -16,8 +16,9 @@ func (c *Client) jRegister() {
 	password := c.req.FormValue("password")
 	first_name := c.req.FormValue("first_name")
 	last_name := c.req.FormValue("last_name")
+	ip := c.ip()
 
-	fmt.Println(email, password, first_name, last_name)
+	fmt.Println(email, password, first_name, last_name, ip)
 }
 
 func (c *Client) jLogin() {

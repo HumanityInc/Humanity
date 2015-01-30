@@ -39,6 +39,12 @@ type Config struct {
 			ClientSecret string `json:"client_secret"`
 		} `json:"google"`
 	} `json:"oauth"`
+
+	Sendmail struct {
+		Mandrill struct {
+			ApiKey string `json:"api_key"`
+		} `json:"mandrill"`
+	} `json:"sendmail"`
 }
 
 var app_conf *Config

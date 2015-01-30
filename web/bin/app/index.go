@@ -1,6 +1,7 @@
 package app
 
 import (
+	_ "../sendmail"
 	_ "../session"
 )
 
