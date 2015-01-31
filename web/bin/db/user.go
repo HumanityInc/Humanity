@@ -1,6 +1,7 @@
 package db
 
 import (
+	"../model"
 	"errors"
 	"golang.org/x/crypto/bcrypt"
 	"time"
@@ -20,22 +21,6 @@ const (
 	SN_GOOGLEPLUS = `gp`
 	SN_FACEBOOK   = `fb`
 	SN_TWITTER    = `tw`
-)
-
-type (
-	User struct {
-		Id         int64  `json:"id"`
-		Email      string `json:"email"`
-		Password   string `json:"-"`
-		FirstName  string `json:"first_name"`
-		LastName   string `json:"last_name"`
-		Activate   string `json:"-"`
-		Registered string `json:"-"`
-		LastLogin  string `json:"-"`
-		LastIp     string `json:"-"`
-		Gender     string `json:"-"`
-		Locale     string `json:"-"`
-	}
 )
 
 var (
@@ -82,14 +67,14 @@ func RegisterSocialUser(socialId, socialNetworkName, email, firstName, lastName 
 
 //
 
-func GetUserBySocialId(socialId, socialNetworkName string) (user *User, err error) {
+func GetUserBySocialId(socialId, socialNetworkName string) (user *model.User, err error) {
 
 	return
 }
 
-func GetUserByEmail(email, password string) (user_ptr *User, err error) {
+func GetUserByEmail(email, password string) (user_ptr *model.User, err error) {
 
-	user, hashedPassword := User{}, ""
+	user, hashedPassword := model.User{}, ""
 
 	err = db.QueryRow(`SELECT `+
 		`"id", "password", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip" `+
@@ -113,9 +98,9 @@ func GetUserByEmail(email, password string) (user_ptr *User, err error) {
 	return
 }
 
-func GetUserById(id int64) (user_ptr *User, err error) {
+func GetUserById(id int64) (user_ptr *model.User, err error) {
 
-	user := User{}
+	user := model.User{}
 
 	err = db.QueryRow(`SELECT `+
 		`"id", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip" `+

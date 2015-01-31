@@ -1,7 +1,7 @@
 package session
 
 import (
-	"../db"
+	"../model"
 	"../utils"
 	"encoding/json"
 	"fmt"
@@ -42,7 +42,7 @@ func SetUserCookie(res http.ResponseWriter) string {
 	return key
 }
 
-func SetUser(user db.User, ukey string) (ok bool) {
+func SetUser(user model.User, ukey string) (ok bool) {
 
 	key_usr := MC_USER_PREFIX + ukey
 
@@ -67,7 +67,7 @@ func SetUser(user db.User, ukey string) (ok bool) {
 	return
 }
 
-func getUser(ukey string) (user db.User, ok bool) {
+func getUser(ukey string) (user model.User, ok bool) {
 
 	key_usr := MC_USER_PREFIX + ukey
 
@@ -77,9 +77,9 @@ func getUser(ukey string) (user db.User, ok bool) {
 
 		if err = json.Unmarshal([]byte(user_str), &user); err == nil {
 			ok = true
-		} /*else {
+		} else {
 			fmt.Println(err)
-		}*/
+		}
 
 	} /* else {
 		fmt.Println(err)
@@ -88,7 +88,7 @@ func getUser(ukey string) (user db.User, ok bool) {
 	return
 }
 
-func GetUser(req *http.Request) (user db.User, ok bool) {
+func GetUser(req *http.Request) (user model.User, ok bool) {
 
 	if cookie, err := req.Cookie(COOKIE_NAME); err == nil {
 

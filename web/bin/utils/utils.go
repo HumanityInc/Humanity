@@ -3,6 +3,7 @@ package utils
 import (
 	"math/rand"
 	"regexp"
+	"strconv"
 )
 
 const (
@@ -25,4 +26,24 @@ func RandomString(strlen int) string {
 		buf[i] = ALPHA[rand.Intn(ALPHA_LENGHT)]
 	}
 	return string(buf)
+}
+
+func ToUint(val string) uint {
+	u64, _ := strconv.ParseUint(val, 10, 32)
+	return uint(u64)
+}
+
+func ToInt(val string) int {
+	i64, _ := strconv.ParseInt(val, 10, 32)
+	return int(i64)
+}
+
+func ToUint64(val string) uint64 {
+	u64, _ := strconv.ParseUint(val, 10, 64)
+	return u64
+}
+
+func ToInt64(val string) int64 {
+	i64, _ := strconv.ParseInt(val, 10, 64)
+	return i64
 }

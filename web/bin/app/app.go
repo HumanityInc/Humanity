@@ -1,8 +1,10 @@
 package app
 
+// TODO use https://github.com/vkholodkov/nginx-upload-module
+
 import (
 	"../config"
-	"../db"
+	"../model"
 	"../session"
 	"../template_cache"
 	"fmt"
@@ -27,16 +29,7 @@ type (
 		lang string
 	}
 
-	Client struct {
-		start int64
-		stop  int64
-		path  []string
-		res   http.ResponseWriter
-		req   *http.Request
-		user  *db.User
-	}
-
-	cb_fn func(cb *Client)
+	cb_fn func(cb *model.Client)
 )
 
 var page_callback map[string]cb_fn
@@ -46,12 +39,13 @@ var mc *memcache.Client
 func init() {
 
 	page_callback = map[string]cb_fn{
-		``:           func(cb *Client) { cb.wIndex() },
-		`feed`:       func(cb *Client) { cb.wFeed() },
-		`auth`:       func(cb *Client) { cb.wAuth() },
-		`j_login`:    func(cb *Client) { cb.jLogin() },
-		`j_logout`:   func(cb *Client) { cb.jLogout() },
-		`j_register`: func(cb *Client) { cb.jRegister() },
+		``:           Index,
+		`feed`:       Feed,
+		`auth`:       Auth,
+		`j_login`:    Login,
+		`j_logout`:   Logout,
+		`j_register`: Register,
+		`j_whoami`:   Whoami,
 	}
 
 	conf := config.GetConfig()
@@ -64,6 +58,14 @@ func init() {
 	}
 
 	session.Init(mc)
+}
+
+func Bind(base string, cb_fn func(cb *model.Client)) (ok bool) {
+	if page_callback != nil {
+		page_callback[base] = cb_fn
+		ok = true
+	}
+	return
 }
 
 func (render *Render) Render() {
@@ -89,37 +91,37 @@ func (render *Render) Render() {
 
 func Handler(res http.ResponseWriter, req *http.Request) {
 
-	cb := Client{
-		start: time.Now().UnixNano(),
-		path:  strings.Split(strings.Trim(req.URL.Path, `/`), `/`),
-		res:   res,
-		req:   req,
+	cb := model.Client{
+		Start: time.Now().UnixNano(),
+		Path:  strings.Split(strings.Trim(req.URL.Path, `/`), `/`),
+		Res:   res,
+		Req:   req,
 	}
 
 	defer error_check(&cb)
 
 	if user, ok := session.GetUser(req); ok {
-		cb.user = &user
+		cb.User = &user
 	}
 
-	if len(cb.path) == 0 {
+	if len(cb.Path) == 0 {
 
-		cb.wIndex()
+		Index(&cb)
 
 	} else {
 
-		if fn, ok := page_callback[cb.path[0]]; ok {
+		if fn, ok := page_callback[cb.Path[0]]; ok {
 			fn(&cb)
 		} else {
-			cb.NotFound()
+			NotFound(&cb)
 		}
 	}
 
-	cb.stop = time.Now().UnixNano()
-	fmt.Printf("%.03f %v\n", float32(cb.stop-cb.start)/1000000.0, cb.path)
+	cb.Stop = time.Now().UnixNano()
+	fmt.Printf("%.03f %v\n", float32(cb.Stop-cb.Start)/1000000.0, cb.Path)
 }
 
-func error_check(cb *Client) {
+func error_check(cb *model.Client) {
 
 	if err := recover(); err != nil {
 
@@ -142,9 +144,11 @@ func error_check(cb *Client) {
 
 		err_str := fmt.Sprintf("%s:%d %s: %s\n", file, line, fn_name, err)
 
-		cb.InternalServerError(err_str)
+		fmt.Println(err_str)
 
-		// TODO send alert, write log
+		InternalServerError(cb)
+
+		// TODO send alert
 
 		var buf [10240]byte
 		runtime.Stack(buf[:], false)

@@ -1,38 +1,110 @@
 package app
 
 import (
+	"../db"
+	"../model"
 	"../session"
-	"fmt"
+	"../utils"
+	"strings"
+)
+
+const (
+	PASSWORD_MIN_LENGTH = 6
+)
+
+type (
+	Result struct {
+		Res   int    `json:"res"`
+		Error string `json:"error,omitempty"`
+	}
 )
 
 var (
-	jsonMimeType = `application/json`
-	jsonSuccess  = []byte(`{"res":0}`)
+	errEmailAlreadyExists     = "EMAIL_ALREADY_EXISTS"
+	errInvalidEmailAddress    = "INVALID_EMAIL"
+	errInvalidPassword        = "INVALID_PASSWORD"
+	errInvalidEmailOrPassword = "INVALID_EMAIL_OR_PASSWORD"
+	errPasswordsNotEqual      = "PASSWORDS_NOT_EQUAL"
 )
 
-func (c *Client) jRegister() {
+func Register(c *model.Client) {
 
-	email := c.req.FormValue("email")
-	password := c.req.FormValue("password")
-	first_name := c.req.FormValue("first_name")
-	last_name := c.req.FormValue("last_name")
-	ip := c.ip()
+	email := c.Req.FormValue("email")
+	password := c.Req.FormValue("password")
+	password2 := c.Req.FormValue("password2")
+	lastName := c.Req.FormValue("last_name")
+	firstName := c.Req.FormValue("first_name")
+	ip := c.Ip()
 
-	fmt.Println(email, password, first_name, last_name, ip)
+	if utils.IsEmail(email) {
+
+		if len(password) >= PASSWORD_MIN_LENGTH {
+
+			if password == password2 {
+
+				lastName = strings.Trim(lastName, " \r\n\t")
+				firstName = strings.Trim(firstName, " \r\n\t")
+
+				err := db.RegisterUser(email, firstName, lastName, password, ip)
+				if err == nil {
+
+					c.WriteJson(&Result{})
+
+				} else {
+					c.WriteJson(&Result{Res: 1, Error: errEmailAlreadyExists})
+				}
+
+			} else {
+				c.WriteJson(&Result{Res: 1, Error: errPasswordsNotEqual})
+			}
+
+		} else {
+			c.WriteJson(&Result{Res: 1, Error: errInvalidPassword})
+		}
+
+	} else {
+		c.WriteJson(&Result{Res: 1, Error: errInvalidEmailAddress})
+	}
 }
 
-func (c *Client) jLogin() {
+func Login(c *model.Client) {
 
-	email := c.req.FormValue("email")
-	password := c.req.FormValue("password")
+	email := c.Req.FormValue("email")
+	password := c.Req.FormValue("password")
 
-	fmt.Println(email, password)
+	if utils.IsEmail(email) {
+
+		if password != "" {
+
+			user, err := db.GetUserByEmail(email, password)
+			if err == nil {
+
+				ukey := session.SetUserCookie(c.Res)
+				session.SetUser(*user, ukey)
+
+				c.WriteJson(&Result{})
+
+			} else {
+				c.WriteJson(&Result{Res: 1, Error: errInvalidEmailOrPassword})
+			}
+
+		} else {
+			c.WriteJson(&Result{Res: 1, Error: errInvalidPassword})
+		}
+
+	} else {
+		c.WriteJson(&Result{Res: 1, Error: errInvalidEmailAddress})
+	}
 }
 
-func (c *Client) jLogout() {
+func Whoami(c *model.Client) {
 
-	session.Delete(c.req, c.res)
+	c.WriteJson(c.User)
+}
 
-	c.res.Header().Add(`Content-Type`, `application/json`)
-	c.res.Write(jsonSuccess)
+func Logout(c *model.Client) {
+
+	session.Delete(c.Req, c.Res)
+
+	c.WriteJson(&Result{})
 }

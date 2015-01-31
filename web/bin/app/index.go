@@ -1,24 +1,35 @@
 package app
 
 import (
+	"../model"
 	_ "../sendmail"
 	_ "../session"
 )
 
-func (c *Client) wIndex() {
+func Index(c *model.Client) {
 
 	page := Render{
-		res:  c.res,
+		res:  c.Res,
 		tmpl: "index/index.html",
+		data: struct {
+			User *model.User
+		}{
+			User: c.User,
+		},
 	}
 	page.Render()
 }
 
-func (c *Client) wFeed() {
+func Feed(c *model.Client) {
 
 	page := Render{
-		res:  c.res,
+		res:  c.Res,
 		tmpl: "feed/index.html",
+		data: struct {
+			User *model.User
+		}{
+			User: c.User,
+		},
 	}
 	page.Render()
 }

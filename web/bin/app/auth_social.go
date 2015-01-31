@@ -2,6 +2,7 @@ package app
 
 import (
 	"../config"
+	"../model"
 	"encoding/json"
 	"fmt"
 	"github.com/bradfitz/gomemcache/memcache"
@@ -14,19 +15,19 @@ import (
 	"time"
 )
 
-func (c *Client) wAuth() {
+func Auth(c *model.Client) {
 
-	if len(c.path) > 1 {
+	if len(c.Path) > 1 {
 
-		switch c.path[1] {
+		switch c.Path[1] {
 		case "gplus":
-			c.wGooglePlus()
+			wGooglePlus(c)
 		case "fb":
-			c.wFacebook()
+			wFacebook(c)
 		case "tw":
-			c.wTwitter()
+			wTwitter(c)
 		case "twcb":
-			c.wTwitterCallback()
+			wTwitterCallback(c)
 		}
 	}
 }
@@ -76,9 +77,9 @@ func init() {
 
 // ---
 
-func (c *Client) wTwitterCallback() {
+func wTwitterCallback(c *model.Client) {
 
-	requestTokenKey := c.req.FormValue("oauth_token")
+	requestTokenKey := c.Req.FormValue("oauth_token")
 	requestTokenSecret := ""
 
 	if item, err := mc.Get("tw:" + requestTokenKey); err == nil {
@@ -90,26 +91,26 @@ func (c *Client) wTwitterCallback() {
 			RequestTokenSecret: requestTokenSecret,
 		}
 
-		token, verifier, err := userConfig.ParseAuthorize(c.req, twitterConfig)
+		token, verifier, err := userConfig.ParseAuthorize(c.Req, twitterConfig)
 
 		if err != nil {
-			http.Error(c.res, "Problem parsing authorization", 500)
+			http.Error(c.Res, "Problem parsing authorization", 500)
 			return
 		}
 
 		httpClient := new(http.Client)
 
 		if err = userConfig.GetAccessToken(token, verifier, twitterConfig, httpClient); err != nil {
-			http.Error(c.res, "Problem getting an access token", 500)
+			http.Error(c.Res, "Problem getting an access token", 500)
 			return
 		}
 
-		fmt.Fprintf(c.res, "Access Token: %#v\n", userConfig)
+		fmt.Fprintf(c.Res, "Access Token: %#v\n", userConfig)
 
-		// fmt.Fprintf(c.res, "Access Token: %v\n", userConfig.AccessTokenKey)
-		// fmt.Fprintf(c.res, "Token Secret: %v\n", userConfig.AccessTokenSecret)
-		fmt.Fprintf(c.res, "Screen Name:  %v\n", userConfig.AccessValues.Get("screen_name"))
-		fmt.Fprintf(c.res, "User ID:      %v\n", userConfig.AccessValues.Get("user_id"))
+		// fmt.Fprintf(c.Res, "Access Token: %v\n", userConfig.AccessTokenKey)
+		// fmt.Fprintf(c.Res, "Token Secret: %v\n", userConfig.AccessTokenSecret)
+		fmt.Fprintf(c.Res, "Screen Name:  %v\n", userConfig.AccessValues.Get("screen_name"))
+		fmt.Fprintf(c.Res, "User ID:      %v\n", userConfig.AccessValues.Get("user_id"))
 
 		return
 
@@ -119,19 +120,19 @@ func (c *Client) wTwitterCallback() {
 	}
 }
 
-func (c *Client) wTwitter() {
+func wTwitter(c *model.Client) {
 
 	httpClient := new(http.Client)
 	userConfig := &oauth1a.UserConfig{}
 
 	if err := userConfig.GetRequestToken(twitterConfig, httpClient); err != nil {
-		http.Error(c.res, "Problem getting the request token", 500)
+		http.Error(c.Res, "Problem getting the request token", 500)
 		return
 	}
 
 	url, err := userConfig.GetAuthorizeURL(twitterConfig)
 	if err != nil {
-		http.Error(c.res, "Problem getting the authorization URL", 500)
+		http.Error(c.Res, "Problem getting the authorization URL", 500)
 		return
 	}
 
@@ -144,12 +145,12 @@ func (c *Client) wTwitter() {
 	// fmt.Printf("RequestTokenKey:    %#v\n", userConfig.RequestTokenKey) // public
 	// fmt.Printf("RequestTokenSecret: %#v\n", userConfig.RequestTokenSecret)
 
-	c.redirect(url)
+	c.Redirect(url)
 }
 
 // ---
 
-func (c *Client) wGooglePlus() {
+func wGooglePlus(c *model.Client) {
 
 	conf := &oauth2.Config{
 		ClientID:     GP_CLIENT_ID,
@@ -159,11 +160,11 @@ func (c *Client) wGooglePlus() {
 		Endpoint:     google.Endpoint,
 	}
 
-	code := c.req.FormValue("code")
+	code := c.Req.FormValue("code")
 
 	if code == "" {
 
-		c.redirect(conf.AuthCodeURL("state"))
+		c.Redirect(conf.AuthCodeURL("state"))
 		return
 
 	} else {
@@ -183,18 +184,18 @@ func (c *Client) wGooglePlus() {
 
 		data, err := ioutil.ReadAll(response.Body)
 
-		// fmt.Fprintf(c.res, "%s", data)
+		// fmt.Fprintf(c.Res, "%s", data)
 
 		// {
-		// "id"
-		// "email"
-		// "verified_email"
-		// "name"
-		// "given_name"
-		// "family_name"
-		// "link"
-		// "picture"
-		// "gender"
+		// "id": "111121802558443619308",
+		// "email": "aleksey.achkasov@gmail.com",
+		// "verified_email": true,
+		// "name": "Aleksey Achkasov",
+		// "given_name": "Aleksey",
+		// "family_name": "Achkasov",
+		// "link": "https://plus.google.com/111121802558443619308",
+		// "picture": "https://lh3.googleusercontent.com/-tUsj4DUH5H4/AAAAAAAAAAI/AAAAAAAAA2Y/HVBV8GQf1VY/photo.jpg",
+		// "gender": "male"
 		// }
 
 		type Profile struct {
@@ -212,12 +213,12 @@ func (c *Client) wGooglePlus() {
 
 		err = json.Unmarshal(data, &profile)
 
-		fmt.Fprintf(c.res, "%#v", profile)
+		fmt.Fprintf(c.Res, "%#v", profile)
 
 		return
 	}
 
-	c.InternalServerError("")
+	InternalServerError(c)
 }
 
 // ---
@@ -246,12 +247,12 @@ func randString(int) string {
 	return fmt.Sprint(time.Now().UnixNano())
 }
 
-func (c *Client) wFacebook() {
+func wFacebook(c *model.Client) {
 
 	params := url.Values{}
-	code := c.req.FormValue("code")
-	error_param := c.req.FormValue("error")
-	error_reason := c.req.FormValue("error_reason")
+	code := c.Req.FormValue("code")
+	error_param := c.Req.FormValue("error")
+	error_reason := c.Req.FormValue("error_reason")
 
 	if error_param == "" && code == "" {
 
@@ -264,7 +265,7 @@ func (c *Client) wFacebook() {
 
 		// fmt.Println(url_get)
 
-		c.redirect(url_get)
+		c.Redirect(url_get)
 		return
 
 	} else if code != "" {
@@ -323,26 +324,56 @@ func (c *Client) wFacebook() {
 			json.Unmarshal(data, &profile)
 
 			/* {
-				"id"
-				"name"
-				"first_name"
-				"last_name"
-				"email"
-				"locale"
-				"timezone"
-				"gender"
+				"id":"785049524848954",
+				"name":"\u0410\u043b\u0435\u043a\u0441\u0435\u0439 \u0410\u0447\u043a\u0430\u0441\u043e\u0432",
+				"first_name":"\u0410\u043b\u0435\u043a\u0441\u0435\u0439",
+				"last_name":"\u0410\u0447\u043a\u0430\u0441\u043e\u0432",
+				"email":"al_ghost\u0040inbox.ru",
+				"locale":"ru_RU",
+				"timezone":2,
+				"gender":"male"
 			} */
 
-			fmt.Fprintf(c.res, "%s\n", data)
+			fmt.Fprintf(c.Res, "%s\n", data)
 
-			fmt.Fprintf(c.res, "%#v\n", profile)
+			fmt.Fprintf(c.Res, "%#v\n", profile)
+
+			// if profile.UserId != "" {
+
+			// u, err := users.GetByFb(profile.UserId)
+
+			// fmt.Println(u, err)
+
+			// if err != nil {
+
+			// 	user := database.User{}
+
+			// 	user.Name = profile.Name
+			// 	user.Email = profile.Email
+			// 	user.FbId = profile.UserId
+			// 	user.Photo = "https://graph.facebook.com/" + profile.UserId + "/picture?type=square&height=200&width=200"
+			// 	user.Login = fmt.Sprint("fb_", profile.UserId)
+
+			// 	users.AddUser(&user)
+
+			// 	session.Values["id"] = user.Id
+			// 	session.Values["user"] = user
+
+			// } else {
+
+			// 	session.Values["id"] = u.Id
+			// 	session.Values["user"] = *u
+			// }
+			// }
+
+			// c.Redirect("/")
 		}
 
 		return
 
 	} else if error_param != "" {
 
-		fmt.Fprintln(c.res, error_param)
-		fmt.Fprintln(c.res, error_reason)
+		fmt.Fprintln(c.Res, error_param)
+		fmt.Fprintln(c.Res, error_reason)
 	}
 }
