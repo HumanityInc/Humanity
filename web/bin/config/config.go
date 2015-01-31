@@ -49,7 +49,7 @@ type Config struct {
 
 var app_conf *Config
 
-func GetConfig() *Config {
+func GetConfig() Config {
 
 	if app_conf == nil {
 
@@ -69,7 +69,7 @@ func GetConfig() *Config {
 		}
 	}
 
-	return app_conf
+	return *app_conf
 }
 
 func (conf *Config) load(filename string) {

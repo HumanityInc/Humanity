@@ -2,6 +2,7 @@ package app
 
 import (
 	"../config"
+	"../db"
 	"../model"
 	"encoding/json"
 	"fmt"
@@ -21,13 +22,13 @@ func Auth(c *model.Client) {
 
 		switch c.Path[1] {
 		case "gplus":
-			wGooglePlus(c)
+			AuthGooglePlus(c)
 		case "fb":
-			wFacebook(c)
+			AuthFacebook(c)
 		case "tw":
-			wTwitter(c)
+			AuthTwitter(c)
 		case "twcb":
-			wTwitterCallback(c)
+			AuthTwitterCallback(c)
 		}
 	}
 }
@@ -35,16 +36,13 @@ func Auth(c *model.Client) {
 // ---
 
 var (
-	GP_CLIENT_ID       string
-	GP_CLIENT_SECRET   string
-	FB_APP_ID          string
-	FB_APP_SECRET      string
-	TW_CONSUMER_KEY    string
-	TW_CONSUMER_SECRET string
+	fbAppId, fbAppSecret            string
+	gpClientId, gpClientSecret      string
+	twConsumerKey, twConsumerSecret string
 
-	GP_REDIRECT_URI = "http://test.ishuman.me:2001/auth/gplus"
-	FB_REDIRECT_URI = "http://test.ishuman.me:2001/auth/fb"
-	TW_REDIRECT_URI = "http://test.ishuman.me:2001/auth/twcb"
+	gpRedirectUri = "http://test.ishuman.me:2001/auth/gplus"
+	fbRedirectUri = "http://test.ishuman.me:2001/auth/fb"
+	twRedirectUri = "http://test.ishuman.me:2001/auth/twcb"
 
 	twitterConfig *oauth1a.Service
 )
@@ -53,23 +51,23 @@ func init() {
 
 	conf := config.GetConfig()
 
-	TW_CONSUMER_KEY = conf.OAuth.Twitter.ConsumerKey
-	TW_CONSUMER_SECRET = conf.OAuth.Twitter.ConsumerSecret
+	fbAppId = conf.OAuth.Facebook.AppId
+	fbAppSecret = conf.OAuth.Facebook.AppSecret
 
-	FB_APP_ID = conf.OAuth.Facebook.AppId
-	FB_APP_SECRET = conf.OAuth.Facebook.AppSecret
+	gpClientId = conf.OAuth.Google.ClientId
+	gpClientSecret = conf.OAuth.Google.ClientSecret
 
-	GP_CLIENT_ID = conf.OAuth.Google.ClientId
-	GP_CLIENT_SECRET = conf.OAuth.Google.ClientSecret
+	twConsumerKey = conf.OAuth.Twitter.ConsumerKey
+	twConsumerSecret = conf.OAuth.Twitter.ConsumerSecret
 
 	twitterConfig = &oauth1a.Service{
 		RequestURL:   "https://api.twitter.com/oauth/request_token",
 		AuthorizeURL: "https://api.twitter.com/oauth/authorize",
 		AccessURL:    "https://api.twitter.com/oauth/access_token",
 		ClientConfig: &oauth1a.ClientConfig{
-			ConsumerKey:    TW_CONSUMER_KEY,
-			ConsumerSecret: TW_CONSUMER_SECRET,
-			CallbackURL:    TW_REDIRECT_URI,
+			ConsumerKey:    twConsumerKey,
+			ConsumerSecret: twConsumerSecret,
+			CallbackURL:    twRedirectUri,
 		},
 		Signer: new(oauth1a.HmacSha1Signer),
 	}
@@ -77,7 +75,7 @@ func init() {
 
 // ---
 
-func wTwitterCallback(c *model.Client) {
+func AuthTwitterCallback(c *model.Client) {
 
 	requestTokenKey := c.Req.FormValue("oauth_token")
 	requestTokenSecret := ""
@@ -120,7 +118,7 @@ func wTwitterCallback(c *model.Client) {
 	}
 }
 
-func wTwitter(c *model.Client) {
+func AuthTwitter(c *model.Client) {
 
 	httpClient := new(http.Client)
 	userConfig := &oauth1a.UserConfig{}
@@ -150,12 +148,12 @@ func wTwitter(c *model.Client) {
 
 // ---
 
-func wGooglePlus(c *model.Client) {
+func AuthGooglePlus(c *model.Client) {
 
 	conf := &oauth2.Config{
-		ClientID:     GP_CLIENT_ID,
-		ClientSecret: GP_CLIENT_SECRET,
-		RedirectURL:  GP_REDIRECT_URI,
+		ClientID:     gpClientId,
+		ClientSecret: gpClientSecret,
+		RedirectURL:  gpRedirectUri,
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email"},
 		Endpoint:     google.Endpoint,
 	}
@@ -169,51 +167,76 @@ func wGooglePlus(c *model.Client) {
 
 	} else {
 
-		tok, err := conf.Exchange(oauth2.NoContext, code)
+		token, err := conf.Exchange(oauth2.NoContext, code)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		response, err := conf.Client(oauth2.NoContext, tok).Get("https://www.googleapis.com/oauth2/v1/userinfo")
+		response, err := conf.Client(oauth2.NoContext, token).Get("https://www.googleapis.com/oauth2/v1/userinfo")
 		if err != nil {
 			fmt.Println("Get:", err)
 			return
 		}
 		defer response.Body.Close()
 
-		data, err := ioutil.ReadAll(response.Body)
+		if data, err := ioutil.ReadAll(response.Body); err == nil {
 
-		// fmt.Fprintf(c.Res, "%s", data)
+			type GoogleProfile struct {
+				UserId     string `json:"id"`
+				Email      string `json:"email"`
+				Name       string `json:"name"`
+				GivenName  string `json:"given_name"`
+				FamilyName string `json:"family_name"`
+				Link       string `json:"link"`
+				Picture    string `json:"picture"`
+				Gender     string `json:"gender"`
+			}
 
-		// {
-		// "id": "111121802558443619308",
-		// "email": "aleksey.achkasov@gmail.com",
-		// "verified_email": true,
-		// "name": "Aleksey Achkasov",
-		// "given_name": "Aleksey",
-		// "family_name": "Achkasov",
-		// "link": "https://plus.google.com/111121802558443619308",
-		// "picture": "https://lh3.googleusercontent.com/-tUsj4DUH5H4/AAAAAAAAAAI/AAAAAAAAA2Y/HVBV8GQf1VY/photo.jpg",
-		// "gender": "male"
-		// }
+			googleProfile := GoogleProfile{}
 
-		type Profile struct {
-			UserId     string `json:"id"`
-			Email      string `json:"email"`
-			Name       string `json:"name"`
-			GivenName  string `json:"given_name"`
-			FamilyName string `json:"family_name"`
-			Link       string `json:"link"`
-			Picture    string `json:"picture"`
-			Gender     string `json:"gender"`
+			if err = json.Unmarshal(data, &googleProfile); err == nil {
+
+				// fmt.Fprintf(c.Res, "%#v", googleProfile)
+
+				user, err := db.GetUserBySocialId(googleProfile.UserId, model.SN_GOOGLEPLUS)
+
+				fmt.Println("> ", user, err)
+
+				if err == nil {
+
+					c.WriteJson(user)
+
+				} else {
+
+					socialProfile := model.SocialProfile{
+						Id:        googleProfile.UserId,
+						SnId:      model.SN_GOOGLEPLUS,
+						Email:     googleProfile.Email,
+						FirstName: googleProfile.GivenName,
+						LastName:  googleProfile.FamilyName,
+						Picture:   googleProfile.Picture,
+						Link:      googleProfile.Link,
+						Gender:    googleProfile.Gender,
+						LastIp:    c.Ip(),
+					}
+
+					if user, err = db.RegisterSocialUser(socialProfile); err == nil {
+
+						c.WriteJson(user)
+
+					} else {
+						// error
+					}
+				}
+
+			} else {
+				// error
+			}
+
+		} else {
+			// error
 		}
-
-		profile := Profile{}
-
-		err = json.Unmarshal(data, &profile)
-
-		fmt.Fprintf(c.Res, "%#v", profile)
 
 		return
 	}
@@ -247,7 +270,7 @@ func randString(int) string {
 	return fmt.Sprint(time.Now().UnixNano())
 }
 
-func wFacebook(c *model.Client) {
+func AuthFacebook(c *model.Client) {
 
 	params := url.Values{}
 	code := c.Req.FormValue("code")
@@ -256,8 +279,8 @@ func wFacebook(c *model.Client) {
 
 	if error_param == "" && code == "" {
 
-		params.Add("client_id", FB_APP_ID)
-		params.Add("redirect_uri", FB_REDIRECT_URI)
+		params.Add("client_id", fbAppId)
+		params.Add("redirect_uri", fbRedirectUri)
 		params.Add("scope", "public_profile,email")
 		params.Add("state", randString(14))
 
@@ -270,9 +293,9 @@ func wFacebook(c *model.Client) {
 
 	} else if code != "" {
 
-		params.Add("client_id", FB_APP_ID)
-		params.Add("client_secret", FB_APP_SECRET)
-		params.Add("redirect_uri", FB_REDIRECT_URI)
+		params.Add("client_id", fbAppId)
+		params.Add("client_secret", fbAppSecret)
+		params.Add("redirect_uri", fbRedirectUri)
 		params.Add("code", code)
 
 		url_get := fbGetUrl("graph", "oauth/access_token", &params)

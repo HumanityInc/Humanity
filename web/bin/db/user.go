@@ -3,28 +3,16 @@ package db
 import (
 	"../model"
 	"errors"
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
-// "id"         int8 NOT NULL DEFAULT nextval('profile_seq'::regclass),
-// "email"      varchar(128) NOT NULL,
-// "password"   varchar(40) NOT NULL DEFAULT ''::character varying,
-// "first_name" varchar(64) NOT NULL DEFAULT ''::character varying,
-// "last_name"  varchar(64) NOT NULL DEFAULT ''::character varying,
-// "last_ip"    inet NOT NULL DEFAULT '0.0.0.0'::inet,
-// "status"     int2 NOT NULL DEFAULT 0,
-// "registered" int8 NOT NULL DEFAULT 0,
-// "last_login" int8 NOT NULL DEFAULT 0,
-
-const (
-	SN_GOOGLEPLUS = `gp`
-	SN_FACEBOOK   = `fb`
-	SN_TWITTER    = `tw`
-)
+const ()
 
 var (
 	ErrUserAlreadyExists             = errors.New(`User already exists`)
+	ErrUserNotFound                  = errors.New(`User not found`)
 	ErrInvalidEmailAddressOrPassword = errors.New(`Invalid email address or password`)
 )
 
@@ -41,16 +29,17 @@ func hashPassword(password string) string {
 
 //
 
-func RegisterUser(email, firstName, lastName, password, ip string) (err error) {
+func RegisterUser(email, firstName, lastName, password, ip string) (userId int64, err error) {
 
 	hashedPassword := hashPassword(password)
 	unix_time := time.Now().Unix()
 
-	_, err = db.Exec(`INSERT INTO "public"."profiles" `+
+	err = db.QueryRow(`INSERT INTO "public"."profiles" `+
 		`("password", "first_name", "last_name", "email", "last_login", "registered", "activate", "last_ip") `+
 		`VALUES `+
-		`($1, $2, $3, $4, $5, $6, $7, $8)`,
-		hashedPassword, firstName, lastName, email, 0, unix_time, 0, ip)
+		`($1, $2, $3, $4, $5, $6, $7, $8) `+
+		`RETURNING id`,
+		hashedPassword, firstName, lastName, email, 0, unix_time, 0, ip).Scan(&userId)
 
 	if err != nil {
 		logger.Println(err)
@@ -60,19 +49,58 @@ func RegisterUser(email, firstName, lastName, password, ip string) (err error) {
 	return
 }
 
-func RegisterSocialUser(socialId, socialNetworkName, email, firstName, lastName string) (err error) {
+func RegisterSocialUser(socialProfile model.SocialProfile) (user_ptr *model.User, err error) {
 
+	var userId int64
+
+	userId, err = RegisterUser(socialProfile.Email, socialProfile.FirstName, socialProfile.LastName, "", socialProfile.LastIp)
+
+	if err == nil {
+
+		_, err = db.Exec(`INSERT INTO "public"."profiles_social" `+
+			`("id", "sn_id", "user_id", "first_name", "last_name", "email", "picture", "link", "gender") `+
+			`VALUES `+
+			`($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+			socialProfile.Id, socialProfile.SnId, userId, socialProfile.FirstName, socialProfile.LastName,
+			socialProfile.Email, socialProfile.Picture, socialProfile.Link, socialProfile.Gender)
+
+		if err != nil {
+			logger.Println(err)
+			return
+		}
+
+		user_ptr, err = GetUserById(userId)
+
+	} else {
+
+		user_ptr, err = GetUserByEmail(socialProfile.Email, "", false)
+	}
 	return
 }
 
 //
 
-func GetUserBySocialId(socialId, socialNetworkName string) (user *model.User, err error) {
+func GetUserBySocialId(socialId string, socialNetwork int) (user_ptr *model.User, err error) {
 
+	user := model.User{}
+
+	err = db.QueryRow(`SELECT "id", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip" `+
+		`FROM "public"."profiles" `+
+		`WHERE "id"=(SELECT "user_id" FROM "public"."profiles_social" WHERE "id"=$1 AND "sn_id"=$2)`,
+		socialId, socialNetwork).Scan(&user.Id, &user.Email, &user.FirstName, &user.LastName,
+		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp)
+
+	if err != nil {
+		fmt.Println(err)
+		logger.Println(err)
+		return
+	}
+
+	user_ptr = &user
 	return
 }
 
-func GetUserByEmail(email, password string) (user_ptr *model.User, err error) {
+func GetUserByEmail(email, password string, checkPassword bool) (user_ptr *model.User, err error) {
 
 	user, hashedPassword := model.User{}, ""
 
@@ -87,11 +115,14 @@ func GetUserByEmail(email, password string) (user_ptr *model.User, err error) {
 		return
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+	if checkPassword {
 
-	if err != nil {
-		logger.Println(err)
-		return
+		err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+
+		if err != nil {
+			logger.Println(err)
+			return
+		}
 	}
 
 	user_ptr = &user

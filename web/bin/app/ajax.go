@@ -45,7 +45,7 @@ func Register(c *model.Client) {
 				lastName = strings.Trim(lastName, " \r\n\t")
 				firstName = strings.Trim(firstName, " \r\n\t")
 
-				err := db.RegisterUser(email, firstName, lastName, password, ip)
+				_, err := db.RegisterUser(email, firstName, lastName, password, ip)
 				if err == nil {
 
 					c.WriteJson(&Result{})
@@ -76,7 +76,7 @@ func Login(c *model.Client) {
 
 		if password != "" {
 
-			user, err := db.GetUserByEmail(email, password)
+			user, err := db.GetUserByEmail(email, password, true)
 			if err == nil {
 
 				ukey := session.SetUserCookie(c.Res)
