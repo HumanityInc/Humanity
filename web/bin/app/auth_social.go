@@ -4,6 +4,7 @@ import (
 	"../config"
 	"../db"
 	"../model"
+	"../session"
 	"encoding/json"
 	"fmt"
 	"github.com/bradfitz/gomemcache/memcache"
@@ -197,11 +198,7 @@ func AuthGooglePlus(c *model.Client) {
 
 			if err = json.Unmarshal(data, &googleProfile); err == nil {
 
-				// fmt.Fprintf(c.Res, "%#v", googleProfile)
-
 				user, err := db.GetUserBySocialId(googleProfile.UserId, model.SN_GOOGLEPLUS)
-
-				fmt.Println("> ", user, err)
 
 				if err == nil {
 
@@ -274,32 +271,37 @@ func AuthFacebook(c *model.Client) {
 
 	params := url.Values{}
 	code := c.Req.FormValue("code")
+	state := c.Req.FormValue("state")
 	error_param := c.Req.FormValue("error")
 	error_reason := c.Req.FormValue("error_reason")
 
 	if error_param == "" && code == "" {
 
+		ukey := session.SetUserCookie(c.Res)
+
+		params.Add("state", ukey)
 		params.Add("client_id", fbAppId)
 		params.Add("redirect_uri", fbRedirectUri)
 		params.Add("scope", "public_profile,email")
-		params.Add("state", randString(14))
 
 		url_get := fbGetUrl("www", "dialog/oauth", &params)
-
-		// fmt.Println(url_get)
 
 		c.Redirect(url_get)
 		return
 
 	} else if code != "" {
 
-		params.Add("client_id", fbAppId)
-		params.Add("client_secret", fbAppSecret)
-		params.Add("redirect_uri", fbRedirectUri)
+		if state != session.GetSession(c.Req) {
+			c.Redirect("/")
+		}
+
 		params.Add("code", code)
+		params.Add("client_id", fbAppId)
+		params.Add("redirect_uri", fbRedirectUri)
+		params.Add("client_secret", fbAppSecret)
 
 		url_get := fbGetUrl("graph", "oauth/access_token", &params)
-		fmt.Println(url_get)
+		// fmt.Println(url_get)
 
 		response, err := http.Get(url_get)
 		if err != nil {
@@ -330,7 +332,7 @@ func AuthFacebook(c *model.Client) {
 
 			data, err := ioutil.ReadAll(response.Body)
 
-			type Profile struct {
+			type FacebookProfile struct {
 				UserId     string `json:"id"`
 				Email      string `json:"email"`
 				Name       string `json:"name"`
@@ -343,53 +345,45 @@ func AuthFacebook(c *model.Client) {
 				Timezone   int    `json:"timezone"`
 			}
 
-			var profile Profile
-			json.Unmarshal(data, &profile)
+			facebookProfile := FacebookProfile{}
 
-			/* {
-				"id":"785049524848954",
-				"name":"\u0410\u043b\u0435\u043a\u0441\u0435\u0439 \u0410\u0447\u043a\u0430\u0441\u043e\u0432",
-				"first_name":"\u0410\u043b\u0435\u043a\u0441\u0435\u0439",
-				"last_name":"\u0410\u0447\u043a\u0430\u0441\u043e\u0432",
-				"email":"al_ghost\u0040inbox.ru",
-				"locale":"ru_RU",
-				"timezone":2,
-				"gender":"male"
-			} */
+			// json.Unmarshal(data, &profile)
+			// fmt.Fprintf(c.Res, "%#v\n", profile)
 
-			fmt.Fprintf(c.Res, "%s\n", data)
+			if err = json.Unmarshal(data, &facebookProfile); err == nil {
 
-			fmt.Fprintf(c.Res, "%#v\n", profile)
+				user, err := db.GetUserBySocialId(facebookProfile.UserId, model.SN_FACEBOOK)
 
-			// if profile.UserId != "" {
+				if err == nil {
 
-			// u, err := users.GetByFb(profile.UserId)
+					c.WriteJson(user)
 
-			// fmt.Println(u, err)
+				} else {
 
-			// if err != nil {
+					socialProfile := model.SocialProfile{
+						Id:        facebookProfile.UserId,
+						SnId:      model.SN_FACEBOOK,
+						Email:     facebookProfile.Email,
+						FirstName: facebookProfile.FirstName,
+						LastName:  facebookProfile.SecondName,
+						Picture:   facebookProfile.Picture,
+						Link:      facebookProfile.Link,
+						Gender:    facebookProfile.Gender,
+						LastIp:    c.Ip(),
+					}
 
-			// 	user := database.User{}
+					if user, err = db.RegisterSocialUser(socialProfile); err == nil {
 
-			// 	user.Name = profile.Name
-			// 	user.Email = profile.Email
-			// 	user.FbId = profile.UserId
-			// 	user.Photo = "https://graph.facebook.com/" + profile.UserId + "/picture?type=square&height=200&width=200"
-			// 	user.Login = fmt.Sprint("fb_", profile.UserId)
+						c.WriteJson(user)
 
-			// 	users.AddUser(&user)
+					} else {
+						// error
+					}
+				}
 
-			// 	session.Values["id"] = user.Id
-			// 	session.Values["user"] = user
-
-			// } else {
-
-			// 	session.Values["id"] = u.Id
-			// 	session.Values["user"] = *u
-			// }
-			// }
-
-			// c.Redirect("/")
+			} else {
+				// error
+			}
 		}
 
 		return

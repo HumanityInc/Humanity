@@ -88,6 +88,14 @@ func getUser(ukey string) (user model.User, ok bool) {
 	return
 }
 
+func GetSession(req *http.Request) (ukey string) {
+
+	if cookie, err := req.Cookie(COOKIE_NAME); err == nil {
+		ukey = cookie.Value
+	}
+	return
+}
+
 func GetUser(req *http.Request) (user model.User, ok bool) {
 
 	if cookie, err := req.Cookie(COOKIE_NAME); err == nil {
@@ -95,7 +103,6 @@ func GetUser(req *http.Request) (user model.User, ok bool) {
 		ukey := cookie.Value
 		user, ok = getUser(ukey)
 	}
-
 	return
 }
 
