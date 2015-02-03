@@ -16,12 +16,16 @@ import (
 const (
 	TEMPLATE_PATH = `../template/en/_email/`
 	MANDRILL_API  = `https://mandrillapp.com/api/1.0`
-	FROM_EMAIL    = `robot@ishuman.me`
-	FROM_NAME     = `robot`
+	FROM_EMAIL    = `welcome@ishuman.me`
+	FROM_NAME     = `Humanity`
 )
 
 type (
 	MailActivate struct {
+		Link string
+	}
+
+	MailSuccess struct {
 		Link string
 	}
 
@@ -65,6 +69,15 @@ func (m *MailActivate) Send(email string) {
 	}
 }
 
+func (m *MailSuccess) Send(email string) {
+
+	err := send("success.txt", email, "Welcome to Humanity!", m)
+
+	if err != nil {
+		logger.Println(err)
+	}
+}
+
 //
 
 func send(tmpl_file, email, subject string, data interface{}) (ret error) {
@@ -82,7 +95,8 @@ func send(tmpl_file, email, subject string, data interface{}) (ret error) {
 			messages := map[string]interface{}{
 				"key": mandrillKey,
 				"message": map[string]interface{}{
-					"text":       text,
+					// "text":       text,
+					"html":       text,
 					"subject":    subject,
 					"from_email": FROM_EMAIL,
 					"from_name":  FROM_NAME,

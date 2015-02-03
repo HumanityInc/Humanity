@@ -14,7 +14,7 @@ import (
 const (
 	MC_USER_PREFIX = "u:"
 	COOKIE_NAME    = `K`
-	KEY_LENGHT     = 24
+	KEY_LENGHT     = 32
 	SESSION_TTL    = 7 * 60 * 60 * 24
 	COOKIE_TTL     = 7
 )

@@ -45,6 +45,7 @@ func init() {
 		`j_login`:    Login,
 		`j_logout`:   Logout,
 		`j_register`: Register,
+		`j_setemail`: SetEmail,
 		`j_whoami`:   Whoami,
 	}
 

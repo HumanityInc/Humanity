@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	PASSWORD_MIN_LENGTH = 6
+	PASSWORD_MIN_LENGTH = 1
 )
 
 type (
@@ -25,6 +25,7 @@ var (
 	errInvalidPassword        = "INVALID_PASSWORD"
 	errInvalidEmailOrPassword = "INVALID_EMAIL_OR_PASSWORD"
 	errPasswordsNotEqual      = "PASSWORDS_NOT_EQUAL"
+	errNotAuth                = "NOTAUTH"
 )
 
 func Register(c *model.Client) {
@@ -45,8 +46,13 @@ func Register(c *model.Client) {
 				lastName = strings.Trim(lastName, " \r\n\t")
 				firstName = strings.Trim(firstName, " \r\n\t")
 
-				_, err := db.RegisterUser(email, firstName, lastName, password, ip)
+				userId, err := db.RegisterUser(email, firstName, lastName, password, ip, true)
 				if err == nil {
+
+					if user, err := db.GetUserById(userId); err == nil {
+						ukey := session.SetUserCookie(c.Res)
+						session.SetUser(*user, ukey)
+					}
 
 					c.WriteJson(&Result{})
 
@@ -91,6 +97,30 @@ func Login(c *model.Client) {
 		} else {
 			c.WriteJson(&Result{Res: 1, Error: errInvalidPassword})
 		}
+
+	} else {
+		c.WriteJson(&Result{Res: 1, Error: errInvalidEmailAddress})
+	}
+}
+
+func SetEmail(c *model.Client) {
+
+	if c.User == nil {
+		c.WriteJson(&Result{Res: 1, Error: errNotAuth})
+		return
+	}
+
+	email := c.Req.FormValue("email")
+
+	if utils.IsEmail(email) {
+
+		user, err := db.SetUserEmail(c.User.Id, email)
+		if err == nil {
+			ukey := session.SetUserCookie(c.Res)
+			session.SetUser(*user, ukey)
+		}
+
+		c.WriteJson(&Result{})
 
 	} else {
 		c.WriteJson(&Result{Res: 1, Error: errInvalidEmailAddress})

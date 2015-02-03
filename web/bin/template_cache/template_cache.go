@@ -11,7 +11,7 @@ import (
 
 const (
 	TEMPLATE_TTL     = 1
-	TEMPLATE_NOCACHE = false
+	TEMPLATE_NOCACHE = true
 )
 
 type TemplateData struct {

@@ -41,9 +41,9 @@ var (
 	gpClientId, gpClientSecret      string
 	twConsumerKey, twConsumerSecret string
 
-	gpRedirectUri = "http://test.ishuman.me:2001/auth/gplus"
-	fbRedirectUri = "http://test.ishuman.me:2001/auth/fb"
-	twRedirectUri = "http://test.ishuman.me:2001/auth/twcb"
+	gpRedirectUri = "https://ishuman.me/auth/gplus"
+	fbRedirectUri = "https://ishuman.me/auth/fb"
+	twRedirectUri = "https://ishuman.me/auth/twcb"
 
 	twitterConfig *oauth1a.Service
 )
@@ -85,10 +85,7 @@ func AuthTwitterCallback(c *model.Client) {
 
 		requestTokenSecret = string(item.Value)
 
-		userConfig := &oauth1a.UserConfig{
-			RequestTokenKey:    requestTokenKey,
-			RequestTokenSecret: requestTokenSecret,
-		}
+		userConfig := oauth1a.NewAuthorizedConfig(requestTokenKey, requestTokenSecret)
 
 		token, verifier, err := userConfig.ParseAuthorize(c.Req, twitterConfig)
 
@@ -104,12 +101,47 @@ func AuthTwitterCallback(c *model.Client) {
 			return
 		}
 
-		fmt.Fprintf(c.Res, "Access Token: %#v\n", userConfig)
-
+		// fmt.Fprintf(c.Res, "Access Token: %#v\n", userConfig)
 		// fmt.Fprintf(c.Res, "Access Token: %v\n", userConfig.AccessTokenKey)
 		// fmt.Fprintf(c.Res, "Token Secret: %v\n", userConfig.AccessTokenSecret)
-		fmt.Fprintf(c.Res, "Screen Name:  %v\n", userConfig.AccessValues.Get("screen_name"))
-		fmt.Fprintf(c.Res, "User ID:      %v\n", userConfig.AccessValues.Get("user_id"))
+		// fmt.Fprintf(c.Res, "Screen Name:  %v\n", userConfig.AccessValues.Get("screen_name"))
+		// fmt.Fprintf(c.Res, "User ID:      %v\n", userConfig.AccessValues.Get("user_id"))
+
+		userId := userConfig.AccessValues.Get("user_id")
+		firstName := userConfig.AccessValues.Get("screen_name")
+
+		user, err := db.GetUserBySocialId(userId, model.SN_TWITTER)
+
+		if err == nil {
+
+			ukey := session.SetUserCookie(c.Res)
+			session.SetUser(*user, ukey)
+
+			if user.Email == "" {
+				c.Redirect("/#!email")
+			} else {
+				c.Redirect("/#!success")
+			}
+
+		} else {
+
+			socialProfile := model.SocialProfile{
+				Id:        userId,
+				SnId:      model.SN_TWITTER,
+				FirstName: firstName,
+				LastIp:    c.Ip(),
+			}
+
+			if user, err = db.RegisterSocialUser(socialProfile); err == nil {
+
+				ukey := session.SetUserCookie(c.Res)
+				session.SetUser(*user, ukey)
+				c.Redirect("/#!email")
+
+			} else {
+				// error
+			}
+		}
 
 		return
 
@@ -202,7 +234,9 @@ func AuthGooglePlus(c *model.Client) {
 
 				if err == nil {
 
-					c.WriteJson(user)
+					ukey := session.SetUserCookie(c.Res)
+					session.SetUser(*user, ukey)
+					c.Redirect("/#!success")
 
 				} else {
 
@@ -220,7 +254,9 @@ func AuthGooglePlus(c *model.Client) {
 
 					if user, err = db.RegisterSocialUser(socialProfile); err == nil {
 
-						c.WriteJson(user)
+						ukey := session.SetUserCookie(c.Res)
+						session.SetUser(*user, ukey)
+						c.Redirect("/#!success")
 
 					} else {
 						// error
@@ -356,7 +392,9 @@ func AuthFacebook(c *model.Client) {
 
 				if err == nil {
 
-					c.WriteJson(user)
+					ukey := session.SetUserCookie(c.Res)
+					session.SetUser(*user, ukey)
+					c.Redirect("/#!success")
 
 				} else {
 
@@ -374,7 +412,9 @@ func AuthFacebook(c *model.Client) {
 
 					if user, err = db.RegisterSocialUser(socialProfile); err == nil {
 
-						c.WriteJson(user)
+						ukey := session.SetUserCookie(c.Res)
+						session.SetUser(*user, ukey)
+						c.Redirect("/#!success")
 
 					} else {
 						// error
