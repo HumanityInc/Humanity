@@ -10,12 +10,15 @@ import (
 
 const (
 	PASSWORD_MIN_LENGTH = 1
+
+	TRIM = " \r\n\t"
 )
 
 type (
 	Result struct {
-		Res   int    `json:"res"`
-		Error string `json:"error,omitempty"`
+		Res   int         `json:"res"`
+		Error string      `json:"error,omitempty"`
+		Data  interface{} `json:"data,omitempty"`
 	}
 )
 
@@ -43,8 +46,8 @@ func Register(c *model.Client) {
 
 			if password == password2 {
 
-				lastName = strings.Trim(lastName, " \r\n\t")
-				firstName = strings.Trim(firstName, " \r\n\t")
+				lastName = strings.Trim(lastName, TRIM)
+				firstName = strings.Trim(firstName, TRIM)
 
 				userId, err := db.RegisterUser(email, firstName, lastName, password, ip, true)
 				if err == nil {

@@ -19,17 +19,3 @@ func Index(c *model.Client) {
 	}
 	page.Render()
 }
-
-func Feed(c *model.Client) {
-
-	page := Render{
-		res:  c.Res,
-		tmpl: "feed/index.html",
-		data: struct {
-			User *model.User
-		}{
-			User: c.User,
-		},
-	}
-	page.Render()
-}

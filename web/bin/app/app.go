@@ -39,14 +39,15 @@ var mc *memcache.Client
 func init() {
 
 	page_callback = map[string]cb_fn{
-		``:           Index,
-		`feed`:       Feed,
-		`auth`:       Auth,
-		`j_login`:    Login,
-		`j_logout`:   Logout,
-		`j_register`: Register,
-		`j_setemail`: SetEmail,
-		`j_whoami`:   Whoami,
+		``:            Index,
+		`auth`:        Auth,
+		`j_login`:     Login,
+		`j_logout`:    Logout,
+		`j_register`:  Register,
+		`j_setemail`:  SetEmail,
+		`j_whoami`:    Whoami,
+		`j_feed`:      Feed,
+		`j_crowdfund`: CrowdfundSave,
 	}
 
 	conf := config.GetConfig()

@@ -89,7 +89,6 @@ func RegisterSocialUser(socialProfile model.SocialProfile) (user_ptr *model.User
 
 		if err != nil {
 			logger.Println(err)
-			// return
 		}
 
 		user_ptr, err = GetUserById(userId)

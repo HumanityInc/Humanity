@@ -78,6 +78,8 @@ func init() {
 
 func AuthTwitterCallback(c *model.Client) {
 
+	// TODO denied
+
 	requestTokenKey := c.Req.FormValue("oauth_token")
 	requestTokenSecret := ""
 
@@ -120,7 +122,7 @@ func AuthTwitterCallback(c *model.Client) {
 			if user.Email == "" {
 				c.Redirect("/#!email")
 			} else {
-				c.Redirect("/#!success")
+				c.Redirect("/#!login")
 			}
 
 		} else {
@@ -236,7 +238,7 @@ func AuthGooglePlus(c *model.Client) {
 
 					ukey := session.SetUserCookie(c.Res)
 					session.SetUser(*user, ukey)
-					c.Redirect("/#!success")
+					c.Redirect("/#!login")
 
 				} else {
 
@@ -394,7 +396,7 @@ func AuthFacebook(c *model.Client) {
 
 					ukey := session.SetUserCookie(c.Res)
 					session.SetUser(*user, ukey)
-					c.Redirect("/#!success")
+					c.Redirect("/#!login")
 
 				} else {
 

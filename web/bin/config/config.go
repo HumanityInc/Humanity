@@ -13,6 +13,11 @@ const (
 )
 
 type Config struct {
+	Process struct {
+		Daemon bool   `json:"daemon"`
+		ChRoot string `json:"chroot"`
+	} `json:"process"`
+
 	Network struct {
 		Bind     string `json:"bind"`
 		Protocol string `json:"protocol"`
@@ -25,18 +30,21 @@ type Config struct {
 
 	OAuth struct {
 		Facebook struct {
-			AppId     string `json:"app_id"`
-			AppSecret string `json:"app_secret"`
+			AppId       string `json:"app_id"`
+			AppSecret   string `json:"app_secret"`
+			RedirectUrl string `json:"redirect_url"`
 		} `json:"facebook"`
 
 		Twitter struct {
 			ConsumerKey    string `json:"consumer_key"`
 			ConsumerSecret string `json:"consumer_secret"`
+			RedirectUrl    string `json:"redirect_url"`
 		} `json:"twitter"`
 
 		Google struct {
 			ClientId     string `json:"client_id"`
 			ClientSecret string `json:"client_secret"`
+			RedirectUrl  string `json:"redirect_url"`
 		} `json:"google"`
 	} `json:"oauth"`
 
