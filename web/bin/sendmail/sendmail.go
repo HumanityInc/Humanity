@@ -71,7 +71,7 @@ func (m *MailActivate) Send(email string) {
 
 func (m *MailSuccess) Send(email string) {
 
-	err := send("success.txt", email, "Welcome to Humanity!", m)
+	err := send("success.txt", email, "Welcome to Humanity! :)", m)
 
 	if err != nil {
 		logger.Println(err)
