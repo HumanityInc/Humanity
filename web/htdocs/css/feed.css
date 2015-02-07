@@ -1,0 +1,131 @@
+body{
+	/*overflow: hidden;*/
+}
+
+.slow_all {
+	-webkit-transition: all 225ms ease;
+	-moz-transition: 	all 225ms ease;
+	-ms-transition: 	all 225ms ease;
+	-o-transition: 		all 225ms ease;
+	transition: 		all 225ms ease;
+}
+
+.wrapper {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background-color: rgba(255,255,0,.3);
+	transform: translateZ(0);
+}
+
+.scrollable {
+	position: relative;
+	overflow: hidden;
+	height: 100%;
+	min-height: 450px;
+	width: auto;
+	background-color: rgba(0,255,255,.3);
+}
+
+.x2, .x3 {
+	position: relative;
+	float: left;
+	display: block;
+	min-height: 100%;
+	background-color: rgba(220,0,0,.2);
+}
+.x3 {
+	background-color: rgba(0,0,220,.2);
+}
+
+.x2 > a {
+	color: #fff;
+	text-decoration: none;
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.x2 > a:hover > .x_content {
+	z-index: 14;
+	bottom: -200px;
+}
+
+.x2>a>.x_content {
+	position: absolute;
+	background-color: #24a3f4;
+	width: inherit;
+	height: 200px;
+	bottom: 0px;
+	z-index: 5;
+
+	-webkit-transition: all 225ms ease;
+	-moz-transition: 	all 225ms ease;
+	-ms-transition: 	all 225ms ease;
+	-o-transition: 		all 225ms ease;
+	transition: 		all 225ms ease;
+}
+
+/**/
+
+.x3 > a {
+	color: #fff;
+	text-decoration: none;
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.x3>a>.x3_content {
+	position: absolute;
+	background-color: #24a3f4;
+	width: inherit;
+	height: 200px;
+	bottom: 0px;
+	z-index: 5;
+
+	-webkit-transition: all 400ms ease;
+	-moz-transition: 	all 400ms ease;
+	-ms-transition: 	all 400ms ease;
+	-o-transition: 		all 400ms ease;
+	transition: 		all 400ms ease;
+}
+
+.x3 > a:hover > .x3_content {
+	z-index: 14;
+	bottom: -200px;
+}
+
+.x_bg {
+	position: relative;
+	width: inherit;
+	height: inherit;
+	background-color: rgba(150,0,0,1);
+	background-size: cover;
+	background-repeat: no-repeat;
+	padding-top: 56.25%;
+	z-index: 24;
+
+	transform: translate3d(0,0,0);
+	-webkit-transform: translate3d(0,0,0);
+}
+
+/**/
+
+.last_el {
+	overflow: hidden;
+}
+
+.last_el > .x_bg {
+	z-index: 1;
+}
+
+.last_el>.x_content, .last_el>.x3_content {
+	bottom: -100% !important;
+}
+
+.last_el:hover > .x_content, .last_el:hover > .x3_content {
+	bottom: 0 !important;
+}

@@ -1,38 +1,292 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>ishuman.me</title>
-	<link type="text/css" rel="stylesheet" href="/css/index.css">
-</head>
-<body style="background: #eee url(/img/background.jpg) 50% 50% no-repeat; background-size: cover;">
 
-	<div class="body">
+	<meta charset="utf-8">
+	<title>Humanity</title>
+
+	<meta property="fb:app_id" content="393092710870235">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://ishuman.me/">
+	<meta property="og:title" content="Humanity"> 
+	<meta property="og:image" content="https://ishuman.me/opensource/pics/emblem.png">
+	<meta property="og:description" content="Humanity - The billion dollar global giant owned by YOU!">
+
+	<link type="text/css" rel="stylesheet" href="/css/index.css?v=20">
+	<link rel="shortcut icon" href="/favicon_2.ico" type="image/x-icon"/>
+
+	<script src="/js/jquery-1.11.2.min.js"></script>
+	<script src="/js/underscore.min.js"></script>
+	<script src="/js/backbone.min.js"></script>
+	<script src="/js/index.js?v=20"></script>
+
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-49097764-1','ishuman.me');ga('send','pageview');</script>
+
+	<style type="text/css">
+
+	.table {
+		border-spacing: 0;
+    	border-collapse: collapse;
+    	width: 100%;
+	}
+
+	.tr { height: 32px; }
+	.small .tr { height: 21px; }
+
+	.tr.first { height: 40px; }
+	.small .tr.first { height: 26px; }
+
+	.tr.button { height: 84px; }
+	.small .tr.button { height: 55px; }
+
+	.tr.control { height: 84px; }
+	.small .tr.control { height: 55px; }
+
+	.title i.td, .title i.white {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+	.title i.white {
+		background-color: rgba(255,255,255,.25);
+	}
+	.title span { position: relative; }
+	
+	.max, .td {
+		background-color: rgba(0, 156, 255, .6);
+
+		-webkit-transition: all 0.3s ease;
+		-moz-transition:    all 0.3s ease;
+		-o-transition:      all 0.3s ease;
+		-ms-transition:     all 0.3s ease;
+		transition:         all 0.3s ease;
+	}
+
+	.td {
+    	font-family: 'Roboto', sans-serif;
+		font-weight: 100;
+	}
+	.td.hole {
+		background-color: transparent;
+		width: 295px;
+	}
+	.login_box .td.hole .login_button {
+		margin: 0;
+		width: 100%;
+	}
+
+	.tr.buttom { height: 28px; }
+	.small .tr.buttom { height: 20px; }
+
+	.login_box .signup,
+	.login_box.small .signup {
+		margin: 0;
+	}
+
+	div.max { height: 564px; overflow: hidden; }
+	.small div.max { height: 371px; }
+
+	</style>
+
+</head>
+<body>
+
+	<div class="body" style="background:transparent url('/img/poster1.jpg') no-repeat 0 0; background-size: cover;">
+
+		<div id="bg" style="opacity: 1; visibility: visible;">
+			<!-- style="background:transparent url('/img/poster1.jpg') no-repeat 0 0; background-size: cover;" -->
+			<video class="vi" autoplay="autoplay" loop="loop">
+				<source src="/steve3.mp4" type="video/mp4">
+				<!-- <source src="/steve.ogv" type="video/ogg"> -->
+				Your browser does not support the video tag.
+			</video>
+		</div>
+
+		<a href="#" class="menu_btn"></a>
+
+		<a class="volume"></a>
 
 		<div class="login_box">
 
-			<div class="title">hello, human! :)</div>
+			<div class="title">
+				<i class="td"></i>
+				<i class="white"></i>
+				<span>hello, human! :)</span>
+			</div>
 
-			<a href="javascript:" class="login_button">sign in with humanity</a>
-			<a href="/auth/fb" class="login_button fb">sign in with facebook</a>
-			<a href="/auth/gplus" class="login_button gp">sign in with google</a>
-			<a href="/auth/tw" class="login_button tw">sign in with twitter</a>
+			<div id="main" style="display: none;">
 
-			<a href="javascript:" class="signup">sign up with email address</a>
+				<table class="table">
+					<tr class="tr first">
+						<td class="td"></td>
+						<td class="td"></td>
+						<td class="td"></td>
+					</tr>
+					<tr class="tr button">
+						<td class="td"></td>
+						<td class="td hole">
+							<a href="#!signin" class="login_button"><img alt="" src="/img/humanity.png">sign in with humanity</a>
+						</td>
+						<td class="td"></td>
+					</tr>
+					<tr class="tr">
+						<td class="td"></td>
+						<td class="td"></td>
+						<td class="td"></td>
+					</tr>
+					<tr class="tr button">
+						<td class="td"></td>
+						<td class="td hole">
+							<a href="/auth/fb" class="login_button fb"><img alt="" src="/img/facebook.png">sign in with facebook</a>
+						</td>
+						<td class="td"></td>
+					</tr>
+					<tr class="tr">
+						<td class="td"></td>
+						<td class="td"></td>
+						<td class="td"></td>
+					</tr>
+					<tr class="tr button">
+						<td class="td"></td>
+						<td class="td hole">
+							<a href="/auth/gplus" class="login_button gp"><img alt="" src="/img/gp.png">sign in with google</a>
+						</td>
+						<td class="td"></td>
+					</tr>
+					<tr class="tr">
+						<td class="td"></td>
+						<td class="td"></td>
+						<td class="td"></td>
+					</tr>
+					<tr class="tr button">
+						<td class="td"></td>
+						<td class="td hole">
+							<a href="/auth/tw" class="login_button tw"><img alt="" src="/img/twitter.png">sign in with twitter</a>
+						</td>
+						<td class="td"></td>
+					</tr>
+					<tr class="tr">
+						<td class="td"></td>
+						<td class="td"></td>
+						<td class="td"></td>
+					</tr>
+					<tr class="tr buttom">
+						<td class="td"></td>
+						<td class="td">
+							<a href="#!main/signup" class="signup">sign up with email address</a>
+						</td>
+						<td class="td"></td>
+					</tr>
+					<tr class="tr">
+						<td class="td"></td>
+						<td class="td"></td>
+						<td class="td"></td>
+					</tr>
+				</table>
+
+			</div>
+
+			<div id="signin" class="max" style="display: none;">
+
+				<form autocomplete="off">
+					<input name="email" type="text" class="login_input" value="" placeholder="my email">
+					<div class="wrong">oops</div>
+					<input name="password" type="password" class="login_input" value="" placeholder="my password">
+					<div class="wrong">oops</div>
+
+					<div class="login_control">
+						<a href="#">back</a>
+						<a href="#!signin/create">create</a>
+						<a id="login" href="javascript:" class="back">sign in</a>
+					</div>
+				</form>
+
+			</div>
+
+			<div id="signup_create" class="max" style="display: none;">
+
+				<form autocomplete="off">
+				<input name="email" type="text" class="login_input" value="" placeholder="my email">
+				<div class="wrong">oops</div>
+				<input name="password" type="password" class="login_input" value="" placeholder="my password">
+				<div class="wrong">oops</div>
+				<input name="password2" type="password" class="login_input" value="" placeholder="confirm password">
+				<div class="wrong">oops</div>
+				<input name="first_name" type="text" class="login_input" value="" placeholder="my first name">
+				<div class="wrong">oops</div>
+				<input name="last_name" type="text" class="login_input" value="" placeholder="my last name">
+				<div class="wrong">oops</div>
+				</form>
+
+				<div class="login_control">
+					<a href="#!signin">back</a>
+					<a id="create1" class="back" href="javascript:">create</a>
+				</div>
+
+			</div>
+
+			<div id="signup_main" class="max" style="display: none;">
+
+				<form autocomplete="off">
+				<input name="email" type="text" class="login_input" value="" placeholder="my email">
+				<div class="wrong">oops</div>
+				<input name="password" type="password" class="login_input" value="" placeholder="my password">
+				<div class="wrong">oops</div>
+				<input name="password2" type="password" class="login_input" value="" placeholder="confirm password">
+				<div class="wrong">oops</div>
+				<input name="first_name" type="text" class="login_input" value="" placeholder="my first name">
+				<div class="wrong">oops</div>
+				<input name="last_name" type="text" class="login_input" value="" placeholder="my last name">
+				<div class="wrong">oops</div>
+				</form>
+
+				<div class="login_control">
+					<a href="#">back</a>
+					<a id="create2" class="back" href="javascript:">create</a>
+				</div>
+
+			</div>
+
+			<div id="email" class="max" style="display: none;">
+				<form autocomplete="off">
+				<input name="email" type="text" class="login_input" value="" placeholder="my email">
+				<div class="wrong">oops</div>
+				</form>
+				<div class="login_control">
+					<a href="#">back</a>
+					<a id="save" class="back" href="javascript:">save</a>
+				</div>
+			</div>
+
+			<div id="success" class="max" style="display: none;">
+				<div class="success">
+					“great success!”<br>
+					check your email!
+				</div>
+			</div>
+
+			<div id="success2" class="max" style="display: none;">
+				<div class="success" style="width: 515px">
+					We'll email your invite soon!
+				</div>
+			</div>
 
 			<table class="colors">
 				<tr>
-					<td class="color c00 active">&nbsp;</td>
-					<td class="color c01">&nbsp;</td>
-					<td class="color c02">&nbsp;</td>
-					<td class="color c03">&nbsp;</td>
-					<td class="color c04">&nbsp;</td>
-					<td class="color c05">&nbsp;</td>
-					<td class="color c06">&nbsp;</td>
-					<td class="color c07">&nbsp;</td>
-					<td class="color c08">&nbsp;</td>
-					<td class="color c09">&nbsp;</td>
-					<td class="color c10">&nbsp;</td>
+					<td data-color="0" class="color c00 active"></td>
+					<td data-color="1" class="color c01"></td>
+					<td data-color="2" class="color c02"></td>
+					<td data-color="3" class="color c03"></td>
+					<td data-color="4" class="color c04"></td>
+					<td data-color="5" class="color c05"></td>
+					<td data-color="6" class="color c06"></td>
+					<td data-color="7" class="color c07"></td>
+					<td data-color="8" class="color c08"></td>
+					<td data-color="9" class="color c09"></td>
+					<td data-color="10" class="color c10"></td>
 				</tr>
 			</table>
 

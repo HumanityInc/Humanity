@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,300);
+@import url(//fonts.googleapis.com/css?family=Roboto:100,300,400);
 
 html{margin:0;padding:0;border:0}
 body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,code,del,dfn,em,img,q,dl,dt,dd,ol,
@@ -16,14 +16,22 @@ a img{border:none}
 
 html, body {
 	height: 100%;
-	background-size: cover;
 	min-height: 520px;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 100;
 }
 
+body {
+	min-height: 670px;
+}
+
 * html .body {
 	height: 100%;
+}
+
+.index {
+	background: #eee url(/img/background.jpg) 50% 50% no-repeat;
+	background-size: cover;
 }
 
 .body {
@@ -32,75 +40,390 @@ html, body {
 	position: relative;
 }
 
+.menu_btn {
+	position: absolute;
+	left: 50%;
+	top: 0px;
+	margin-left: -23px;
+	width: 46px;
+	height: 43px;
+	display: block;
+	background: url(/img/menu.png) 50% 50% no-repeat;
+	background-size: 66%;
+	z-index: 10;
+}
+.menu_btn.fixed {
+	position: fixed;
+}
+
 /* - */
+
+#bg {
+	position: absolute;
+	top: -50%;
+	left: -50%;
+	width: 200%;
+	height: 200%;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform: translateZ(0) translate3d(0,0,0);
+	-moz-transform: translateZ(0) translate3d(0,0,0);
+	-ms-transform: translateZ(0) translate3d(0,0,0);
+	-o-transform: translateZ(0) translate3d(0,0,0);
+	transform: translateZ(0) translate3d(0,0,0);
+}
+
+#bg .vi {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	min-width: 50%;
+	min-height: 50%;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform: translateZ(0) translate3d(0,0,0);
+	-moz-transform: translateZ(0) translate3d(0,0,0);
+	-ms-transform: translateZ(0) translate3d(0,0,0);
+	-o-transform: translateZ(0) translate3d(0,0,0);
+	transform: translateZ(0) translate3d(0,0,0);
+}
+
+/* - */
+
+.volume {
+	width: 20px;
+	height: 22px;
+	position: absolute;
+	display: block;
+	right: 5px;
+	bottom: 5px;
+	background: url(/img/volume.png) 0 -22px no-repeat;
+	cursor: pointer;
+	opacity: .7;
+}
+.volume:hover,
+.volume.off {
+	background: url(/img/volume.png) 0 0 no-repeat;
+}
 
 .login_box {
 	display: inline-block;
-	background-color: rgba(0, 144, 255, .6);
+	/*background-color: rgba(0, 156, 255, .6);*/
 	color: rgba(255, 255, 255, .9);
-	width: 573px;
-	height: 514px;
+	width: 868px;
+	height: 718px;
 
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin-left: -286px;
-	margin-top: -252px;
+	margin-left: -434px;
+	margin-top: -381px;
 
-	text-shadow: 0 0 6px rgba(255, 255, 255, .5);
+	display: none;
+
+	-webkit-transition: all 0.3s ease;
+	-moz-transition:    all 0.3s ease;
+	-o-transition:      all 0.3s ease;
+	-ms-transition:     all 0.3s ease;
+	transition:         all 0.3s ease;
+}
+.login_box.small {
+	width: 572px;
+	height: 473px;
+	margin-left: -286px;
+	margin-top: -251px;
 }
 
-.login_box .title {
+.login_box .wrong {
+	font-size: 34px;
 	height: 0;
 	line-height: 0;
-	font-size: 60px;
-	padding: 51px 0;
+	position: relative;
+	left: 670px;
+	top: -34px;
+	display: none;
+}
+.login_box.small .wrong {
+	font-size: 22px;
+	left: 442px;
+	top: -22px;
+}
+
+
+.login_box .title {
+	position: relative;
+	height: 0;
+	line-height: 0;
+	font-size: 92px;
+	padding: 77px 0;
 	text-align: center;
+	/*background-color: rgba(255, 255, 255, .25);*/
+	color: rgba(255, 255, 255, .8);
+	text-shadow: 0 0 3px rgba(255, 255, 255, .55);
+}
+.login_box.small .title {
+	font-size: 61px;
+	padding: 51px 0;
+}
+
+.login_box .login_input {
+	margin: 20px auto 0;
+	width: 447px;
+	height: 67px;
+	border: 0 none;
+	display: block;
+	background-color: #f6f6f6;
+	font-size: 34px;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
+	text-align: center;
+	color: #2da9f9;
+	box-sizing: border-box;
+}
+.login_box.small .login_input {
+	margin: 13px auto 0;
+	width: 295px;
+	height: 44px;
+	font-size: 22px;
+}
+.login_box.small .login_input:first-child {
+	margin: 26px auto 0;
+}
+.login_box .login_input::-webkit-input-placeholder {
+	color: rgba(45, 169, 249, .4);
+}
+.login_box .login_input:-moz-placeholder {
+	color: rgba(45, 169, 249, .4);
+}
+
+.login_box .login_control {
+	margin: 20px auto 0;
+	width: 447px;
+	height: 57px;
 	background-color: rgba(255, 255, 255, .25);
+}
+.login_box.small .login_control {
+	margin: 13px auto 0;
+	width: 295px;
+	height: 37px;
+}
+.login_box .login_control a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 34px;
+	display: block;
+	/*width: 33.33%;*/
+	width: auto;
+	float: left;
+	text-align: center;
+	height: 0;
+	line-height: 0;
+	padding: 27px 31px 30px 31px;
+	box-sizing: border-box;
+}
+.login_box.small .login_control a {
+	font-size: 22px;
+	padding: 17px 21px 20px 21px;
+}
+.login_box .login_control a:hover {
+	background-color: rgba(255, 255, 255, .15);
+}
+.login_box .login_control a.back {
+	float: right;
+	/*padding-left: 18px;*/
+}
+.login_box.small .login_control a.back {
+	float: right;
+	/*padding-left: 12px;*/
+}
+
+.login_box .success {
+	width: 467px;
+	margin: 170px auto 0;
+	font-size: 60px;
+	text-align: center;
+}
+.login_box.small .success {
+	width: 295px;
+	margin-top: 122px;
+	font-size: 39px;
 }
 
 .login_box .login_button {
 	display: block;
-	width: 295px;
-	height: 55px;
-	background: #41c8f5 url(/img/social_network.png) 14px 9px no-repeat;
-	margin: 26px auto 0;
+	position: relative;
+	width: 447px;
+	height: 84px;
+	background: rgba(65, 200, 245, 1); /*url(/img/social_network.png) 14px 15px no-repeat;*/
+	margin: 40px auto 0;
 	line-height: 0;
 	text-align: center;
-	padding: 27px 0 27px 45px;
-	font-size: 22px;
+	padding: 42px 0 42px 65px;
+	font-size: 34px;
 	box-sizing: border-box;
 	color: #fff;
 	text-decoration: none;
-}
-.login_box .login_button.fb {
-	background: #2870f4 url(/img/social_network.png) 14px -69px no-repeat;
-}
-.login_box .login_button.gp {
-	background: #e44258 url(/img/social_network.png) 14px -145px no-repeat;
-}
-.login_box .login_button.tw {
-	background: #4bcce6 url(/img/social_network.png) 14px -221px no-repeat;
-}
+	text-shadow: 0 0 6px rgba(255, 255, 255, .55);
 
-.signup {
-	text-decoration: none;
-	color: #fff;
-	display: block;
+	-webkit-transition: all 0.3s ease;
+	-moz-transition:    all 0.3s ease;
+	-o-transition:      all 0.3s ease;
+	-ms-transition:     all 0.3s ease;
+	transition:         all 0.3s ease;
+	opacity: .85;
+}
+.login_box .login_button:hover {
+	opacity: 1;
+}
+.login_box.small .login_button {
+	margin-top: 26px;
+	width: 295px;
+	height: 55px;
+	padding: 27px 0 27px 47px;
 	font-size: 22px;
+	background: rgba(65, 200, 245, 1); /* url(/img/social_network_small.png) 12px 10px no-repeat;*/
+}
+.login_box .login_button > img {
+	display: block;
+	position: absolute;
+	top: 17px;
+	left: 16px;
+	width: 55px;
+}
+.login_box.small .login_button > img {
+	display: block;
+	position: absolute;
+	top: 12px;
+	left: 14px;
+	width: 36px;
+}
+/*.login_box .login_button:hover {
+	background-color: rgba(65, 200, 245, 1) !important;
+}*/
+
+.login_box .login_button.fb {
+	margin-top: 32px;
+	background: rgba(40, 112, 244, 1); /*url(/img/social_network.png) 14px -103px no-repeat;*/
+}
+.login_box.small .login_button.fb {
+	margin-top: 21px;
+	background: rgba(40, 112, 244, 1); /*url(/img/social_network_small.png) 12px -68px no-repeat;*/
+}
+.login_box .login_button.fb > img {
+	top: 15px;
+	left: 28px;
+	height: 55px;
+	width: auto;
+}
+.login_box.small .login_button.fb > img {
+	top: 10px;
+	left: 22px;
+	height: 36px;
+	width: auto;
+}
+/*.login_box .login_button.fb:hover {
+	background-color: rgba(40, 112, 244, 1) !important;
+}*/
+
+.login_box .login_button.gp {
+	margin-top: 32px;
+	background: rgba(228, 66, 88, 1); /*url(/img/social_network.png) 14px -219px no-repeat;*/
+}
+.login_box.small .login_button.gp {
+	margin-top: 21px;
+	background: rgba(228, 66, 88, 1); /*url(/img/social_network_small.png) 12px -144px no-repeat;*/
+}
+.login_box .login_button.gp > img {
+	top: 14px;
+	left: 22px;
+	height: 55px;
+	width: auto;
+}
+.login_box.small .login_button.gp > img {
+	top: 10px;
+	left: 18px;
+	height: 36px;
+	width: auto;
+}
+/*.login_box .login_button.gp:hover {
+	background-color: rgba(228, 66, 88, 1) !important;
+}*/
+
+.login_box .login_button.tw {
+	margin-top: 32px;
+	background: rgba(75, 204, 230, 1);/* url(/img/social_network.png) 14px -333px no-repeat;*/
+}
+.login_box.small .login_button.tw {
+	margin-top: 21px;
+	background: rgba(75, 204, 230, 1); /* url(/img/social_network_small.png) 12px -219px no-repeat;*/
+}
+.login_box .login_button.tw > img {
+	top: 18px;
+	left: 21px;
+	height: auto;
+	width: 55px;
+}
+.login_box.small .login_button.tw > img {
+	top: 13px;
+	left: 17px;
+	height: auto;
+	width: 36px;
+}
+/*.login_box .login_button.tw:hover {
+	background-color: rgba(75, 204, 230, 1) !important;
+}*/
+
+.login_box .signup {
+	text-decoration: none;
+	color: rgba(255, 255, 255, .9);
+	display: block;
+	font-size: 32px;
 	line-height: 0;
 	text-align: center;
+	width: 447px;
+	margin: 45px auto 0;
+	text-shadow: 0 0 6px rgba(255, 255, 255, .7);
+
+	-webkit-transition: all 0.3s ease;
+	-moz-transition:    all 0.3s ease;
+	-o-transition:      all 0.3s ease;
+	-ms-transition:     all 0.3s ease;
+	transition:         all 0.3s ease;
+}
+.login_box .signup:hover {
+	color: rgba(255, 255, 255, 1);
+}
+
+.login_box.small .signup {
 	width: 295px;
+	font-size: 22px;
 	margin: 30px auto 0;
 }
 
-.colors {
+.login_box .colors {
 	width: 100%;
-	height: 29px;
+	height: 44px;
 	left: 0;
 	right: 0;
 	bottom: 0;
 	position: absolute;
+	bottom: -44px;
+}
+.login_box.small .colors {
+	height: 29px;
+	bottom: -29px;
+}
+.colors {
+	background: rgba(65, 200, 245, .1);
 }
 .colors td {
 	width: 9.09%;
@@ -108,30 +431,164 @@ html, body {
 .color {
 	cursor: pointer;
 	position: relative;
+
+	-webkit-transition: all 0.3s ease;
+	-moz-transition:    all 0.3s ease;
+	-o-transition:      all 0.3s ease;
+	-ms-transition:     all 0.3s ease;
+	transition:         all 0.3s ease;
 }
 .color.active:before {
 	display: block;
 	content: "";
-	width: 8px;
-	height: 8px;
+	width: 12px;
+	height: 12px;
 	background-color: #fff;
 	position: absolute;
 	left: 50%;
 	top: 50%;
+	margin-left: -6px;
+	margin-top: -6px;
+}
+.login_box.small .color.active:before {
+	width: 8px;
+	height: 8px;
 	margin-left: -4px;
 	margin-top: -4px;
 }
 
-.c00 { background-color: rgba(  0, 156, 255, .8); }
-.c01 { background-color: rgba(  6,   0, 255, .8); }
-.c02 { background-color: rgba(121,  43, 244, .8); }
-.c03 { background-color: rgba(255,   0, 240, .8); }
-.c04 { background-color: rgba(255,   0,   0, .8); }
-.c05 { background-color: rgba(255, 138,   0, .8); }
-.c06 { background-color: rgba(255, 234,   0, .8); }
-.c07 { background-color: rgba( 30, 255,   0, .8); }
-.c08 { background-color: rgba(  0, 234, 255, .8); }
-.c09 { background-color: rgba(255, 255, 255, .8); }
-.c10 { background-color: rgba(  0,   0,   0, .8); }
+
+.login_box.f0  .td, .login_box.f0  .max { background-color: rgba(  0, 156, 255, .6); }
+.login_box.f1  .td, .login_box.f1  .max { background-color: rgba(  6,   0, 255, .6); }
+.login_box.f2  .td, .login_box.f2  .max { background-color: rgba(121,  43, 244, .6); }
+.login_box.f3  .td, .login_box.f3  .max { background-color: rgba(255,   0, 240, .6); }
+.login_box.f4  .td, .login_box.f4  .max { background-color: rgba(255,   0,   0, .6); }
+.login_box.f5  .td, .login_box.f5  .max { background-color: rgba(255, 138,   0, .6); }
+.login_box.f6  .td, .login_box.f6  .max { background-color: rgba(255, 234,   0, .6); }
+.login_box.f7  .td, .login_box.f7  .max { background-color: rgba( 30, 255,   0, .6); }
+.login_box.f8  .td, .login_box.f8  .max { background-color: rgba(  0, 234, 255, .6); }
+.login_box.f9  .td, .login_box.f9  .max { background-color: rgba(255, 255, 255, .6); }
+.login_box.f10 .td, .login_box.f10 .max { background-color: rgba(  0,   0,   0, .6); }
+
+.login_box.f1  .title {
+	background-color: rgba(255, 255, 255, .10);
+}
+
+.login_box.f9  .title,
+.login_box.f9  .signup {
+	color: rgba(  0, 156, 255, .9);
+	text-shadow: 0 0 3px rgba(0, 156, 255, .9);
+}
+
+
+.login_box.f0 .login_input::-webkit-input-placeholder  { color: rgba( 45, 169, 249, .4); }
+.login_box.f0 .login_input:-moz-placeholder            { color: rgba( 45, 169, 249, .4); }
+.login_box.f1 .login_input::-webkit-input-placeholder  { color: rgba(  6,   0, 255, .4); }
+.login_box.f1 .login_input:-moz-placeholder            { color: rgba(  6,   0, 255, .4); }
+.login_box.f2 .login_input::-webkit-input-placeholder  { color: rgba(121,  43, 244, .4); }
+.login_box.f2 .login_input:-moz-placeholder            { color: rgba(121,  43, 244, .4); }
+.login_box.f3 .login_input::-webkit-input-placeholder  { color: rgba(255,   0, 240, .4); }
+.login_box.f3 .login_input:-moz-placeholder            { color: rgba(255,   0, 240, .4); }
+.login_box.f4 .login_input::-webkit-input-placeholder  { color: rgba(255,   0,   0, .4); }
+.login_box.f4 .login_input:-moz-placeholder            { color: rgba(255,   0,   0, .4); }
+.login_box.f5 .login_input::-webkit-input-placeholder  { color: rgba(255, 138,   0, .4); }
+.login_box.f5 .login_input:-moz-placeholder            { color: rgba(255, 138,   0, .4); }
+.login_box.f6 .login_input::-webkit-input-placeholder  { color: rgba(255, 234,   0, .4); }
+.login_box.f6 .login_input:-moz-placeholder            { color: rgba(255, 234,   0, .4); }
+.login_box.f7 .login_input::-webkit-input-placeholder  { color: rgba( 30, 255,   0, .4); }
+.login_box.f7 .login_input:-moz-placeholder            { color: rgba( 30, 255,   0, .4); }
+.login_box.f8 .login_input::-webkit-input-placeholder  { color: rgba(  0, 234, 255, .4); }
+.login_box.f8 .login_input:-moz-placeholder            { color: rgba(  0, 234, 255, .4); }
+.login_box.f9 .login_input::-webkit-input-placeholder  { color: rgba(  0, 156, 255, .4); }
+.login_box.f9 .login_input:-moz-placeholder            { color: rgba(  0, 156, 255, .4); }
+.login_box.f10 .login_input::-webkit-input-placeholder { color: rgba(  0,   0,   0, .4); }
+.login_box.f10 .login_input:-moz-placeholder           { color: rgba(  0,   0,   0, .4); }
+
+.login_box.f9 .login_control a { color: rgba(  0, 156, 255, .8); }
+
+.login_box.s0  .td, .login_box.s0  .max { background-color: rgba(  0, 156, 255, .6); }
+.login_box.s1  .td, .login_box.s1  .max { background-color: rgba(  6,   0, 255, .6); }
+.login_box.s2  .td, .login_box.s2  .max { background-color: rgba(121,  43, 244, .6); }
+.login_box.s3  .td, .login_box.s3  .max { background-color: rgba(255,   0, 240, .6); }
+.login_box.s4  .td, .login_box.s4  .max { background-color: rgba(255,   0,   0, .6); }
+.login_box.s5  .td, .login_box.s5  .max { background-color: rgba(255, 138,   0, .6); }
+.login_box.s6  .td, .login_box.s6  .max { background-color: rgba(255, 234,   0, .6); }
+.login_box.s7  .td, .login_box.s7  .max { background-color: rgba( 30, 255,   0, .6); }
+.login_box.s8  .td, .login_box.s8  .max { background-color: rgba(  0, 234, 255, .6); }
+.login_box.s9  .td, .login_box.s9  .max { background-color: rgba(255, 255, 255, .6); }
+.login_box.s10 .td, .login_box.s10 .max { background-color: rgba(  0,   0,   0, .6); }
+
+.login_box.s1  .title {
+	background-color: rgba(255, 255, 255, .10);
+}
+.login_box.s0 .title, .login_box.s1 .title,
+.login_box.s2 .title, .login_box.s3 .title,
+.login_box.s4 .title, .login_box.s5 .title,
+.login_box.s6 .title, .login_box.s7 .title,
+.login_box.s8 .title, .login_box.s10 .title,
+.login_box.s0 .signup, .login_box.s1 .signup,
+.login_box.s2 .signup, .login_box.s3 .signup,
+.login_box.s4 .signup, .login_box.s5 .signup,
+.login_box.s6 .signup, .login_box.s7 .signup,
+.login_box.s8 .signup, .login_box.s10 .signup {
+	color: rgba(  255, 255, 255, .9);
+	text-shadow: 0 0 3px rgba(255, 255, 255, .9);
+}
+
+.login_box.s9  .title,
+.login_box.s9  .signup {
+	color: rgba(  0, 156, 255, .55);
+	text-shadow: 0 0 3px rgba(0, 156, 255, .55);
+}
+
+.login_box.s9 .login_control a { color: rgba(  0, 156, 255, .8); }
+
+
+.login_box.s0 .login_input::-webkit-input-placeholder  { color: rgba( 45, 169, 249, .4); }
+.login_box.s0 .login_input:-moz-placeholder            { color: rgba( 45, 169, 249, .4); }
+.login_box.s1 .login_input::-webkit-input-placeholder  { color: rgba(  6,   0, 255, .4); }
+.login_box.s1 .login_input:-moz-placeholder            { color: rgba(  6,   0, 255, .4); }
+.login_box.s2 .login_input::-webkit-input-placeholder  { color: rgba(121,  43, 244, .4); }
+.login_box.s2 .login_input:-moz-placeholder            { color: rgba(121,  43, 244, .4); }
+.login_box.s3 .login_input::-webkit-input-placeholder  { color: rgba(255,   0, 240, .4); }
+.login_box.s3 .login_input:-moz-placeholder            { color: rgba(255,   0, 240, .4); }
+.login_box.s4 .login_input::-webkit-input-placeholder  { color: rgba(255,   0,   0, .4); }
+.login_box.s4 .login_input:-moz-placeholder            { color: rgba(255,   0,   0, .4); }
+.login_box.s5 .login_input::-webkit-input-placeholder  { color: rgba(255, 138,   0, .4); }
+.login_box.s5 .login_input:-moz-placeholder            { color: rgba(255, 138,   0, .4); }
+.login_box.s6 .login_input::-webkit-input-placeholder  { color: rgba(255, 234,   0, .4); }
+.login_box.s6 .login_input:-moz-placeholder            { color: rgba(255, 234,   0, .4); }
+.login_box.s7 .login_input::-webkit-input-placeholder  { color: rgba( 30, 255,   0, .4); }
+.login_box.s7 .login_input:-moz-placeholder            { color: rgba( 30, 255,   0, .4); }
+.login_box.s8 .login_input::-webkit-input-placeholder  { color: rgba(  0, 234, 255, .4); }
+.login_box.s8 .login_input:-moz-placeholder            { color: rgba(  0, 234, 255, .4); }
+.login_box.s9 .login_input::-webkit-input-placeholder  { color: rgba(  0, 156, 255, .4); }
+.login_box.s9 .login_input:-moz-placeholder            { color: rgba(  0, 156, 255, .4); }
+.login_box.s10 .login_input::-webkit-input-placeholder { color: rgba(  0,   0,   0, .4); }
+.login_box.s10 .login_input:-moz-placeholder           { color: rgba(  0,   0,   0, .4); }
+
+.c00 { background-color: rgba(  0, 156, 255, .6); }
+.c01 { background-color: rgba(  6,   0, 255, .6); }
+.c02 { background-color: rgba(121,  43, 244, .6); }
+.c03 { background-color: rgba(255,   0, 240, .6); }
+.c04 { background-color: rgba(255,   0,   0, .6); }
+.c05 { background-color: rgba(255, 138,   0, .6); }
+.c06 { background-color: rgba(255, 234,   0, .6); }
+.c07 { background-color: rgba( 30, 255,   0, .6); }
+.c08 { background-color: rgba(  0, 234, 255, .6); }
+.c09 { background-color: rgba(255, 255, 255, .6); }
+.c10 { background-color: rgba(  0,   0,   0, .6); }
+
+.c00:hover { background-color: rgba(  0, 156, 255, 1); }
+.c01:hover { background-color: rgba(  6,   0, 255, 1); }
+.c02:hover { background-color: rgba(121,  43, 244, 1); }
+.c03:hover { background-color: rgba(255,   0, 240, 1); }
+.c04:hover { background-color: rgba(255,   0,   0, 1); }
+.c05:hover { background-color: rgba(255, 138,   0, 1); }
+.c06:hover { background-color: rgba(255, 234,   0, 1); }
+.c07:hover { background-color: rgba( 30, 255,   0, 1); }
+.c08:hover { background-color: rgba(  0, 234, 255, 1); }
+.c09:hover { background-color: rgba(255, 255, 255, 1); }
+.c10:hover { background-color: rgba(  0,   0,   0, 1); }
 
 /*  */

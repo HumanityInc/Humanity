@@ -7,6 +7,8 @@ import (
 	"../model"
 	"../session"
 	"../template_cache"
+	"./ajax"
+	"./oauth"
 	"fmt"
 	"github.com/bradfitz/gomemcache/memcache"
 	"net/http"
@@ -40,14 +42,17 @@ func init() {
 
 	page_callback = map[string]cb_fn{
 		``:            Index,
-		`auth`:        Auth,
-		`j_login`:     Login,
-		`j_logout`:    Logout,
-		`j_register`:  Register,
-		`j_setemail`:  SetEmail,
-		`j_whoami`:    Whoami,
-		`j_feed`:      Feed,
-		`j_crowdfund`: CrowdfundSave,
+		`feed`:        Feed,
+		`crowdfund`:   Crowdfund,
+		`create`:      Create,
+		`auth`:        oauth.Auth,
+		`j_login`:     ajax.Login,
+		`j_logout`:    ajax.Logout,
+		`j_register`:  ajax.Register,
+		`j_setemail`:  ajax.SetEmail,
+		`j_whoami`:    ajax.Whoami,
+		`j_feed`:      ajax.Feed,
+		`j_crowdfund`: ajax.CrowdfundSave,
 	}
 
 	conf := config.GetConfig()
