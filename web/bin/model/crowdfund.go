@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"net/url"
 	"strings"
 )
@@ -18,40 +17,69 @@ type (
 		Сollected  int64    `json:"сollected"`
 		Visible    int16    `json:"visible"`
 		Name       string   `json:"name"`
+		Video      string   `json:"video"`
 		Cover      string   `json:"cover"`
 		Images     []string `json:"images"`
 	}
 )
 
-func init() {
+func getYoutubeId(link string) (id string) {
 
-	return
-
-	// get youtube id
-
-	info, _ := url.Parse("https://www.youtube.com/watch?v=PnlafTs7nos&list=PLAJjZKeHBIoSsmwRSkNOhAI8D36zH8ta9")
-	// info, _ := url.Parse("http://youtu.be/PnlafTs7nos?list=PLAJjZKeHBIoSsmwRSkNOhAI8D36zH8ta9")
-
+	info, _ := url.Parse(link)
 	values := info.Query()
 
 	switch info.Host {
 	case "www.youtube.com", "youtube.com":
 
-		id := values.Get("v")
-
-		fmt.Println(info.Host, id)
+		if id = values.Get("v"); id == "" {
+			parts := strings.Split(info.RequestURI(), "?")
+			if len(parts) > 0 {
+				uri := strings.Trim(parts[0], "/")
+				if strings.Index(uri, "embed/") == 0 {
+					id = uri[6:]
+				}
+			}
+		}
 
 	case "youtu.be":
 
 		parts := strings.Split(info.RequestURI(), "?")
-
 		if len(parts) > 0 {
-
-			id := strings.Trim(parts[0], "/")
-
-			fmt.Println(info.Host, id)
+			id = strings.Trim(parts[0], "/")
 		}
-
 	}
 
+	return
 }
+
+func (cf *Crowdfund) EmbedLink() (link string) {
+
+	if id := getYoutubeId(cf.Video); id != "" {
+
+		param := url.Values{}
+		param.Add("autoplay", "0")
+		param.Add("controls", "0")
+		param.Add("showinfo", "0")
+		param.Add("autohide", "1")
+		link = "https://youtube.com/embed/" + id + "?" + param.Encode()
+	}
+	return
+}
+
+// func init() {
+
+// 	return
+
+// 	links := []string{
+// 		"http://www.youtube.com/watch?v=xjS6SftYQaQ",
+// 		"http://www.youtube.com/embed/xjS6SftYQaQ",
+// 		"http://www.youtube.com/watch?v=xjS6SftYQaQ&list=SPA60DCEB33156E51F",
+// 		"https://www.youtube.com/watch?v=xjS6SftYQaQ&list=PLAJjZKeHBIoSsmwRSkNOhAI8D36zH8ta9",
+// 		"http://youtu.be/xjS6SftYQaQ?list=PLAJjZKeHBIoSsmwRSkNOhAI8D36zH8ta9",
+// 	}
+
+// 	for i, lnk := range links {
+
+// 		fmt.Println(i, getYoutubeId(embedLink(getYoutubeId(lnk))))
+// 	}
+// }

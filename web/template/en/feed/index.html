@@ -2,10 +2,720 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	
 	<title>ishuman.me</title>
+
 	<link type="text/css" rel="stylesheet" href="/css/index.css">
+	<!-- <link type="text/css" rel="stylesheet" href="/css/feed.css"> -->
+	
+	<script type="text/javascript" src="/js/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-throttle.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.mousewheel.min.js"></script>
+	
+	<style type="text/css">
+
+	body {
+		background-image: none;
+		background-color: white;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.wrapper {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		background-color: rgba(255,255,0,.3);
+		transform: translateZ(0);
+	}
+
+	.scrollable {
+		position: relative;
+		overflow: hidden;
+		height: 100%;
+		width: auto;
+		background-color: rgba(0,255,255,.3);
+	}
+
+	.x2, .x3 {
+		position: relative;
+		float: left;
+		display: block;
+		min-height: 100%;
+		background-color: rgba(220,0,0,.2);
+	}
+	.x3 {
+		background-color: rgba(0,0,220,.2);
+	}
+
+	.x2 > div, .x3 > div {
+		position: relative;
+		overflow: visible;
+	}
+
+	.x2 > div .play,
+	.x3 > div .play {
+		position: absolute;
+		display: block;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: url(/img/play.png) 50% 50% no-repeat;
+
+		opacity: 0;
+	}
+	.x2 > div:hover .play,
+	.x3 > div:hover .play {
+		opacity: 1;
+
+		-webkit-transition: all 0.3s ease;
+		-moz-transition:    all 0.3s ease;
+		-o-transition:      all 0.3s ease;
+		-ms-transition:     all 0.3s ease;
+		transition:         all 0.3s ease;
+
+		-webkit-transition-delay: .7s;
+		-o-transition-delay:      .7s;
+		-moz-transition-delay:    .7s;
+		transition-delay:         .7s;
+	}
+
+	.x2 > div {
+		width: 100%;
+		background: rgba(150,0,0,1) url(/img/1.jpg) 50% 50% /cover no-repeat;
+	}
+	.x2 > div.g {
+		background: rgba(150,150,0,1) url(/img/3.jpg) 50% 50% /cover no-repeat;
+	}
+	.x2 > div:before {
+		content: " ";
+		display: block;
+		padding-top: 56.25%;
+	}
+
+	.x3 > div {
+		width: 100%;
+		background: rgba(0,0,150,1) url(/img/2.jpg) 50% 50% /cover no-repeat;
+	}
+	.x3 > div.g {
+		background: rgba(150,0,150,1) url(/img/4.jpg) 50% 50% /cover no-repeat;
+	}
+	.x3 > div.gg {
+		background: rgba(0,150,0,1) url(/img/5.jpeg) 50% 50% /cover no-repeat;
+	}
+	.x3 > div:before {
+		content: " ";
+		display: block;
+		padding-top: 56.25%;
+	}
+
+	.hide .x2 > div {
+		display: none;
+	}
+
+
+	.x2 .hint,
+	.x3 .hint {
+
+		position: absolute;
+		z-index: 10;
+		width: 100%;
+		background-image: none;
+		background-color: rgba(0,156,255,.8);
+		/*height: 37.5%;*/
+		height: 0;
+		left: 0;
+		top: 0;
+
+		display: block;
+		overflow: hidden;
+
+		-webkit-transition: all 0.3s ease;
+		-moz-transition:    all 0.3s ease;
+		-o-transition:      all 0.3s ease;
+		-ms-transition:     all 0.3s ease;
+		transition:         all 0.3s ease;
+
+		font-size: 100%;
+	}
+
+	.x3 .hint {
+		font-size: 70%;
+	}
+
+	.x2 .hint:before,
+	.x3 .hint:before {
+		display: none;
+	}
+
+	/* - */
+
+	.x2 > div:nth-child(1) + .hint { top: 49.9%; }
+	.x2 > div:nth-child(3) + .hint { top: auto; bottom: 50%; }
+
+	.x2 > div:nth-child(1):hover + .hint,
+	.x2 > div:nth-child(3):hover + .hint {
+		height: 35.5%;
+		min-height: 265px;
+
+		-webkit-transition-delay: .7s;
+		-o-transition-delay:      .7s;
+		-moz-transition-delay:    .7s;
+		transition-delay:         .7s;
+	}
+
+	.x2 .hint:hover { 
+		height: 35.5%; 
+		min-height: 265px;
+	}
+
+	/* - */
+
+	.x3 > div:nth-child(1) + .hint { top: 33.3%; }
+	.x3 > div:nth-child(3) + .hint { top: 66.6%; }
+	.x3 > div:nth-child(5) + .hint { top: auto; bottom: 33.3%; }
+
+	.x3 > div:nth-child(1):hover + .hint,
+	.x3 > div:nth-child(3):hover + .hint,
+	.x3 > div:nth-child(5):hover + .hint {
+		height: 25%;
+		min-height: 185px;
+
+		-webkit-transition-delay: .7s;
+		-o-transition-delay:      .7s;
+		-moz-transition-delay:    .7s;
+		transition-delay:         .7s;
+	}
+
+	.x3 .hint:hover {
+		height: 25%;
+		min-height: 185px;
+	}
+
+	/* - */
+
+	.hint .top {
+		width: 100%;
+		height: 3.4em;
+		box-sizing: border-box;
+		overflow: hidden;
+	}
+
+	.hint .collected {
+		border-spacing: 0;
+    	border-collapse: collapse;
+		height: 100%;
+		width: 100%;
+		font-size: 2.8em;
+		line-height: normal;
+	}
+	.hint .collected td {
+		text-align: center;
+		font-family: 'Roboto', sans-serif;
+		font-weight: 100;
+		color: #fff;
+		vertical-align: middle;
+	}
+	.hint .proc,
+	.hint .remaining {
+		width: 25%;
+		font-size: .5em;
+	}
+
+
+	.hint .text {
+		padding: .3em 0 .2em;
+		text-align: center;
+		font-size: 2.7em;
+		line-height: normal;
+		color: #fff;
+	}
+
+	.hint .donate { 
+		text-align: center;
+		font-size: 3.6em;
+		line-height: normal;
+		color: #fff;
+	}
+
+	.hint .now > div, 
+	.hint .donate > div {
+		display: inline-block;
+		position: relative;
+		padding: 0 .9em;
+		margin: 0 auto;
+	}
+
+	.hint .proc,
+	.hint .now {
+		background-color: rgba(255,255,255,.25);
+	}
+	.remaining {
+		background-color: rgba(255,255,255,.1);
+	}
+
+	.hint .plus,
+	.hint .minus {
+		position: absolute;
+		display: block;
+		width: .8em;
+		height: .8em;
+		left: 0;
+		top: 50%;
+		margin-top: -.4em;
+		border-radius: 50%;
+		cursor: pointer;
+	}
+	.hint .plus > img,
+	.hint .minus > img {
+		width: 100%;
+		display: block;
+	}
+
+	.hint .plus {
+		left: auto;
+		right: 0;
+	}
+
+	.hint .now {
+
+	}
+
+	.hint .empower {
+		text-align: center;
+	}
+	.hint .empower > a {
+		display: inline-block;
+		font-size: 2.4em;
+		line-height: normal;
+		color: #fff;
+		text-decoration: none;
+		background-color: rgba(255,255,255,.25);
+		padding: 0 .4em 0.1em;
+		margin: .2em auto 0;
+	}
+
+
+	/* - */
+
+
+
+	/*.x2 > div:hover + .hint {
+		top: 12.5%;
+		-webkit-transition-delay: 1s;
+		-o-transition-delay:      1s;
+		-moz-transition-delay:    1s;
+		transition-delay:         1s;
+	}*/
+
+
+
+	</style>
 </head>
 <body>
+
+
+<div class="wrapper">
+	
+	<div class="scrollable">
+
+		<div class="x2">
+			
+			<div class="b0" data-index="0">
+				<a href="/crowdfund" class="play"></a>
+			</div>
+			<div class="hint">
+				<div class="top">
+					<table class="collected">
+						<tr>
+							<td class="proc">79.500%</td>
+							<td class="now">
+								<div>
+									<i class="plus"><img src="/img/plus.svg"></i>
+									<span>$999,999.00</span>
+									<i class="minus"><img src="/img/minus.svg"></i>
+								</div>
+							</td>
+							<td class="remaining">-$2,050.00</td>
+						</tr>
+					</table>
+				</div>
+				<div class="text">i’ll tdonate</div>
+				<div class="donate">
+					<div>
+						<i class="plus"><img src="/img/plus.svg"></i>
+						<span>$500.00</span>
+						<i class="minus"><img src="/img/minus.svg"></i>
+					</div>
+				</div>
+				<div class="empower"><a href="javascript:">empower</a></div>
+			</div>
+
+			<div class="b1" data-index="1" class="g">
+				<a href="/crowdfund" class="play"></a>
+			</div>
+			<div class="hint">
+				<div class="top">
+					<table class="collected">
+						<tr>
+							<td class="proc">79.500%</td>
+							<td class="now">
+								<div>
+									<i class="plus"><img src="/img/plus.svg"></i>
+									<span>$7,950.00</span>
+									<i class="minus"><img src="/img/minus.svg"></i>
+								</div>
+							</td>
+							<td class="remaining">-$2,050.00</td>
+						</tr>
+					</table>
+				</div>
+				<div class="text">i’ll tdonate</div>
+				<div class="donate">
+					<div>
+						<i class="plus"><img src="/img/plus.svg"></i>
+						<span>$500.00</span>
+						<i class="minus"><img src="/img/minus.svg"></i>
+					</div>
+				</div>
+				<div class="empower"><a href="javascript:">empower</a></div>
+			</div>
+
+		</div>
+
+		<div class="x3">
+			<div class="b0" data-index="0">
+				<i class="play"></i>
+			</div>
+			<div class="hint">
+				<div class="top">
+					<table class="collected">
+						<tr>
+							<td class="proc">79.500%</td>
+							<td class="now">
+								<div>
+									<i class="plus"><img src="/img/plus.svg"></i>
+									<span>$7,950.00</span>
+									<i class="minus"><img src="/img/minus.svg"></i>
+								</div>
+							</td>
+							<td class="remaining">-$2,050.00</td>
+						</tr>
+					</table>
+				</div>
+				<div class="text">i’ll tdonate</div>
+				<div class="donate">
+					<div>
+						<i class="plus"><img src="/img/plus.svg"></i>
+						<span>$500.00</span>
+						<i class="minus"><img src="/img/minus.svg"></i>
+					</div>
+				</div>
+				<div class="empower"><a href="javascript:">empower</a></div>
+			</div>
+
+			<div class="b1 g" data-index="1"></div>
+			<div class="hint">
+				<div class="top">
+					<table class="collected">
+						<tr>
+							<td class="proc">79.500%</td>
+							<td class="now">
+								<div>
+									<i class="plus"><img src="/img/plus.svg"></i>
+									<span>$7,950.00</span>
+									<i class="minus"><img src="/img/minus.svg"></i>
+								</div>
+							</td>
+							<td class="remaining">-$2,050.00</td>
+						</tr>
+					</table>
+				</div>
+				<div class="text">i’ll tdonate</div>
+				<div class="donate">
+					<div>
+						<i class="plus"><img src="/img/plus.svg"></i>
+						<span>$500.00</span>
+						<i class="minus"><img src="/img/minus.svg"></i>
+					</div>
+				</div>
+				<div class="empower"><a href="javascript:">empower</a></div>
+			</div>
+
+			<div class="b2 gg" data-index="2"></div>
+			<div class="hint">
+				<div class="top">
+					<table class="collected">
+						<tr>
+							<td class="proc">79.500%</td>
+							<td class="now">
+								<div>
+									<i class="plus"><img src="/img/plus.svg"></i>
+									<span>$7,950.00</span>
+									<i class="minus"><img src="/img/minus.svg"></i>
+								</div>
+							</td>
+							<td class="remaining">-$2,050.00</td>
+						</tr>
+					</table>
+				</div>
+				<div class="text">i’ll tdonate</div>
+				<div class="donate">
+					<div>
+						<i class="plus"><img src="/img/plus.svg"></i>
+						<span>$500.00</span>
+						<i class="minus"><img src="/img/minus.svg"></i>
+					</div>
+				</div>
+				<div class="empower"><a href="javascript:">empower</a></div>
+			</div>
+		</div>
+
+		<div class="x2">
+			
+			<div class="b0" data-index="0"></div>
+			<div class="hint"></div>
+
+			<div class="b1" data-index="1" class="g"></div>
+			<div class="hint"></div>
+
+		</div>
+
+		<div class="x3">
+			<div class="b0" data-index="0"></div>
+			<div class="hint"></div>
+
+			<div class="b1 g" data-index="1"></div>
+			<div class="hint"></div>
+
+			<div class="b2 gg" data-index="2"></div>
+			<div class="hint"></div>
+		</div>
+
+		<div class="x2">
+			
+			<div class="b0" data-index="0"></div>
+			<div class="hint"></div>
+
+			<div class="b1" data-index="1" class="g"></div>
+			<div class="hint"></div>
+
+		</div>
+
+		<div class="x3">
+			<div class="b0" data-index="0"></div>
+			<div class="hint"></div>
+
+			<div class="b1 g" data-index="1"></div>
+			<div class="hint"></div>
+
+			<div class="b2 gg" data-index="2"></div>
+			<div class="hint"></div>
+		</div>
+
+	</div>
+
+
+</div>
+
+<a href="#" class="menu_btn fixed"></a>
+
+
+<script type="text/javascript">
+
+
+	$(function(){
+
+		var isfirstload = true;
+
+		var $window = $(window);
+		var $wrapper = $('.wrapper');
+		var $scrollable = $('.scrollable');
+
+		var timeoutId = null, currentHint = $();
+
+		$scrollable.find('.x2').each(function() {
+
+			// var holder = $(this),
+			// 	children = holder.children();
+
+			// children.mouseenter(function(){
+
+			// 	// var index = $(this).data('index')|0;
+
+			// 	// index = 1 - index;
+
+			// 	// children.eq(index);
+
+			// 	$(this).addClass('active');
+
+			// })
+			// .mouseleave(function(){
+
+			// 	$(this).removeClass('active');
+			// });
+		});
+
+
+		$scrollable.find('.x3').each(function() {
+
+			// var holder = $(this);
+
+			// holder.children().mouseenter(function(){
+
+			// 	var index = $(this).data('index')|0;
+
+			// 	index++;
+			// 	if (index > 2) index = 1;
+
+			// 	console.log(index)
+
+			// 	$(this).addClass('abc');
+
+			// })
+			// .mouseleave(function(){
+
+			// 	$(this).removeClass('abc');
+			// });
+		});
+
+		// $scrollable.on('mouseenter', '.x2 .hint', function(e) {
+
+		// 	return false;
+		// });
+
+		// $scrollable.on('mouseenter', '.x2 div, .x3 div', function(e) {
+
+		// 	var _self = $(this);
+
+		// 	// if ($(e.target).hasClass('hint')) return false;
+
+		// 	timeoutId = setTimeout(function(){
+
+		// 		var index = _self.data('index')|0,
+		// 			parent = _self.parent(),
+		// 			hint = parent.find('.hint');
+
+		// 			console.log(_self.attr('class'));
+
+		// 		if (_self.hasClass('hint')) return;
+
+		// 		currentHint.hide();
+
+		// 		if (parent.hasClass('x2')) {
+
+		// 			console.log(index, hint.length);
+
+		// 			// switch(index) {
+		// 			// case 0: 
+		// 			// 	break;
+		// 			// case 1:
+		// 			// 	break;
+		// 			// }
+
+		// 			currentHint = hint.eq(1-index);
+
+		// 		} else {
+
+		// 			console.log(index);
+
+		// 			// switch(index) {
+		// 			// case 0:
+		// 			// 	break;
+		// 			// case 1:
+		// 			// 	break;
+		// 			// case 2:
+		// 			// 	break;
+		// 			// }
+
+		// 			currentHint = hint.eq(2-index);
+		// 		}
+
+		// 		// currentHint = _self.find('.hint');
+
+		// 		// currentHint.removeClass('p1 p2 p3').addClass('p'+index);
+
+		// 		currentHint.show();
+		// 	},
+		// 	500);
+		// })
+		// .on('mouseleave', '.x2 > div, .x3 > div', function() {
+
+		// 	clearTimeout(timeoutId);
+		// });
+
+		$window.resize(function(){
+
+			if($window.height() <= 670 && !isfirstload) {
+				return false;
+			}
+
+			isfirstload = false;
+
+			var $x2 = $wrapper.find('.x2'),
+				$x3 = $wrapper.find('.x3');
+
+			var wx2 = $(window).height()/1.125,
+				wx3 = $(window).height()/1.6875;
+
+			$x2.width(wx2);
+			$x3.width(wx3);
+
+			$wrapper.width($x2.length*wx2 + $x3.length*wx3 + 0.5);
+		});
+
+		$window.resize();
+
+
+		$('html,body').on('mousewheel', function(e, delta) {
+
+			this.scrollLeft -= delta;
+
+			e.preventDefault();
+		});
+
+		// ---
+
+		// var delta = e.wheelDelta || e.originalEvent.detail * -40 || e.originalEvent.wheelDelta;
+		// $(this).scrollLeft($(this).scrollLeft() + delta);
+		// if(($(this).scrollLeft() + $(this).innerWidth()) >= $(this)[0].scrollWidth) {
+			// alert(1);
+			// load_blocks(1);
+		// }
+
+		// function load_blocks(countBl) {
+		// 	var $bl = $($('#map_part_tpl').html());
+		// 	$scrollable.append($bl);
+		// 	$window.resize();
+		// }
+
+		// ---
+	});
+
+	// var feed = [{}];
+	// $(function(){
+	// 	var $window = $(window);
+	// 	var $wrapper = $('.wrapper');
+	// 	$window.resize(function(){
+	// 		var $x2 = $wrapper.find('.x2'),
+	// 			$x3 = $wrapper.find('.x3');
+	// 		var wx2 = $(window).height()/1.125,
+	// 			wx3 = $(window).height()/1.6875;
+	// 		$x2.width(wx2);
+	// 		$x3.width(wx3);
+	// 		$wrapper.width($x2.length*wx2 + $x3.length*wx3 + 1);
+	// 	});
+	// 	$window.resize();
+	// 	$('html, body').mousewheel(function(e, delta) {
+	// 		this.scrollLeft -= e.originalEvent.wheelDelta;
+	// 		e.preventDefault();
+	// 	});
+	// });
+
+</script>
 
 </body>
 </html>

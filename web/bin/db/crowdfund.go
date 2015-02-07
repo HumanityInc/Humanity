@@ -2,6 +2,7 @@ package db
 
 import (
 	"../model"
+	"time"
 )
 
 const ()
@@ -11,7 +12,7 @@ type ()
 func Crowdfunds(offset, limit uint) (list []model.Crowdfund) {
 
 	rows, err := db.Query(`SELECT "id", "owner_id", "ctime", "utime", "goal", "collected", "name", "cover" `+
-		`FROM "public"."crowdfunds" order by "id" LIMIT $1 OFFSET $2`, limit, offset)
+		`FROM "public"."crowdfunds" ORDER BY "id" LIMIT $1 OFFSET $2`, limit, offset)
 
 	if err != nil {
 		logger.Println(err)
@@ -37,15 +38,54 @@ func Crowdfunds(offset, limit uint) (list []model.Crowdfund) {
 	return
 }
 
+func GetCrowdfund(id int64) (crowdfund_ptr *model.Crowdfund, err error) {
+
+	var crowdfund model.Crowdfund
+
+	err = db.QueryRow(`SELECT "goal", "name", "cover", "video" `+
+		`FROM "public"."crowdfunds" `+
+		`WHERE "id"=$1`, id).Scan(&crowdfund.Goal, &crowdfund.Name, &crowdfund.Cover, &crowdfund.Video)
+
+	if err != nil {
+		logger.Println(err)
+		return
+	}
+
+	crowdfund_ptr = &crowdfund
+	return
+}
+
 func SaveCrowdfund(crowdfund *model.Crowdfund) (err error) {
+
+	unix_time := time.Now().Unix()
 
 	if crowdfund.Id == 0 {
 
-		// insert
+		err = db.QueryRow(`INSERT INTO "public"."crowdfunds" `+
+			`("owner_id", "ctime", "goal", "name", "cover", "utime", "video") `+
+			`VALUES `+
+			`($1, $2, $3, $4, $5, $2, $6) `+
+			`RETURNING id`,
+			crowdfund.OwnerId, unix_time, crowdfund.Goal, crowdfund.Name,
+			crowdfund.Cover, crowdfund.Video).Scan(&crowdfund.Id)
+
+		if err != nil {
+			logger.Println(err)
+			return
+		}
 
 	} else {
 
-		// update
+		_, err = db.Exec(`UPDATE "public"."crowdfunds" `+
+			`SET "goal"=$3, "name"=$4, "cover"=$5, "utime"=$6, "video"=$7 `+
+			`WHERE "id"=$1 AND "owner_id"=$2`,
+			crowdfund.Id, crowdfund.OwnerId, crowdfund.Goal, crowdfund.Name,
+			crowdfund.Cover, unix_time, crowdfund.Video)
+
+		if err != nil {
+			logger.Println(err)
+			return
+		}
 	}
 
 	return
