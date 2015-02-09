@@ -33,7 +33,9 @@ var page_callback map[string]cb_fn
 func init() {
 
 	page_callback = map[string]cb_fn{
-		``: func(cb *Callback) { cb.wIndex() },
+		``:       func(cb *Callback) { cb.wIndex() },
+		`upload`: func(cb *Callback) { cb.wUpload() },
+		`images`: func(cb *Callback) { cb.wImages() },
 	}
 }
 

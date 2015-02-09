@@ -44,6 +44,8 @@ var (
 
 func (c *Callback) wUpload() {
 
+	c.res.Header().Add("Access-Control-Allow-Origin", "http://test.ishuman.me:2001")
+
 	if c.req.Method == "POST" {
 
 		file, header, err := c.req.FormFile("file")
@@ -91,6 +93,7 @@ func (c *Callback) wUpload() {
 
 			file_path := path + filename + ext
 			file_url := FILE_URL + sub_path + filename + ext
+			cover := FILE_URL + sub_path + IMAGE_POSTER + "/" + filename + ext
 
 			err = ioutil.WriteFile(file_path, buf, 0644)
 			if err != nil {
@@ -169,6 +172,7 @@ func (c *Callback) wUpload() {
 
 			link := map[string]string{
 				"filelink": file_url,
+				"cover":    cover,
 			}
 
 			data, _ := json.Marshal(&link)
@@ -177,6 +181,7 @@ func (c *Callback) wUpload() {
 
 	} else {
 
-		c.MethodNotAllowed()
+		c.res.Write([]byte(""))
+		// c.MethodNotAllowed()
 	}
 }
