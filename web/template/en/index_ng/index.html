@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html ng-app="HumanityApp">
+<head>
+
+	<meta charset="utf-8">
+	<title>Humanity</title>
+
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+
+	<meta name="keywords" content="Humanity">
+	<meta name="description" content="Humanity - The billion dollar global giant owned by YOU!">
+
+	<meta property="fb:app_id" content="393092710870235">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://ishuman.me/">
+	<meta property="og:title" content="Humanity"> 
+	<meta property="og:image" content="https://ishuman.me/opensource/pics/emblem.png">
+	<meta property="og:description" content="Humanity - The billion dollar global giant owned by YOU!">
+
+	<link type="text/css" rel="stylesheet" href="/css/index.css?v=20">
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+
+	<script src="/js/angular.min.js"></script>
+	<script src="/js/angular-route.min.js"></script>
+
+	<script src="/js/plupload/plupload.full.min.js"></script>
+	<script src="/js/angular-plupload.min.js"></script>
+
+	<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-49097764-1','ishuman.me');ga('send','pageview');</script>
+
+	<script type="text/javascript">
+
+
+		function createCookie(name, value, days) {
+			if(days) {
+				var date = new Date();
+				date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+				var expires = "; expires=" + date.toGMTString();
+			}
+			else var expires = "";
+			document.cookie = name + "=" + value + expires + "; path=/";
+		}
+
+		function getCookie(c_name) {
+			if(document.cookie.length > 0) {
+				c_start = document.cookie.indexOf(c_name + "=");
+				if(c_start != -1) {
+					c_start = c_start + c_name.length + 1;
+					c_end = document.cookie.indexOf(";", c_start);
+					if(c_end == -1) {
+						c_end = document.cookie.length;
+					}
+					return unescape(document.cookie.substring(c_start, c_end));
+				}
+			}
+			return "";
+		}
+
+		function detectmob() { 
+			if( navigator.userAgent.match(/Android/i)
+				|| navigator.userAgent.match(/webOS/i)
+				|| navigator.userAgent.match(/iPhone/i)
+				|| navigator.userAgent.match(/iPad/i)
+				|| navigator.userAgent.match(/iPod/i)
+				|| navigator.userAgent.match(/BlackBerry/i)
+				|| navigator.userAgent.match(/Windows Phone/i)
+			){
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		var app = angular.module('HumanityApp', ['ngRoute', 'angular-plupload']);
+
+		app.config(function($routeProvider, pluploadOptionProvider) {
+
+			$routeProvider.when('/', {
+				controller: 'indexController',
+				templateUrl: '/tmpl/index.html'
+			});
+
+			$routeProvider.when('/create', {
+				controller: 'createController',
+				templateUrl: '/tmpl/create.html'
+			});
+
+			$routeProvider.when('/feed', {
+				controller: 'feedController',
+				templateUrl: '/tmpl/feed.html'
+			});
+
+			$routeProvider.when('/success', {
+				controller: 'successController',
+				templateUrl: '/tmpl/success.html'
+			});
+
+			$routeProvider.when('/invite', {
+				controller: 'inviteSoonController',
+				templateUrl: '/tmpl/invite_soon.html'
+			});
+
+			$routeProvider.when('/email', {
+				controller: 'saveEmailController',
+				templateUrl: '/tmpl/save_email.html'
+			});
+
+			$routeProvider.otherwise({redirectTo: "/"});
+
+			pluploadOptionProvider.setOptions({
+				runtimes: 'html5,html4,flash,silverlight',
+				file_data_name: 'file',
+				max_file_size: '1mb',
+				required_features: 'send_browser_cookies',
+				url: "http://test.ishuman.me:1991/upload",
+				flash_swf_url: '/js/plupload/Moxie.swf',
+				silverlight_xap_url: '/js/plupload/Moxie.xap',
+				filters: [{
+					title: "Images",
+					extensions: "png,jpg,jpeg,bmp,tif,tiff"
+				}]
+			});
+		});
+
+		app.directive('resize', function($window) {
+
+			return function(scope, element) {
+				
+				var w = angular.element($window);
+				scope.smallBox = '';
+
+				scope.getWindowDimensions = function () {
+					return {
+						'height': $window.innerHeight,
+						'width': $window.innerWidth
+					};
+				};
+
+				scope.$watch(scope.getWindowDimensions, function(newValue, oldValue) {
+
+					if (newValue.height > 900) {
+						scope.smallBox = '';
+					} else {
+						scope.smallBox = 'small';
+					}
+
+				}, true);
+
+				w.bind('resize', function () {
+					scope.$apply();
+				});
+			}
+		});
+
+		app.controller('indexController', function($scope, $http, $location, $timeout, $document, $routeParams) {
+
+			$scope.main = true;
+			$scope.signin = false;
+			$scope.signup_create = false;
+			$scope.signup_main = false;
+
+			$scope.form = {};
+			$scope.form.email = "";
+			$scope.form.password = "";
+			$scope.form.password2 = "";
+			$scope.form.first_name = "";
+			$scope.form.last_name = "";
+
+			$scope.color = ['','','','','','','','','','',''];
+			$scope.hoverColor = '';
+			$scope.setColor = '';
+
+			var curColor = getCookie("color")|0;
+			$scope.color[curColor] = 'active';
+			$scope.setColor = 'f'+curColor;
+
+
+			$scope.GoToSignin = function() {
+				$scope.signin = true;
+				$scope.main = $scope.signup_create = $scope.signup_main = false;
+			};
+
+			$scope.GoToSignupCreate = function() {
+				$scope.signup_create = true;
+				$scope.main = $scope.signin = $scope.signup_main = false;
+			};
+
+			$scope.GoToSignupMain = function() {
+				$scope.signup_main = true;
+				$scope.main = $scope.signin = $scope.signup_create = false;
+			};
+
+			$scope.GoToMain = function() {
+				$scope.main = true;
+				$scope.signin = $scope.signup_create = $scope.signup_main = false;
+			};
+
+			$scope.Login = function() {
+				alert("Login");
+			};
+
+			$scope.Create = function() {
+				alert("Create");
+			};
+
+			$scope.PreviewColor = function(n) {
+				$scope.hoverColor = 's'+n;
+			};
+
+			$scope.ResetColor = function(n) {
+				$scope.hoverColor = '';
+			};
+
+			$scope.SetColor = function(n) {
+
+				$scope.setColor = 'f'+n;
+				$scope.color = ['','','','','','','','','','',''];
+				$scope.color[n] = 'active';
+
+				createCookie("color", n, 99);
+			};
+
+		});
+
+		// ===
+
+		app.controller('successController', function($scope, $http, $timeout) {
+			
+		});
+
+		// ===
+
+		app.controller('inviteSoonController', function($scope, $http, $timeout) {
+			
+		});
+
+		// ===
+
+		app.controller('saveEmailController', function($scope, $http, $location) {
+			
+			$scope.Back = function() {
+				$location.path("/");
+			};
+
+			$scope.SaveEmail = function() {
+
+			};
+		});
+
+		// ===
+
+		app.controller('feedController', function($scope, $http, $timeout) {
+			
+		});
+
+		app.controller('createController', function($scope, $http, $timeout) {
+
+			$scope.form = {
+				goal: crowdfund.goal, 
+				name: crowdfund.name, 
+				video: crowdfund.video, 
+				cover: crowdfund.cover
+			};
+
+			$scope.fileUpload = {
+				url: 'http://test.ishuman.me:1991/upload',
+				callbacks: {
+					filesAdded: function(uploader, files) {
+
+						$scope.loading = true;
+
+						$timeout(function() { 
+							uploader.start(); 
+						}, 1);
+					},
+					uploadProgress: function(uploader, file) {
+
+						$scope.loading = file.percent/100.0;
+					},
+					fileUploaded: function(uploader, file, response) {
+
+						var res = angular.fromJson(response.response);
+
+						$scope.form.cover = res.cover;
+
+						$scope.loading = false;
+					},
+					error: function(uploader, error) {
+
+						$scope.loading = false;
+						alert(error.message);
+					}
+				}
+			};
+
+			$scope.Login = function() {
+
+				$http({
+					method: 'POST',
+					url: "j_crowdfund",
+					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+					transformRequest: function(obj) {
+						var str=[];
+						for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+						return str.join("&");
+					},
+					data: {
+						id: crowdfundId,
+						goal:  $scope.form.goal,
+						name:  $scope.form.name,
+						video: $scope.form.video,
+						cover: $scope.form.cover
+					}
+				})
+				.success(function(data) {
+
+					if (data.res == 0) {
+
+						crowdfundId = data.data.id;
+					}
+
+				});
+			};
+		});
+
+	</script>
+
+</head>
+<body ng-view>
+
+
+
+
+</body>
+</html>

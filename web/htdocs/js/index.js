@@ -37,6 +37,18 @@ function getCookie(c_name) {
 	return "";
 }
 
+function requestFullScreen(element) {
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullscreen;
+    if (requestMethod) {
+        requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") {
+        var wscript = new ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+        }
+    }
+}
+
 function detectmob() { 
 	if( navigator.userAgent.match(/Android/i)
 		|| navigator.userAgent.match(/webOS/i)
@@ -56,10 +68,34 @@ $(function() {
 	'use strict';
 
 	if (detectmob()) {
-		$('video').remove();
+
+		$('#bg, .volume, .fullscreen').remove();
+
+		$('.mplay').click(function() {
+
+			var v = $('.mvideo').show();
+			v[0].play();
+
+			v.unbind('click').click(function() {
+				return false;
+			});
+
+			$(document).unbind('click').click(function() {
+				v[0].pause();
+				v.hide();
+				$(document).unbind('click');
+			});
+
+			return false;
+		});
 	}
 
-	var $signup_create = $('#signup_create'),
+	$('.fullscreen').click(function() {
+		requestFullScreen(document.documentElement);
+	});
+
+	var $login_box_minimized = $('.login_box_minimized'),
+		$signup_create = $('#signup_create'),
 		$signup_main = $('#signup_main'),
 		$login_box = $('.login_box'),
 		$success2 = $('#success2'),
@@ -71,14 +107,26 @@ $(function() {
 
 	var $win = $(window);
 	$win.resize(function() {
-		if ($win.height() > 900) {
-			$login_box.removeClass('small');
+		if ($win.height() > 900 && $win.width() > 870) {
+			$login_box.add($login_box_minimized).removeClass('small');
 		} else {
-			$login_box.addClass('small');
+			$login_box.add($login_box_minimized).addClass('small');
 		}
 	}).resize();
 
 	$login_box.show();
+
+	$('.minimize').click(function() {
+
+		$login_box.hide();
+		$login_box_minimized.show()
+	});
+
+	$login_box_minimized.click(function() {
+
+		$login_box.show();
+		$login_box_minimized.hide()
+	});
 
 	$('input').focus(function(){
 		$(this).data('placeholder',$(this).attr('placeholder'))

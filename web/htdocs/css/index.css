@@ -22,7 +22,7 @@ html, body {
 }
 
 body {
-	min-height: 670px;
+	min-height: 600px;
 }
 
 * html .body {
@@ -48,9 +48,10 @@ body {
 	width: 46px;
 	height: 43px;
 	display: block;
-	background: url(/img/menu.png) 50% 50% no-repeat;
 	background-size: 66%;
 	z-index: 10;
+	text-align: center;
+	margin-top: 6px;
 }
 .menu_btn.fixed {
 	position: fixed;
@@ -99,25 +100,39 @@ body {
 
 /* - */
 
+svg path {
+	fill: rgba( 0, 156, 255, .6);
+	cursor: pointer;
+}
+
 .volume {
 	width: 20px;
 	height: 22px;
 	position: absolute;
 	display: block;
-	right: 5px;
-	bottom: 5px;
-	background: url(/img/volume.png) 0 -22px no-repeat;
+	left: 50%;
+	margin-left: 35px;
+	top: 10px;
+	/*background: url(/img/volume.png) 0 -22px no-repeat;*/
 	cursor: pointer;
 	opacity: .7;
+	z-index: 11;
 }
-.volume:hover,
-.volume.off {
-	background: url(/img/volume.png) 0 0 no-repeat;
+.volume:hover #vol01,
+.volume.off #vol01,
+.volume:hover #vol02,
+.volume.off #vol02 {
+	display: none;
+	/*background: url(/img/volume.png) 0 0 no-repeat;*/
+}
+
+.volume.off:hover #vol01,
+.volume.off:hover #vol02 {
+	display: block;
 }
 
 .login_box {
 	display: inline-block;
-	/*background-color: rgba(0, 156, 255, .6);*/
 	color: rgba(255, 255, 255, .9);
 	width: 868px;
 	height: 718px;
@@ -128,13 +143,11 @@ body {
 	margin-left: -434px;
 	margin-top: -381px;
 
-	display: none;
-
-	-webkit-transition: all 0.3s ease;
-	-moz-transition:    all 0.3s ease;
-	-o-transition:      all 0.3s ease;
-	-ms-transition:     all 0.3s ease;
-	transition:         all 0.3s ease;
+	-webkit-transition: background-color 0.3s ease;
+	-moz-transition:    background-color 0.3s ease;
+	-o-transition:      background-color 0.3s ease;
+	-ms-transition:     background-color 0.3s ease;
+	transition:         background-color 0.3s ease;
 }
 .login_box.small {
 	width: 572px;
@@ -214,14 +227,13 @@ body {
 .login_box.small .login_control {
 	margin: 13px auto 0;
 	width: 295px;
-	height: 37px;
+	height: 34px;
 }
 .login_box .login_control a {
 	color: #fff;
 	text-decoration: none;
 	font-size: 34px;
 	display: block;
-	/*width: 33.33%;*/
 	width: auto;
 	float: left;
 	text-align: center;
@@ -229,10 +241,11 @@ body {
 	line-height: 0;
 	padding: 27px 31px 30px 31px;
 	box-sizing: border-box;
+	cursor: pointer;
 }
 .login_box.small .login_control a {
 	font-size: 22px;
-	padding: 17px 21px 20px 21px;
+	padding: 17px 21px 17px 21px;
 }
 .login_box .login_control a:hover {
 	background-color: rgba(255, 255, 255, .15);
@@ -273,12 +286,13 @@ body {
 	color: #fff;
 	text-decoration: none;
 	text-shadow: 0 0 6px rgba(255, 255, 255, .55);
+	cursor: pointer;
 
-	-webkit-transition: all 0.3s ease;
-	-moz-transition:    all 0.3s ease;
-	-o-transition:      all 0.3s ease;
-	-ms-transition:     all 0.3s ease;
-	transition:         all 0.3s ease;
+	-webkit-transition: background-color 0.3s ease;
+	-moz-transition:    background-color 0.3s ease;
+	-o-transition:      background-color 0.3s ease;
+	-ms-transition:     background-color 0.3s ease;
+	transition:         background-color 0.3s ease;
 	opacity: .85;
 }
 .login_box .login_button:hover {
@@ -392,12 +406,13 @@ body {
 	width: 447px;
 	margin: 45px auto 0;
 	text-shadow: 0 0 6px rgba(255, 255, 255, .7);
+	cursor: pointer;
 
-	-webkit-transition: all 0.3s ease;
-	-moz-transition:    all 0.3s ease;
-	-o-transition:      all 0.3s ease;
-	-ms-transition:     all 0.3s ease;
-	transition:         all 0.3s ease;
+	-webkit-transition: background-color 0.3s ease;
+	-moz-transition:    background-color 0.3s ease;
+	-o-transition:      background-color 0.3s ease;
+	-ms-transition:     background-color 0.3s ease;
+	transition:         background-color 0.3s ease;
 }
 .login_box .signup:hover {
 	color: rgba(255, 255, 255, 1);
@@ -432,11 +447,11 @@ body {
 	cursor: pointer;
 	position: relative;
 
-	-webkit-transition: all 0.3s ease;
-	-moz-transition:    all 0.3s ease;
-	-o-transition:      all 0.3s ease;
-	-ms-transition:     all 0.3s ease;
-	transition:         all 0.3s ease;
+	-webkit-transition: background-color 0.3s ease;
+	-moz-transition:    background-color 0.3s ease;
+	-o-transition:      background-color 0.3s ease;
+	-ms-transition:     background-color 0.3s ease;
+	transition:         background-color 0.3s ease;
 }
 .color.active:before {
 	display: block;
@@ -456,19 +471,89 @@ body {
 	margin-left: -4px;
 	margin-top: -4px;
 }
+.color.c09.active:before {
+	background-color: rgba( 0, 156, 255, .6);
+}
 
 
 .login_box.f0  .td, .login_box.f0  .max { background-color: rgba(  0, 156, 255, .6); }
 .login_box.f1  .td, .login_box.f1  .max { background-color: rgba(  6,   0, 255, .6); }
 .login_box.f2  .td, .login_box.f2  .max { background-color: rgba(121,  43, 244, .6); }
-.login_box.f3  .td, .login_box.f3  .max { background-color: rgba(255,   0, 240, .6); }
+.login_box.f3  .td, .login_box.f3  .max { background-color: rgba(220,   0, 220, .6); }
 .login_box.f4  .td, .login_box.f4  .max { background-color: rgba(255,   0,   0, .6); }
 .login_box.f5  .td, .login_box.f5  .max { background-color: rgba(255, 138,   0, .6); }
 .login_box.f6  .td, .login_box.f6  .max { background-color: rgba(255, 234,   0, .6); }
-.login_box.f7  .td, .login_box.f7  .max { background-color: rgba( 30, 255,   0, .6); }
+.login_box.f7  .td, .login_box.f7  .max { background-color: rgba( 30, 220,   0, .6); }
 .login_box.f8  .td, .login_box.f8  .max { background-color: rgba(  0, 234, 255, .6); }
 .login_box.f9  .td, .login_box.f9  .max { background-color: rgba(255, 255, 255, .6); }
 .login_box.f10 .td, .login_box.f10 .max { background-color: rgba(  0,   0,   0, .6); }
+
+
+.login_box.f0  ~ .login_box_minimized { background-color: rgba(  0, 156, 255, .6); }
+.login_box.f1  ~ .login_box_minimized { background-color: rgba(  6,   0, 255, .6); }
+.login_box.f2  ~ .login_box_minimized { background-color: rgba(121,  43, 244, .6); }
+.login_box.f3  ~ .login_box_minimized { background-color: rgba(220,   0, 220, .6); }
+.login_box.f4  ~ .login_box_minimized { background-color: rgba(255,   0,   0, .6); }
+.login_box.f5  ~ .login_box_minimized { background-color: rgba(255, 138,   0, .6); }
+.login_box.f6  ~ .login_box_minimized { background-color: rgba(255, 234,   0, .6); }
+.login_box.f7  ~ .login_box_minimized { background-color: rgba( 30, 220,   0, .6); }
+.login_box.f8  ~ .login_box_minimized { background-color: rgba(  0, 234, 255, .6); }
+.login_box.f9  ~ .login_box_minimized { background-color: rgba(255, 255, 255, .6); color: rgba(  0, 156, 255, .8); text-shadow: 0 0 3px rgba(0, 156, 255, .9); }
+.login_box.f10 ~ .login_box_minimized { background-color: rgba(  0,   0,   0, .6); }
+
+.login_box.f0  ~ .login_box_minimized:hover { background-color: rgba(  0, 156, 255, .4); }
+.login_box.f1  ~ .login_box_minimized:hover { background-color: rgba(  6,   0, 255, .4); }
+.login_box.f2  ~ .login_box_minimized:hover { background-color: rgba(121,  43, 244, .4); }
+.login_box.f3  ~ .login_box_minimized:hover { background-color: rgba(220,   0, 220, .4); }
+.login_box.f4  ~ .login_box_minimized:hover { background-color: rgba(255,   0,   0, .4); }
+.login_box.f5  ~ .login_box_minimized:hover { background-color: rgba(255, 138,   0, .4); }
+.login_box.f6  ~ .login_box_minimized:hover { background-color: rgba(255, 234,   0, .4); }
+.login_box.f7  ~ .login_box_minimized:hover { background-color: rgba( 30, 220,   0, .4); }
+.login_box.f8  ~ .login_box_minimized:hover { background-color: rgba(  0, 234, 255, .4); }
+.login_box.f9  ~ .login_box_minimized:hover { background-color: rgba(255, 255, 255, .4); }
+.login_box.f10 ~ .login_box_minimized:hover { background-color: rgba(  0,   0,   0, .4); }
+
+
+.login_box.f0  ~ .menu_btn svg path, .login_box.f0  ~ .volume svg path { fill: rgba(  0, 156, 255, .6); }
+.login_box.f1  ~ .menu_btn svg path, .login_box.f1  ~ .volume svg path { fill: rgba(  6,   0, 255, .6); }
+.login_box.f2  ~ .menu_btn svg path, .login_box.f2  ~ .volume svg path { fill: rgba(121,  43, 244, .6); }
+.login_box.f3  ~ .menu_btn svg path, .login_box.f3  ~ .volume svg path { fill: rgba(220,   0, 220, .6); }
+.login_box.f4  ~ .menu_btn svg path, .login_box.f4  ~ .volume svg path { fill: rgba(255,   0,   0, .6); }
+.login_box.f5  ~ .menu_btn svg path, .login_box.f5  ~ .volume svg path { fill: rgba(255, 138,   0, .6); }
+.login_box.f6  ~ .menu_btn svg path, .login_box.f6  ~ .volume svg path { fill: rgba(255, 234,   0, .6); }
+.login_box.f7  ~ .menu_btn svg path, .login_box.f7  ~ .volume svg path { fill: rgba( 30, 220,   0, .6); }
+.login_box.f8  ~ .menu_btn svg path, .login_box.f8  ~ .volume svg path { fill: rgba(  0, 234, 255, .6); }
+.login_box.f9  ~ .menu_btn svg path, .login_box.f9  ~ .volume svg path { fill: rgba(255, 255, 255, .6); }
+.login_box.f10 ~ .menu_btn svg path, .login_box.f10 ~ .volume svg path { fill: rgba(  0,   0,   0, .6); }
+
+
+.login_box.f0  .title i.minimize { background-color: rgba(  0, 156, 255, .3); }
+.login_box.f1  .title i.minimize { background-color: rgba(  6,   0, 255, .3); }
+.login_box.f2  .title i.minimize { background-color: rgba(121,  43, 244, .3); }
+.login_box.f3  .title i.minimize { background-color: rgba(220,   0, 220, .3); }
+.login_box.f4  .title i.minimize { background-color: rgba(255,   0,   0, .3); }
+.login_box.f5  .title i.minimize { background-color: rgba(255, 138,   0, .3); }
+.login_box.f6  .title i.minimize { background-color: rgba(255, 234,   0, .3); }
+.login_box.f7  .title i.minimize { background-color: rgba( 30, 220,   0, .3); }
+.login_box.f8  .title i.minimize { background-color: rgba(  0, 234, 255, .3); }
+.login_box.f9  .title i.minimize { background-color: rgba(255, 255, 255, .3); }
+.login_box.f9  .title i.minimize:hover { background-color: rgba(255, 255, 255, .6) !important; }
+.login_box.f9  .title i.minimize span { background-color: rgba(  0, 156, 255, .6); }
+.login_box.f9  .title i.minimize:hover span { background-color: rgba(  0, 156, 255, .6); }
+.login_box.f10 .title i.minimize { background-color: rgba(  0,   0,   0, .3); }
+
+
+.login_box.s0  .title i.minimize { background-color: rgba(  0, 156, 255, .3); }
+.login_box.s1  .title i.minimize { background-color: rgba(  6,   0, 255, .3); }
+.login_box.s2  .title i.minimize { background-color: rgba(121,  43, 244, .3); }
+.login_box.s3  .title i.minimize { background-color: rgba(220,   0, 220, .3); }
+.login_box.s4  .title i.minimize { background-color: rgba(255,   0,   0, .3); }
+.login_box.s5  .title i.minimize { background-color: rgba(255, 138,   0, .3); }
+.login_box.s6  .title i.minimize { background-color: rgba(255, 234,   0, .3); }
+.login_box.s7  .title i.minimize { background-color: rgba( 30, 220,   0, .3); }
+.login_box.s8  .title i.minimize { background-color: rgba(  0, 234, 255, .3); }
+.login_box.s9  .title i.minimize { background-color: rgba(255, 255, 255, .3); }
+.login_box.s10 .title i.minimize { background-color: rgba(  0,   0,   0, .3); }
 
 .login_box.f1  .title {
 	background-color: rgba(255, 255, 255, .10);
@@ -487,16 +572,16 @@ body {
 .login_box.f1 .login_input:-moz-placeholder            { color: rgba(  6,   0, 255, .4); }
 .login_box.f2 .login_input::-webkit-input-placeholder  { color: rgba(121,  43, 244, .4); }
 .login_box.f2 .login_input:-moz-placeholder            { color: rgba(121,  43, 244, .4); }
-.login_box.f3 .login_input::-webkit-input-placeholder  { color: rgba(255,   0, 240, .4); }
-.login_box.f3 .login_input:-moz-placeholder            { color: rgba(255,   0, 240, .4); }
+.login_box.f3 .login_input::-webkit-input-placeholder  { color: rgba(220,   0, 220, .4); }
+.login_box.f3 .login_input:-moz-placeholder            { color: rgba(220,   0, 220, .4); }
 .login_box.f4 .login_input::-webkit-input-placeholder  { color: rgba(255,   0,   0, .4); }
 .login_box.f4 .login_input:-moz-placeholder            { color: rgba(255,   0,   0, .4); }
 .login_box.f5 .login_input::-webkit-input-placeholder  { color: rgba(255, 138,   0, .4); }
 .login_box.f5 .login_input:-moz-placeholder            { color: rgba(255, 138,   0, .4); }
 .login_box.f6 .login_input::-webkit-input-placeholder  { color: rgba(255, 234,   0, .4); }
 .login_box.f6 .login_input:-moz-placeholder            { color: rgba(255, 234,   0, .4); }
-.login_box.f7 .login_input::-webkit-input-placeholder  { color: rgba( 30, 255,   0, .4); }
-.login_box.f7 .login_input:-moz-placeholder            { color: rgba( 30, 255,   0, .4); }
+.login_box.f7 .login_input::-webkit-input-placeholder  { color: rgba( 30, 220,   0, .4); }
+.login_box.f7 .login_input:-moz-placeholder            { color: rgba( 30, 220,   0, .4); }
 .login_box.f8 .login_input::-webkit-input-placeholder  { color: rgba(  0, 234, 255, .4); }
 .login_box.f8 .login_input:-moz-placeholder            { color: rgba(  0, 234, 255, .4); }
 .login_box.f9 .login_input::-webkit-input-placeholder  { color: rgba(  0, 156, 255, .4); }
@@ -509,14 +594,26 @@ body {
 .login_box.s0  .td, .login_box.s0  .max { background-color: rgba(  0, 156, 255, .6); }
 .login_box.s1  .td, .login_box.s1  .max { background-color: rgba(  6,   0, 255, .6); }
 .login_box.s2  .td, .login_box.s2  .max { background-color: rgba(121,  43, 244, .6); }
-.login_box.s3  .td, .login_box.s3  .max { background-color: rgba(255,   0, 240, .6); }
+.login_box.s3  .td, .login_box.s3  .max { background-color: rgba(220,   0, 220, .6); }
 .login_box.s4  .td, .login_box.s4  .max { background-color: rgba(255,   0,   0, .6); }
 .login_box.s5  .td, .login_box.s5  .max { background-color: rgba(255, 138,   0, .6); }
 .login_box.s6  .td, .login_box.s6  .max { background-color: rgba(255, 234,   0, .6); }
-.login_box.s7  .td, .login_box.s7  .max { background-color: rgba( 30, 255,   0, .6); }
+.login_box.s7  .td, .login_box.s7  .max { background-color: rgba( 30, 220,   0, .6); }
 .login_box.s8  .td, .login_box.s8  .max { background-color: rgba(  0, 234, 255, .6); }
 .login_box.s9  .td, .login_box.s9  .max { background-color: rgba(255, 255, 255, .6); }
 .login_box.s10 .td, .login_box.s10 .max { background-color: rgba(  0,   0,   0, .6); }
+
+.login_box.s0  ~ .menu_btn svg path, .login_box.s0  ~ .volume svg path { fill: rgba(  0, 156, 255, .6); }
+.login_box.s1  ~ .menu_btn svg path, .login_box.s1  ~ .volume svg path { fill: rgba(  6,   0, 255, .6); }
+.login_box.s2  ~ .menu_btn svg path, .login_box.s2  ~ .volume svg path { fill: rgba(121,  43, 244, .6); }
+.login_box.s3  ~ .menu_btn svg path, .login_box.s3  ~ .volume svg path { fill: rgba(220,   0, 220, .6); }
+.login_box.s4  ~ .menu_btn svg path, .login_box.s4  ~ .volume svg path { fill: rgba(255,   0,   0, .6); }
+.login_box.s5  ~ .menu_btn svg path, .login_box.s5  ~ .volume svg path { fill: rgba(255, 138,   0, .6); }
+.login_box.s6  ~ .menu_btn svg path, .login_box.s6  ~ .volume svg path { fill: rgba(255, 234,   0, .6); }
+.login_box.s7  ~ .menu_btn svg path, .login_box.s7  ~ .volume svg path { fill: rgba( 30, 220,   0, .6); }
+.login_box.s8  ~ .menu_btn svg path, .login_box.s8  ~ .volume svg path { fill: rgba(  0, 234, 255, .6); }
+.login_box.s9  ~ .menu_btn svg path, .login_box.s9  ~ .volume svg path { fill: rgba(255, 255, 255, .6); }
+.login_box.s10 ~ .menu_btn svg path, .login_box.s10 ~ .volume svg path { fill: rgba(  0,   0,   0, .6); }
 
 .login_box.s1  .title {
 	background-color: rgba(255, 255, 255, .10);
@@ -543,6 +640,18 @@ body {
 
 .login_box.s9 .login_control a { color: rgba(  0, 156, 255, .8); }
 
+.login_box.s0  .title i.minimize span,
+.login_box.s1  .title i.minimize span,
+.login_box.s2  .title i.minimize span,
+.login_box.s3  .title i.minimize span,
+.login_box.s4  .title i.minimize span,
+.login_box.s5  .title i.minimize span,
+.login_box.s6  .title i.minimize span,
+.login_box.s7  .title i.minimize span,
+.login_box.s8  .title i.minimize span,
+.login_box.s10 .title i.minimize span { background-color: rgba(255, 255, 255, .6); }
+
+.login_box.s9 .title i.minimize span { background-color: rgba(  0, 156, 255, .6); }
 
 .login_box.s0 .login_input::-webkit-input-placeholder  { color: rgba( 45, 169, 249, .4); }
 .login_box.s0 .login_input:-moz-placeholder            { color: rgba( 45, 169, 249, .4); }
@@ -550,16 +659,16 @@ body {
 .login_box.s1 .login_input:-moz-placeholder            { color: rgba(  6,   0, 255, .4); }
 .login_box.s2 .login_input::-webkit-input-placeholder  { color: rgba(121,  43, 244, .4); }
 .login_box.s2 .login_input:-moz-placeholder            { color: rgba(121,  43, 244, .4); }
-.login_box.s3 .login_input::-webkit-input-placeholder  { color: rgba(255,   0, 240, .4); }
-.login_box.s3 .login_input:-moz-placeholder            { color: rgba(255,   0, 240, .4); }
+.login_box.s3 .login_input::-webkit-input-placeholder  { color: rgba(220,   0, 220, .4); }
+.login_box.s3 .login_input:-moz-placeholder            { color: rgba(220,   0, 220, .4); }
 .login_box.s4 .login_input::-webkit-input-placeholder  { color: rgba(255,   0,   0, .4); }
 .login_box.s4 .login_input:-moz-placeholder            { color: rgba(255,   0,   0, .4); }
 .login_box.s5 .login_input::-webkit-input-placeholder  { color: rgba(255, 138,   0, .4); }
 .login_box.s5 .login_input:-moz-placeholder            { color: rgba(255, 138,   0, .4); }
 .login_box.s6 .login_input::-webkit-input-placeholder  { color: rgba(255, 234,   0, .4); }
 .login_box.s6 .login_input:-moz-placeholder            { color: rgba(255, 234,   0, .4); }
-.login_box.s7 .login_input::-webkit-input-placeholder  { color: rgba( 30, 255,   0, .4); }
-.login_box.s7 .login_input:-moz-placeholder            { color: rgba( 30, 255,   0, .4); }
+.login_box.s7 .login_input::-webkit-input-placeholder  { color: rgba( 30, 220,   0, .4); }
+.login_box.s7 .login_input:-moz-placeholder            { color: rgba( 30, 220,   0, .4); }
 .login_box.s8 .login_input::-webkit-input-placeholder  { color: rgba(  0, 234, 255, .4); }
 .login_box.s8 .login_input:-moz-placeholder            { color: rgba(  0, 234, 255, .4); }
 .login_box.s9 .login_input::-webkit-input-placeholder  { color: rgba(  0, 156, 255, .4); }
@@ -570,11 +679,11 @@ body {
 .c00 { background-color: rgba(  0, 156, 255, .6); }
 .c01 { background-color: rgba(  6,   0, 255, .6); }
 .c02 { background-color: rgba(121,  43, 244, .6); }
-.c03 { background-color: rgba(255,   0, 240, .6); }
+.c03 { background-color: rgba(220,   0, 220, .6); }
 .c04 { background-color: rgba(255,   0,   0, .6); }
 .c05 { background-color: rgba(255, 138,   0, .6); }
 .c06 { background-color: rgba(255, 234,   0, .6); }
-.c07 { background-color: rgba( 30, 255,   0, .6); }
+.c07 { background-color: rgba( 30, 220,   0, .6); }
 .c08 { background-color: rgba(  0, 234, 255, .6); }
 .c09 { background-color: rgba(255, 255, 255, .6); }
 .c10 { background-color: rgba(  0,   0,   0, .6); }
@@ -582,13 +691,79 @@ body {
 .c00:hover { background-color: rgba(  0, 156, 255, 1); }
 .c01:hover { background-color: rgba(  6,   0, 255, 1); }
 .c02:hover { background-color: rgba(121,  43, 244, 1); }
-.c03:hover { background-color: rgba(255,   0, 240, 1); }
+.c03:hover { background-color: rgba(220,   0, 220, 1); }
 .c04:hover { background-color: rgba(255,   0,   0, 1); }
 .c05:hover { background-color: rgba(255, 138,   0, 1); }
 .c06:hover { background-color: rgba(255, 234,   0, 1); }
-.c07:hover { background-color: rgba( 30, 255,   0, 1); }
+.c07:hover { background-color: rgba( 30, 220,   0, 1); }
 .c08:hover { background-color: rgba(  0, 234, 255, 1); }
 .c09:hover { background-color: rgba(255, 255, 255, 1); }
 .c10:hover { background-color: rgba(  0,   0,   0, 1); }
 
 /*  */
+
+
+.table {
+	border-spacing: 0;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.tr { height: 32px; }
+.small .tr { height: 21px; }
+
+.tr.first { height: 40px; }
+.small .tr.first { height: 26px; }
+
+.tr.button { height: 84px; }
+.small .tr.button { height: 55px; }
+
+.tr.control { height: 84px; }
+.small .tr.control { height: 55px; }
+
+.title i.td, .title i.white {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.title i.white {
+	background-color: rgba(255,255,255,.25);
+}
+.title span { position: relative; }
+
+.max, .td {
+	background-color: rgba(0, 156, 255, .6);
+
+	-webkit-transition: all 0.3s ease;
+	-moz-transition:    all 0.3s ease;
+	-o-transition:      all 0.3s ease;
+	-ms-transition:     all 0.3s ease;
+	transition:         all 0.3s ease;
+}
+
+.td {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
+}
+.td.hole {
+	background-color: transparent;
+	width: 295px;
+}
+.login_box .td.hole .login_button {
+	margin: 0;
+	width: 100%;
+}
+
+.tr.buttom { height: 28px; }
+.small .tr.buttom { height: 20px; }
+
+.login_box .signup,
+.login_box.small .signup {
+	margin: 0;
+}
+
+div.max { height: 564px; overflow: hidden; }
+.small div.max { height: 371px; }
