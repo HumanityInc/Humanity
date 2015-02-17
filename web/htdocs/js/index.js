@@ -49,6 +49,18 @@ function requestFullScreen(element) {
     }
 }
 
+function exitFullScreen(element) {
+	var requestMethod = element.exitFullscreen || element.webkitExitFullscreen || element.mozCancelFullscreen || element.msExitFullscreen;
+    if (requestMethod) {
+        requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") {
+        var wscript = new ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+        }
+    }
+}
+
 function detectmob() { 
 	if( navigator.userAgent.match(/Android/i)
 		|| navigator.userAgent.match(/webOS/i)
@@ -64,12 +76,47 @@ function detectmob() {
 	}
 }
 
+$(document).load(function() {
+
+	$('#container').perfectScrollbar('update');
+
+});
+
 $(function() {
 	'use strict';
 
+	var ut = 1424176132;
+
+	function setCounter() {
+
+		var h = 0, m = 0, s = 0, ct = (new Date().getTime()/1000)|0;
+
+		if (ut > ct) {
+			var d = ut - ct;
+			h = Math.floor(d / 3600);
+			m = Math.floor((d - (h * 3600)) / 60);
+			s = d - (h * 3600) - (m * 60);
+		}
+
+		if(h<10)h='0'+h;
+		if(m<10)m='0'+m;
+		if(s<10)s='0'+s;
+
+		var str = (h=="00"?"":h+":")+m+":"+s;
+
+		$("#rtime").text(str);		
+	}
+
+	setInterval(setCounter, 1000);
+
+	setCounter();
+
 	if (detectmob()) {
 
-		$('#bg, .volume, .fullscreen').remove();
+		$('#bg, .volume, .fullscreen, .pause, .minimize').remove();
+
+		var $lb = $('.login_box');//.removeClass('right left');
+		$lb.addClass('mobile');
 
 		$('.mplay').click(function() {
 
@@ -90,11 +137,7 @@ $(function() {
 		});
 	}
 
-	$('.fullscreen').click(function() {
-		requestFullScreen(document.documentElement);
-	});
-
-	var $login_box_minimized = $('.login_box_minimized'),
+	var $login_box_minimized = $('.box_minimized'),
 		$signup_create = $('#signup_create'),
 		$signup_main = $('#signup_main'),
 		$login_box = $('.login_box'),
@@ -116,16 +159,66 @@ $(function() {
 
 	$login_box.show();
 
+	$('#news').perfectScrollbar({suppressScrollX: false});
+
+	var $fullscreen = $('.fullscreen');
+
+	$fullscreen.click(function() {
+
+		if ($(this).data('fs') != "1") {
+			$(this).data('fs', '1');
+			requestFullScreen(document.documentElement);
+		} else {
+			$(this).data('fs', '0');
+			exitFullScreen(document);
+		}
+	});
+
 	$('.minimize').click(function() {
 
-		$login_box.hide();
-		$login_box_minimized.show()
+		var type = $(this).data('type');
+
+		if (type != "3") {
+
+			var cur_box = $(this).closest('.login_box').hide();
+
+			$login_box.not(cur_box).addClass('center');
+
+			$login_box_minimized.filter('[data-type="'+type+'"]').show();
+
+		} else {
+
+			$(this).closest('.graph').hide();
+			$(this).closest('.login_box').find('.max').removeClass('ga');
+
+			$login_box_minimized.filter('[data-type="'+type+'"]').show();
+		}
+
+		// $login_box.hide();
+		// $login_box_minimized.show()
 	});
 
 	$login_box_minimized.click(function() {
 
-		$login_box.show();
-		$login_box_minimized.hide()
+		// if ($fullscreen.data('fs') == "1") {
+			// $login_box.show();
+		// } else {
+			// $login_box.eq(1).show();
+		// }
+
+		var type = $(this).data('type');
+
+		// if (type != "3") {
+
+			var cur_box = $('.minimize[data-type="'+type+'"]').closest('.login_box').show();
+
+			$login_box.not(cur_box).removeClass('center');
+
+			$(this).hide();
+
+		// } else {
+
+		// }
 	});
 
 	$('input').focus(function(){
@@ -156,7 +249,31 @@ $(function() {
 		
 	});
 
+	$('.pause').click(function() {
+		if ($(this).hasClass('active')) {
+			$video[0].play();
+			$(this).removeClass('active');
+		} else {
+			$video[0].pause();
+			$(this).addClass('active');
+		}
+	});
+
 	var $color = $('.color');
+
+	(function(){
+	
+		var c = getCookie('color')|0,
+			cur = $login_box.data('cur');
+
+		$login_box.removeClass('f'+cur).data('cur', c).addClass('f'+c);
+
+		$color.removeClass('active');
+
+		$color.filter("[data-color='"+c+"']").addClass('active');
+
+	})();
+
 	$color.mouseenter(function() {
 
 		var c = $(this).data('color');
@@ -173,6 +290,8 @@ $(function() {
 			cur = $login_box.data('cur');
 
 		$login_box.removeClass('f'+cur).data('cur', c).addClass('f'+c);
+
+		createCookie("color", c, 99);
 
 		$color.removeClass('active');
 		$(this).addClass('active');
@@ -338,14 +457,20 @@ $(function() {
 		main: function() {
 			$all.not($main).hide();
 			$main.show();
+
+			ga('send', 'pageview', '/#');
 		},
 		signin: function() {
 			$all.not($signin).hide();
 			$signin.show().find('input');
+
+			ga('send', 'pageview', '/#!signin');
 		},
 		main_signup: function() {
 			$all.not($signup_main).hide();
-			$signup_main.show().find('input');	
+			$signup_main.show().find('input');
+
+			ga('send', 'pageview', '/#!main/signup');
 		},
 		create_signup: function() {
 
@@ -357,18 +482,26 @@ $(function() {
 
 			$all.not($signup_create).hide();
 			$signup_create.show().find('input');
+
+			ga('send', 'pageview', '/#!signin/create');
 		},
 		login: function() {
 			$all.not($success2).hide();
 			$success2.show();
+
+			ga('send', 'pageview', '/#!signin');
 		},
 		success: function() {
 			$all.not($success).hide();
 			$success.show();
+
+			ga('send', 'pageview', '/#!success');
 		},
 		email: function() {
 			$all.not($email).hide();
 			$email.show().find('input');
+			
+			ga('send', 'pageview', '/#!email');
 		}
 	});
 

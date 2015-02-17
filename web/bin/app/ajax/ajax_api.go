@@ -54,6 +54,7 @@ func CrowdfundSave(c *model.Client) {
 		Goal:    c.FormValueInt64("goal"),
 		Name:    c.Req.FormValue("name"),
 		Video:   c.Req.FormValue("video"),
+		Cover:   c.Req.FormValue("cover"),
 		Images:  images,
 	}
 

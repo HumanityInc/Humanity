@@ -29,6 +29,10 @@ type (
 		Link string
 	}
 
+	MailAlert struct{}
+
+	MailGreetings struct{}
+
 	MandrillReturn struct {
 		Email        string `json:"email"`
 		Status       string `json:"status"`
@@ -60,6 +64,15 @@ func init() {
 
 //
 
+func (m *MailAlert) Send(email string) {
+
+	err := send("alert.txt", email, "Hello! :)", m)
+
+	if err != nil {
+		logger.Println(err)
+	}
+}
+
 func (m *MailActivate) Send(email string) {
 
 	err := send("activate.txt", email, "EmailActivate", m)
@@ -72,6 +85,15 @@ func (m *MailActivate) Send(email string) {
 func (m *MailSuccess) Send(email string) {
 
 	err := send("success.txt", email, "Welcome to Humanity! :)", m)
+
+	if err != nil {
+		logger.Println(err)
+	}
+}
+
+func (m *MailGreetings) Send(email string) {
+
+	err := send("greetings.txt", email, "Greetings.", m)
 
 	if err != nil {
 		logger.Println(err)

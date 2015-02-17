@@ -3,7 +3,7 @@
 <head>
 
 	<meta charset="utf-8">
-	<title>Humanity</title>
+	<title>Humanity - Made In Ukraine!</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -17,20 +17,37 @@
 	<meta property="og:image" content="https://ishuman.me/opensource/pics/emblem.png">
 	<meta property="og:description" content="Humanity - The BILLION Dollar GLOBAL Giant YOU Own!">
 
-	<link type="text/css" rel="stylesheet" href="/css/index.css?v=21">
+	<link type="text/css" rel="stylesheet" href="/css/index.css?v=26">
 	<link rel="shortcut icon" href="/favicon_2.ico" type="image/x-icon"/>
 
+
 	<script src="/js/jquery-1.11.2.min.js"></script>
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.5.9/perfect-scrollbar.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.5.9/perfect-scrollbar.min.js"></script>
+
 	<script src="/js/underscore.min.js"></script>
 	<script src="/js/backbone.min.js"></script>
-	<script src="/js/index.js?v=21"></script>
+	<script src="/js/moment.js"></script>
 
-	<link href="//vjs.zencdn.net/4.11/video-js.css" rel="stylesheet">
-	<script src="//vjs.zencdn.net/4.11/video.js"></script>
+	<script src="/js/index.js?v=26"></script>
+
+
+	<!-- <link href="//vjs.zencdn.net/4.11/video-js.css" rel="stylesheet">
+	<script src="//vjs.zencdn.net/4.11/video.js"></script> -->
 
 	<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-49097764-1','ishuman.me');ga('send','pageview');</script>
 
 	<style type="text/css">
+
+	.login_box.left.small div.max {
+		position: relative;
+		overflow: hidden;
+		padding: 0;
+	}
+	.ps-container:hover>.ps-scrollbar-y-rail:hover {
+		opacity: .4;
+	}
 
 	.table {
 		border-spacing: 0;
@@ -59,10 +76,10 @@
 		bottom: 0;
 	}
 	.title i.white {
-		background-color: rgba(255,255,255,.25);
+		background-color: rgba(255,255,255,.15);
 	}
 
-	.title i.minimize {
+	i.minimize {
 		position: absolute;
 		width: 49px;
 		height: 33px;
@@ -71,7 +88,7 @@
 		right: 0;
 		cursor: pointer;
 	}
-	.title i.minimize span {
+	i.minimize span {
 		position: absolute;
 		display: block;
 		height: 6px;
@@ -83,20 +100,20 @@
 		margin-left: -13px;
 	}
 
-	.small .title i.minimize {
+	.small i.minimize {
 		width: 33px;
 		height: 23px;
 	}
-	.small .title i.minimize span {
+	.small i.minimize span {
 		height: 4px;
 		width: 18px;
 		margin-top: -2px;
 		margin-left: -9px;
 	}
-	.title i.minimize:hover {
+	i.minimize:hover {
 		background-color: rgba(255, 255, 255, .15) !important;
 	}
-	.small .title i.minimize:hover span {
+	.small i.minimize:hover span {
 		background-color: rgba(255, 255, 255, .9);
 	}
 
@@ -128,10 +145,15 @@
 	.tr.buttom { height: 28px; }
 	.small .tr.buttom { height: 20px; }
 
-	.login_box_minimized {
+	.holder_minimize {
 		position: absolute;
 		left: 0;
 		bottom: 0;
+		overflow: auto;
+	}
+
+	.box_minimized {
+		float: left;
 		color: rgba(255, 255, 255, .8);
 		background-color: rgba(0, 156, 255, .6);
 		line-height: 0;
@@ -142,11 +164,11 @@
 		display: none;
 		cursor: pointer;
 	}
-	.login_box_minimized.small {
+	.box_minimized.small {
 		font-size: 22px;
 		padding: 15px 8px;
 	}
-	.login_box_minimized:hover {
+	.box_minimized:hover {
 		background-color: rgba(0, 156, 255, .8);
 	}
 
@@ -199,13 +221,13 @@
 			</video>
 		</div>
 
-		<div class="login_box f10" data-cur="10">
+		<div class="login_box right f0" data-cur="0">
 
 			<div class="title">
 				<i class="td"></i>
 				<i class="white"></i>
 				<span>hello, human! :)</span>
-				<i class="minimize"><span></span></i>
+				<i class="minimize" data-type="1"><span></span></i>
 			</div>
 
 			<div id="main" style="display: none;">
@@ -354,8 +376,10 @@
 
 			<div id="success" class="max" style="display: none;">
 				<div class="success">
-					“great success!”<br>
-					check your email!
+					<!-- “great success!”<br>
+					check your email! -->
+					Are you in Top 100?<br>
+					Sign in late Tuesday!
 				</div>
 			</div>
 
@@ -367,9 +391,9 @@
 
 			<table class="colors">
 				<tr>
-					<td data-color="10" class="color c10 active"></td>
+					<td data-color="10" class="color c10"></td>
 					<td data-color="9" class="color c09"></td>
-					<td data-color="0" class="color c00"></td>
+					<td data-color="0" class="color c00 active"></td>
 					<td data-color="1" class="color c01"></td>
 					<td data-color="2" class="color c02"></td>
 					<td data-color="3" class="color c03"></td>
@@ -383,17 +407,34 @@
 
 		</div>
 
-		<!-- <div class="mplay"></div>
+		<div class="login_box left f0" data-cur="0" style="display: none;">
+			<div class="title">
+				<i class="td"></i>
+				<i class="white"></i>
+				<!-- <span id="rtime">00:00:00</span> -->
+				<span>news</span>
+				<i class="minimize" data-type="0"><span></span></i>
+			</div>
 
+			<div class="max ga" id="news">
+				<div style="padding: 20px;">
+					{{.Changelog}}
+				</div>
+			</div>
+
+			<div class="max graph">
+				<i class="minimize" data-type="3"><span></span></i>
+			</div>
+		</div>
+
+		<!-- <div class="mplay"></div>
 		<video controls class="video-js vjs-default-skin mvideo">
 			<source src="/steve3_.mp4" type="video/mp4">
 			Your browser does not support the video tag.
 		</video> -->
 
-		{{/*.Changelog*/}}
-
 		<a href="#" class="menu_btn">
-			<svg version="1.1" baseProfile="basic" id="Layer_1"
+			<svg version="1.1" baseProfile="basic"
 				 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="30px"
 				 viewBox="0 0 391 347" xml:space="preserve">
 				<path fill-rule="evenodd" clip-rule="evenodd" d="M205,0c23.291,4.425,51.577,8.329,74,18
@@ -405,27 +446,79 @@
 			</svg>
 		</a>
 
-		<a class="volume">
-			<svg version="1.1" baseProfile="basic" id="Layer_2"
-				 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="22px"
-				 viewBox="0 0 675 745" xml:space="preserve">
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M0,528c0-103.656,0-207.344,0-311c33.997,0,68.003,0,102,0
-					C189.991,145.007,278.009,72.993,366,1c0.333,0,0.667,0,1,0c-0.333,247.642-0.667,495.358-1,743c-1.667-1.667-3.333-3.333-5-5
-					c-86.325-70.326-172.675-140.674-259-211C68.003,528,33.997,528,0,528z"></path>
-				<path id="vol01" fill-rule="evenodd" clip-rule="evenodd" d="M558,91c20.428,10.009,46.39,52.828,59,73
-					c41.045,65.657,75.843,176.05,51,285c-13.493,59.175-35.375,105.005-65,147c-12.844,18.208-26.298,38.749-44,52
-					c-18.665-18.332-37.335-36.668-56-55c0-0.333,0-0.667,0-1c0-0.667,0-1.333,0-2c74.994-57.096,114.785-200.768,76-323
-					c-10.33-32.555-28.22-63.041-47-88c-9.666-10.666-19.334-21.334-29-32c4-4.666,8-9.334,12-14
-					C529.332,119.001,543.668,104.999,558,91z"></path>
-				<path id="vol02" fill-rule="evenodd" clip-rule="evenodd" d="M466,182c16.064,7.849,28.218,31.283,38,46
-					c66.757,100.436,51.489,262.083-37,328c-11.62-8.881-56.353-51.654-46-60c7.666-10.333,15.334-20.667,23-31
-					c13.317-21.886,30.16-62.155,25-99c-5.169-36.906-9.586-65.371-25-91c-5.673-9.432-26.699-29.288-29-37
-					c3.333-3.667,6.667-7.333,10-11C438.665,212.001,452.334,196.999,466,182z"></path>
-			</svg>
-		</a>
+		<div class="holder_btn">
 
-		<div class="login_box_minimized">hello human</div>
+			<a class="fullscreen">
+				<svg version="1.1" baseProfile="basic"
+					 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="26px" height="26px"
+					 viewBox="0 0 60 60" xml:space="preserve">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M27.862,1C16.218,1.72,6.732,4.137,1.013,17.476
+						c3.28-3,6.332-5.848,10.984-7.323c-0.095,3.115-0.752,17.862,14.036,18.917c5.667,0.403,14.764-3.397,14.645-17.697
+						c3.904,2.075,8.543,5.126,10.373,9.154c0,0.61,0.381,0.61,0,0.61c-12.609,17.142-39.854,13.369-50.038-0.61
+						c5.633,25.758,49.149,23.906,57.362,0C51.15,11.185,41.91,1.79,27.862,1z M30.915,13.205c-0.223,2.956-1.396,4.411-4.882,4.271
+						c-2.921,0.048-5.264-7.699,0-9.764c1.22,0,0.61,0,1.83,0c0.371,0.251,2.564,1.472,3.052,4.882V13.205z"></path>
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M27.85,3C16.206,3.72,6.719,6.137,1,19.476
+						c3.28-3,6.332-5.848,10.984-7.323C11.89,15.268,11.232,30.016,26.02,31.07c5.666,0.404,14.763-3.396,14.646-17.697
+						c3.902,2.075,8.543,5.126,10.373,9.154c0,0.61,0.381,0.61,0,0.61C38.428,40.279,11.184,36.506,1,22.527
+						c5.633,25.758,49.15,23.906,57.361,0C51.137,13.185,41.898,3.79,27.85,3z M30.902,15.205c-0.223,2.956-1.396,4.411-4.882,4.271
+						c-2.921,0.048-5.264-7.699,0-9.764c1.22,0,0.61,0,1.83,0c0.371,0.251,2.564,1.472,3.052,4.882V15.205z"></path>
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M29.488,2C17.844,2.72,8.358,5.137,2.639,18.476
+						c3.28-3,6.332-5.848,10.984-7.323c-0.095,3.115-0.752,17.862,14.036,18.917c5.666,0.403,14.763-3.397,14.646-17.697
+						c3.902,2.075,8.543,5.126,10.373,9.154c0,0.61,0.381,0.61,0,0.61c-12.611,17.142-39.855,13.369-50.039-0.61
+						c5.633,25.758,49.15,23.906,57.361,0C52.775,12.185,43.537,2.79,29.488,2z M32.541,14.205c-0.223,2.956-1.396,4.411-4.882,4.271
+						c-2.921,0.048-5.264-7.699,0-9.764c1.22,0,0.61,0,1.83,0c0.371,0.251,2.564,1.472,3.053,4.882V14.205z"></path>
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M27.85,2C16.206,2.72,6.719,5.137,1,18.476
+						c3.28-3,6.332-5.848,10.984-7.323c-0.095,3.115-0.752,17.862,14.036,18.917c5.666,0.403,14.763-3.397,14.646-17.697
+						c3.902,2.075,8.543,5.126,10.373,9.154c0,0.61,0.381,0.61,0,0.61C38.428,39.279,11.184,35.506,1,21.527
+						c5.633,25.758,49.15,23.906,57.361,0C51.137,12.185,41.898,2.79,27.85,2z M30.902,14.205c-0.223,2.956-1.396,4.411-4.882,4.271
+						c-2.921,0.048-5.264-7.699,0-9.764c1.22,0,0.61,0,1.83,0c0.371,0.251,2.564,1.472,3.052,4.882V14.205z"></path>
+				</svg>
+			</a>
 
+			<a class="volume">
+				<svg version="1.1" baseProfile="basic"
+					 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="22px"
+					 viewBox="0 0 675 745" xml:space="preserve">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M0,528c0-103.656,0-207.344,0-311c33.997,0,68.003,0,102,0
+						C189.991,145.007,278.009,72.993,366,1c0.333,0,0.667,0,1,0c-0.333,247.642-0.667,495.358-1,743c-1.667-1.667-3.333-3.333-5-5
+						c-86.325-70.326-172.675-140.674-259-211C68.003,528,33.997,528,0,528z"></path>
+					<path id="vol01" fill-rule="evenodd" clip-rule="evenodd" d="M558,91c20.428,10.009,46.39,52.828,59,73
+						c41.045,65.657,75.843,176.05,51,285c-13.493,59.175-35.375,105.005-65,147c-12.844,18.208-26.298,38.749-44,52
+						c-18.665-18.332-37.335-36.668-56-55c0-0.333,0-0.667,0-1c0-0.667,0-1.333,0-2c74.994-57.096,114.785-200.768,76-323
+						c-10.33-32.555-28.22-63.041-47-88c-9.666-10.666-19.334-21.334-29-32c4-4.666,8-9.334,12-14
+						C529.332,119.001,543.668,104.999,558,91z"></path>
+					<path id="vol02" fill-rule="evenodd" clip-rule="evenodd" d="M466,182c16.064,7.849,28.218,31.283,38,46
+						c66.757,100.436,51.489,262.083-37,328c-11.62-8.881-56.353-51.654-46-60c7.666-10.333,15.334-20.667,23-31
+						c13.317-21.886,30.16-62.155,25-99c-5.169-36.906-9.586-65.371-25-91c-5.673-9.432-26.699-29.288-29-37
+						c3.333-3.667,6.667-7.333,10-11C438.665,212.001,452.334,196.999,466,182z"></path>
+				</svg>
+			</a>
+
+			<a class="pause">
+				<svg id="svg_pause" version="1.1" baseProfile="basic"
+					 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22px" height="22px"
+					 viewBox="0 0 60 60" xml:space="preserve">
+					<rect x="13" y="7" width="12" height="45"></rect>
+					<rect x="34" y="7" width="12" height="45"></rect>
+				</svg>
+
+				<svg id="svg_play" version="1.1" baseProfile="basic"
+					 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22px" height="22px"
+					 viewBox="0 0 60 60" xml:space="preserve">
+					<polyline points="45.983,29.543 12,52.086 12,7 "/>
+				</svg>
+
+			</a>
+
+		</div>
+
+		<div class="holder_minimize">
+			<div class="box_minimized" data-type="3">graph</div>
+			<div class="box_minimized" data-type="0">news</div>
+			<div class="box_minimized" data-type="1">hello human</div>
+		</div>
+
+		<div style="clear:both; width:100%;"></div>
 	</div>
 
 </body>

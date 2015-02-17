@@ -42,6 +42,7 @@ func init() {
 
 	page_callback = map[string]cb_fn{
 		``:            Index,
+		`index_ng`:    IndexNg,
 		`feed`:        Feed,
 		`crowdfund`:   Crowdfund,
 		`create`:      Create,
@@ -53,6 +54,7 @@ func init() {
 		`j_whoami`:    ajax.Whoami,
 		`j_feed`:      ajax.Feed,
 		`j_crowdfund`: ajax.CrowdfundSave,
+		`test_menu`:   TestMenu,
 	}
 
 	conf := config.GetConfig()
