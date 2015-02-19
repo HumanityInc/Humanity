@@ -12,7 +12,7 @@ type ()
 func Crowdfunds(offset, limit uint) (list []model.Crowdfund) {
 
 	rows, err := db.Query(`SELECT "id", "owner_id", "ctime", "utime", "goal", "collected", "name", "cover" `+
-		`FROM "public"."crowdfunds" ORDER BY "id" LIMIT $1 OFFSET $2`, limit, offset)
+		`FROM "public"."crowdfunds" ORDER BY "id" DESC LIMIT $1 OFFSET $2`, limit, offset)
 
 	if err != nil {
 		logger.Println(err)

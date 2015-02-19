@@ -20,7 +20,7 @@ func Feed(c *model.Client) {
 	limit := c.FormValueUint("limit")
 
 	if limit == 0 {
-		limit = 30
+		limit = 60
 	}
 
 	if limit > 100 {

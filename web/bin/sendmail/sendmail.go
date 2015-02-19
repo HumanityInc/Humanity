@@ -31,7 +31,13 @@ type (
 
 	MailAlert struct{}
 
+	MailReset struct {
+		Link string
+	}
+
 	MailGreetings struct{}
+
+	MailCongratulations struct{}
 
 	MandrillReturn struct {
 		Email        string `json:"email"`
@@ -63,6 +69,24 @@ func init() {
 }
 
 //
+
+func (m *MailReset) Send(email string) {
+
+	err := send("reset.txt", email, "Reset password", m)
+
+	if err != nil {
+		logger.Println(err)
+	}
+}
+
+func (m *MailCongratulations) Send(email string) {
+
+	err := send("congratulations.txt", email, "Congratulations!", m)
+
+	if err != nil {
+		logger.Println(err)
+	}
+}
 
 func (m *MailAlert) Send(email string) {
 

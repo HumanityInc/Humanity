@@ -3,6 +3,7 @@ package db
 import (
 	"../model"
 	"../sendmail"
+	"../utils"
 	"database/sql"
 	"errors"
 	"fmt"
@@ -16,6 +17,8 @@ var (
 	ErrUserAlreadyExists             = errors.New(`User already exists`)
 	ErrUserNotFound                  = errors.New(`User not found`)
 	ErrInvalidEmailAddressOrPassword = errors.New(`Invalid email address or password`)
+
+	Invitee = map[string]int{}
 )
 
 func hashPassword(password string) string {
@@ -25,8 +28,91 @@ func hashPassword(password string) string {
 		logger.Println(err)
 		return ""
 	}
-
 	return string(hashedPassword)
+}
+
+//
+
+func UpdatePassword(profId uint64, code, password string) (ok bool) {
+
+	var id uint64
+
+	err := db.QueryRow(`SELECT "prof_id" FROM "public"."reset_passwd" WHERE "prof_id"=$1 AND "code"=$2 LIMIT 1`,
+		profId, code).Scan(&id)
+
+	if err != nil {
+		logger.Println(err)
+		return
+	}
+
+	if id != 0 {
+
+		hash := hashPassword(password)
+
+		_, err := db.Exec(`UPDATE "public"."profiles" SET "password"=$1 WHERE "id"=$2`,
+			hash, id)
+
+		if err != nil {
+			logger.Println(err)
+			return
+		}
+
+		_, err = db.Exec(`DELETE FROM "public"."reset_passwd" WHERE "prof_id"=$1`, id)
+
+		if err != nil {
+			logger.Println(err)
+			return
+		}
+
+		ok = true
+	}
+	return
+}
+
+func SendResetLink(email string) (ok bool) {
+
+	if user, err := GetUserByEmail(email, "", false); err == nil {
+
+		code := utils.RandomString(48)
+
+		_, err = db.Exec(`INSERT INTO "public"."reset_passwd" ("prof_id", "code") VALUES ($1, $2)`,
+			user.Id, code)
+
+		if err != nil {
+
+			result, err := db.Exec(`UPDATE "public"."reset_passwd" SET "code"=$1 WHERE "prof_id"=$2`,
+				code, user.Id)
+
+			if err != nil {
+				logger.Println(err)
+				return
+			}
+
+			ar, err := result.RowsAffected()
+
+			if err != nil {
+				logger.Println(err)
+				return
+			}
+
+			if err == nil && ar != 0 {
+
+				m := sendmail.MailReset{Link: fmt.Sprintf("https://ishuman.me/reset/%d/%s", user.Id, code)}
+				go m.Send(user.Email)
+
+				ok = true
+			}
+			return
+
+		} else {
+
+			m := sendmail.MailReset{Link: fmt.Sprintf("https://ishuman.me/reset/%d/%s", user.Id, code)}
+			go m.Send(user.Email)
+
+			ok = true
+		}
+	}
+	return
 }
 
 //
@@ -51,7 +137,7 @@ func RegisterUser(email, firstName, lastName, password, ip string, useEmail bool
 		}
 
 		m := sendmail.MailSuccess{}
-		m.Send(email)
+		go m.Send(email)
 
 	} else {
 
@@ -94,7 +180,7 @@ func RegisterSocialUser(socialProfile model.SocialProfile) (user_ptr *model.User
 		user_ptr, err = GetUserById(userId)
 
 		m := sendmail.MailSuccess{}
-		m.Send(socialProfile.Email)
+		go m.Send(socialProfile.Email)
 
 	} else {
 
@@ -180,7 +266,7 @@ func SetUserEmail(id int64, email string) (user_ptr *model.User, err error) {
 	if err == nil && ar != 0 {
 
 		m := sendmail.MailSuccess{}
-		m.Send(email)
+		go m.Send(email)
 	}
 
 	user_ptr, err = GetUserById(id)

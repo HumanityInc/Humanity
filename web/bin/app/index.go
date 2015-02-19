@@ -4,6 +4,7 @@ import (
 	"../db"
 	"../model"
 	_ "../session"
+	"../utils"
 	// "fmt"
 	"html/template"
 	"io/ioutil"
@@ -21,9 +22,57 @@ func Index(c *model.Client) {
 		data: struct {
 			User      *model.User
 			Changelog template.HTML
+			ProfId    uint64
+			Code      string
 		}{
 			User:      c.User,
 			Changelog: template.HTML(changelog_byte),
+		},
+	}
+	page.Render()
+}
+
+func ResetPasswd(c *model.Client) {
+
+	if len(c.Path) == 3 {
+
+		changelog_byte, _ := ioutil.ReadFile("../htdocs/opensource/changelog.txt")
+
+		prof_id := utils.ToUint64(c.Path[1])
+		code := c.Path[2]
+
+		page := Render{
+			res:  c.Res,
+			tmpl: "index/index.html",
+			data: struct {
+				User      *model.User
+				ProfId    uint64
+				Code      string
+				Changelog template.HTML
+			}{
+				User:      c.User,
+				ProfId:    prof_id,
+				Code:      code,
+				Changelog: template.HTML(changelog_byte),
+			},
+		}
+		page.Render()
+
+		return
+	}
+
+	c.Redirect("/")
+}
+
+func FeedNg(c *model.Client) {
+
+	page := Render{
+		res:  c.Res,
+		tmpl: "feed_ng/index.html",
+		data: struct {
+			User *model.User
+		}{
+			User: c.User,
 		},
 	}
 	page.Render()

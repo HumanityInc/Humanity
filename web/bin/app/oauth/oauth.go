@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -138,7 +139,12 @@ func AuthTwitterCallback(c *model.Client) {
 			if user.Email == "" {
 				c.Redirect("/#!email")
 			} else {
-				c.Redirect("/#!login")
+
+				if db.Invitee[strings.ToLower(user.Email)] == 1 {
+					c.Redirect("/#!congratulations")
+				} else {
+					c.Redirect("/#!login")
+				}
 			}
 
 		} else {
@@ -256,7 +262,12 @@ func AuthGooglePlus(c *model.Client) {
 
 					ukey := session.SetUserCookie(c.Res)
 					session.SetUser(*user, ukey)
-					c.Redirect("/#!login")
+
+					if db.Invitee[strings.ToLower(googleProfile.Email)] == 1 {
+						c.Redirect("/#!congratulations")
+					} else {
+						c.Redirect("/#!login")
+					}
 
 				} else {
 
@@ -415,7 +426,12 @@ func AuthFacebook(c *model.Client) {
 
 					ukey := session.SetUserCookie(c.Res)
 					session.SetUser(*user, ukey)
-					c.Redirect("/#!login")
+
+					if db.Invitee[strings.ToLower(facebookProfile.Email)] == 1 {
+						c.Redirect("/#!congratulations")
+					} else {
+						c.Redirect("/#!login")
+					}
 
 				} else {
 

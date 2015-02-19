@@ -55,6 +55,10 @@ func init() {
 		`j_feed`:      ajax.Feed,
 		`j_crowdfund`: ajax.CrowdfundSave,
 		`test_menu`:   TestMenu,
+		`feed_ng`:     FeedNg,
+		`j_reset`:     ajax.ResetPasswd,
+		`j_resetlink`: ajax.SendResetLink,
+		`reset`:       ResetPasswd,
 	}
 
 	conf := config.GetConfig()

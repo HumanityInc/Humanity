@@ -85,7 +85,7 @@ $(document).load(function() {
 $(function() {
 	'use strict';
 
-	var ut = 1424176132;
+	var ut = 1424227463 + 24*60*60 + 11*60*60 + 12*60 + 59*60 - 6*60*60 - 54*60;
 
 	function setCounter() {
 
@@ -93,6 +93,11 @@ $(function() {
 
 		if (ut > ct) {
 			var d = ut - ct;
+			h = Math.floor(d / 3600);
+			m = Math.floor((d - (h * 3600)) / 60);
+			s = d - (h * 3600) - (m * 60);
+		} else {
+			var d = ct - ut;
 			h = Math.floor(d / 3600);
 			m = Math.floor((d - (h * 3600)) / 60);
 			s = d - (h * 3600) - (m * 60);
@@ -138,15 +143,19 @@ $(function() {
 	}
 
 	var $login_box_minimized = $('.box_minimized'),
+		$congratulations = $("#congratulations"),
 		$signup_create = $('#signup_create'),
 		$signup_main = $('#signup_main'),
 		$login_box = $('.login_box'),
 		$success2 = $('#success2'),
+		$password = $("#password"),
 		$success = $('#success'),
 		$signin = $('#signin'),
 		$email = $('#email'),
+		$reset = $('#reset'),
 		$main = $('#main'),
-		$all = $signin.add($signup_main).add($signup_create).add($main).add($success).add($email).add($success2);
+		$all = $signin.add($signup_main).add($signup_create).add($main).add($success).add($email)
+		.add($success2).add($congratulations).add($reset).add($password);
 
 	var $win = $(window);
 	$win.resize(function() {
@@ -189,11 +198,18 @@ $(function() {
 		} else {
 
 			$(this).closest('.graph').hide();
-			$(this).closest('.login_box').find('.max').removeClass('ga');
+			var cur_box = $(this).closest('.login_box');
+			cur_box.find('.max').removeClass('ga');
 
 			$login_box_minimized.filter('[data-type="'+type+'"]').show();
+
+			if (cur_box.find('.title').css('display') == 'none') {
+
+				$login_box.not(cur_box).addClass('center');
+			}
 		}
 
+		$('#news').perfectScrollbar("update");
 		// $login_box.hide();
 		// $login_box_minimized.show()
 	});
@@ -208,17 +224,36 @@ $(function() {
 
 		var type = $(this).data('type');
 
-		// if (type != "3") {
+		if (type != "3") {
 
 			var cur_box = $('.minimize[data-type="'+type+'"]').closest('.login_box').show();
 
+			cur_box.find('.title').show().next().show();
+
 			$login_box.not(cur_box).removeClass('center');
 
-			$(this).hide();
+		} else {
 
-		// } else {
+			var cur_box = $('.minimize[data-type="'+type+'"]').closest('.login_box');
+			cur_box.find('.max').addClass('ga');
+			cur_box.find('.graph').show();
 
-		// }
+			if (cur_box.css('display') == 'none') {
+
+				cur_box.find('.title').hide().next().hide();
+				cur_box.show();
+
+				$login_box.not(cur_box).removeClass('center');
+
+			} else if (cur_box.find('.title').css('display') == 'none') {
+
+				$login_box.not(cur_box).removeClass('center');
+			}
+		}
+
+		$('#news').perfectScrollbar("update");
+
+		$(this).hide();
 	});
 
 	$('input').focus(function(){
@@ -361,7 +396,12 @@ $(function() {
 		.done(function(data){
 
 			if (data.res == 0) {
-				document.location.href = "#!login"
+
+				if (data.invitee == "1") {
+					document.location.href = "#!congratulations"
+				} else {
+					document.location.href = "#!login"
+				}
 			} else {
 				switch(data.error) {
 				case "INVALID_EMAIL":
@@ -439,6 +479,76 @@ $(function() {
 
 	});
 
+	$("#new_passwd").click(function(){
+
+		var $parent = $(this).parent().parent();
+
+		$parent.find('.wrong').hide()
+
+		var password = $('input[name="password"]', $parent),
+			password2 = $('input[name="password2"]', $parent);
+		
+		if (password.val() == "") {
+			password.focus().next().show();
+			return;
+		}
+		if (password2.val() == "") {
+			password2.focus().next().show();
+			return;
+		}
+
+		$.ajax({
+			url: "/j_reset",
+			type: "POST",
+			dataType: "JSON",
+			data: {
+				code: resetCode,
+				prof_id: resetProfId,
+				password: password.val(),
+				password2: password2.val()
+			}
+		})
+		.done(function(data){
+
+			if (data.res == 0) {
+				document.location.href = "#!signin";
+			} else {
+				password2.focus().next().show();
+			}
+		});
+	});
+
+	$("#send_passwd").click(function() {
+
+		var $parent = $(this).parent().parent();
+
+		$parent.find('.wrong').hide()
+
+		var email = $('input[name="email"]', $parent);
+		
+		if (email.val() == "") {
+			email.focus().next().show();
+			return;
+		}
+
+		$.ajax({
+			url: "/j_resetlink",
+			type: "POST",
+			dataType: "JSON",
+			data: {
+				email: email.val()
+			}
+		})
+		.done(function(data){
+
+			if (data.res == 0) {
+				document.location.href = "#";
+			} else {
+				email.focus().next().show();
+			}
+		});
+	});
+
 	var Router = Backbone.Router.extend({
 		routes: {
 			"": "main",
@@ -449,16 +559,43 @@ $(function() {
 			"!signin/create": "create_signup",
 			"!main/signup": "main_signup",
 			"!success": "success",
-			"!login": "login"
+			"!login": "login",
+			"!reset": "reset",
+			"!password": "password",
+			"!congratulations": "congratulations"
 		},
 		initialize: function() {
 			var stat = Backbone.history.start({pushState: false, root: '/'});
+
+			if (resetProfId && resetCode) {
+
+				document.location.href = "#!reset";
+
+			}
 		}, 
+		password: function() {
+
+			$all.not($password).hide();
+			$password.show();
+		},
 		main: function() {
+
 			$all.not($main).hide();
 			$main.show();
 
 			ga('send', 'pageview', '/#');
+		},
+		reset: function() {
+
+			$all.not($reset).hide();
+			$reset.show();			
+		},
+		congratulations: function() {
+
+			$all.not($congratulations).hide();
+			$congratulations.show();
+
+			ga('send', 'pageview', '/#!congratulations');
 		},
 		signin: function() {
 			$all.not($signin).hide();

@@ -17,7 +17,7 @@
 	<meta property="og:image" content="https://ishuman.me/opensource/pics/emblem.png">
 	<meta property="og:description" content="Humanity - The BILLION Dollar GLOBAL Giant YOU Own!">
 
-	<link type="text/css" rel="stylesheet" href="/css/index.css?v=26">
+	<link type="text/css" rel="stylesheet" href="/css/index.css?v=29">
 	<link rel="shortcut icon" href="/favicon_2.ico" type="image/x-icon"/>
 
 
@@ -30,11 +30,13 @@
 	<script src="/js/backbone.min.js"></script>
 	<script src="/js/moment.js"></script>
 
-	<script src="/js/index.js?v=26"></script>
+	<script src="/js/index.js?v=29"></script>
 
-
-	<!-- <link href="//vjs.zencdn.net/4.11/video-js.css" rel="stylesheet">
-	<script src="//vjs.zencdn.net/4.11/video.js"></script> -->
+	{{if .ProfId}}
+		<script type="text/javascript">
+			var resetProfId = {{.ProfId}}, resetCode = {{.Code}};
+		</script>
+	{{end}}
 
 	<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-49097764-1','ishuman.me');ga('send','pageview');</script>
 
@@ -87,6 +89,7 @@
 		top: 0;
 		right: 0;
 		cursor: pointer;
+		display: none;
 	}
 	i.minimize span {
 		position: absolute;
@@ -116,6 +119,21 @@
 	.small i.minimize:hover span {
 		background-color: rgba(255, 255, 255, .9);
 	}
+
+	.login_box:hover .title i.minimize {
+		display: block;
+	}
+
+	.login_box.left div.max.graph {
+		text-align: left;
+		font-size: 13px;
+		padding: 5px; 
+	}
+	.login_box.left div.max.graph > span { display: none; }
+	.login_box.left div.max.graph:hover > span { display: inline-block; }
+
+	.max.graph i.minimize { display: none; }
+	.max.graph:hover i.minimize { display: block; }
 
 	.title span { position: relative; }
 	
@@ -171,6 +189,18 @@
 	.box_minimized:hover {
 		background-color: rgba(0, 156, 255, .8);
 	}
+	.box_minimized.graph {
+		background-image: url(/img/graph.png);
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: 36px 41px;
+		width: 50px;
+		box-sizing: border-box;
+	}
+	.box_minimized.small.graph {
+		width: 34px;
+		background-size: 66%;
+	}
 
 	.login_box .signup,
 	.login_box.small .signup {
@@ -203,6 +233,10 @@
 		height: 480px;
 		margin-top: -240px;
 		margin-left: -427px;
+	}
+
+	#news b {
+		font-weight: 500;
 	}
 
 	</style>
@@ -341,6 +375,36 @@
 
 			</div>
 
+			<div id="password" class="max" style="display: none;">
+				
+				<form autocomplete="off">
+				<input name="email" type="text" class="login_input" value="" placeholder="my email">
+				<div class="wrong">oops</div>
+				</form>
+
+				<div class="login_control">
+					<a href="#">back</a>
+					<a id="send_passwd" class="back" href="javascript:">send</a>
+				</div>
+
+			</div>
+
+			<div id="reset" class="max" style="display: none;">
+				
+				<form autocomplete="off">
+				<input name="password" type="password" class="login_input" value="" placeholder="my password">
+				<div class="wrong">oops</div>
+				<input name="password2" type="password" class="login_input" value="" placeholder="confirm password">
+				<div class="wrong">oops</div>
+				</form>
+
+				<div class="login_control">
+					<a href="#">back</a>
+					<a id="new_passwd" class="back" href="javascript:">save</a>
+				</div>
+
+			</div>
+
 			<div id="signup_main" class="max" style="display: none;">
 
 				<form autocomplete="off">
@@ -373,13 +437,21 @@
 					<a id="save" class="back" href="javascript:">save</a>
 				</div>
 			</div>
+			
+
+			<div id="congratulations" class="max" style="display: none;">
+				<div class="success" style="margin-top: 95px; font-size: 32px;">
+					CONGRATULATIONS!<br>
+					you are in the top 101!<br>
+					stand by for your activation email!
+				</div>
+			</div>
 
 			<div id="success" class="max" style="display: none;">
-				<div class="success">
-					<!-- “great success!”<br>
-					check your email! -->
-					Are you in Top 100?<br>
-					Sign in late Tuesday!
+				<div class="success" style="margin-top: 95px; font-size: 32px;">
+					CONGRATULATIONS!<br>
+					you are in group 2 &amp; 3!<br>
+					stand by for your activation email!
 				</div>
 			</div>
 
@@ -411,8 +483,8 @@
 			<div class="title">
 				<i class="td"></i>
 				<i class="white"></i>
-				<!-- <span id="rtime">00:00:00</span> -->
-				<span>news</span>
+				<span id="rtime">00:00:00</span>
+				<!-- <span>news</span> -->
 				<i class="minimize" data-type="0"><span></span></i>
 			</div>
 
@@ -423,6 +495,7 @@
 			</div>
 
 			<div class="max graph">
+				<span>30 days</span>
 				<i class="minimize" data-type="3"><span></span></i>
 			</div>
 		</div>
@@ -513,7 +586,7 @@
 		</div>
 
 		<div class="holder_minimize">
-			<div class="box_minimized" data-type="3">graph</div>
+			<div class="box_minimized graph" data-type="3"></div>
 			<div class="box_minimized" data-type="0">news</div>
 			<div class="box_minimized" data-type="1">hello human</div>
 		</div>

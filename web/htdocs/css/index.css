@@ -1,4 +1,4 @@
-@import url(//fonts.googleapis.com/css?family=Roboto:100,300,400);
+@import url(//fonts.googleapis.com/css?family=Roboto:100,300,400,500);
 
 html{margin:0;padding:0;border:0}
 body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,code,del,dfn,em,img,q,dl,dt,dd,ol,
@@ -41,7 +41,7 @@ body {
 }
 
 .menu_btn {
-	position: absolute;
+	position: fixed;
 	left: 50%;
 	top: 0px;
 	margin-left: -23px;
@@ -131,6 +131,49 @@ svg path {
 	display: block;
 }
 
+.holder_btn {
+	position: absolute;
+	width: 300px;
+	height: 45px;
+	left: 50%;
+	top: 0;
+	margin-left: -150px;
+	display: none;
+}
+
+.fullscreen {
+	width: 26px;
+	height: 26px;
+	position: absolute;
+	right: 50%;
+	margin-right: 35px;
+	cursor: pointer;
+	display: block;
+	opacity: .7;
+	z-index: 12;
+	top: 12px;
+	opacity: .5;
+}
+
+.pause {
+	position: absolute;
+	left: 50%;
+	margin-left: 71px;
+	top: 10px;
+	cursor: pointer;
+	opacity: .7;
+}
+
+.pause #svg_play { display: none; }
+
+.pause.active #svg_play { display: block; }
+.pause.active #svg_pause { display: none; }
+
+.menu_btn:hover + .holder_btn,
+.holder_btn:hover {
+	display: block;
+}
+
 .login_box {
 	display: inline-block;
 	color: rgba(255, 255, 255, .9);
@@ -155,6 +198,75 @@ svg path {
 	margin-left: -286px;
 	margin-top: -251px;
 }
+
+.login_box.right {
+	margin-left: -67px;
+}
+.login_box.right.small {
+	margin-left: -46px;
+}
+.login_box.left {
+	width: 579px;
+	margin-left: -801px;
+}
+.login_box.left.small {
+	width: 377px;
+	margin-left: -526px;
+}
+
+.login_box.left div.max {
+	height: 608px;
+	box-sizing: border-box;
+	/*padding: 30px;*/
+	text-align: center;
+	font-size: 30px;
+	/*overflow-y: auto;*/
+	overflow: hidden;
+	text-shadow: 0 0 3px rgba(255, 255, 255, .7);
+	position: relative;
+}
+.login_box.left.small div.max {
+	height: 400px;
+	padding: 20px;
+	font-size: 22px;
+}
+
+.login_box.left div.max.ga {
+	height: 473px;
+}
+.login_box.left.small div.max.ga {
+	height: 311px;
+}
+
+.login_box.left div.max.graph {
+	height: 135px;
+	background-image: url(/img/analytics.png?v=1);
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	background-size: contain;
+	opacity: .8;
+}
+.login_box.left.small div.max.graph {
+	height: 89px;
+}
+
+/* = */
+
+.login_box.right.center {
+	margin-left: -434px;
+}
+.login_box.right.small.center {
+	margin-left: -286px;
+}
+
+.login_box.left.center {
+	margin-left: -289px;
+}
+.login_box.left.small.center {
+	margin-left: -188px;
+}
+
+/* = */
 
 .login_box .wrong {
 	font-size: 34px;
@@ -222,7 +334,7 @@ svg path {
 	margin: 20px auto 0;
 	width: 447px;
 	height: 57px;
-	background-color: rgba(255, 255, 255, .25);
+	background-color: rgba(255, 255, 255, .15);
 }
 .login_box.small .login_control {
 	margin: 13px auto 0;
@@ -260,14 +372,14 @@ svg path {
 }
 
 .login_box .success {
-	width: 467px;
+	width: 747px;
 	margin: 170px auto 0;
 	font-size: 60px;
 	text-align: center;
 }
 .login_box.small .success {
-	width: 295px;
-	margin-top: 122px;
+	width: 485px;
+	margin-top: 102px;
 	font-size: 39px;
 }
 
@@ -489,82 +601,113 @@ svg path {
 .login_box.f10 .td, .login_box.f10 .max { background-color: rgba(  0,   0,   0, .6); }
 
 
-.login_box.f0  ~ .login_box_minimized { background-color: rgba(  0, 156, 255, .6); }
-.login_box.f1  ~ .login_box_minimized { background-color: rgba(  6,   0, 255, .6); }
-.login_box.f2  ~ .login_box_minimized { background-color: rgba(121,  43, 244, .6); }
-.login_box.f3  ~ .login_box_minimized { background-color: rgba(220,   0, 220, .6); }
-.login_box.f4  ~ .login_box_minimized { background-color: rgba(255,   0,   0, .6); }
-.login_box.f5  ~ .login_box_minimized { background-color: rgba(255, 138,   0, .6); }
-.login_box.f6  ~ .login_box_minimized { background-color: rgba(255, 234,   0, .6); }
-.login_box.f7  ~ .login_box_minimized { background-color: rgba( 30, 220,   0, .6); }
-.login_box.f8  ~ .login_box_minimized { background-color: rgba(  0, 234, 255, .6); }
-.login_box.f9  ~ .login_box_minimized { background-color: rgba(255, 255, 255, .6); color: rgba(  0, 156, 255, .8); text-shadow: 0 0 3px rgba(0, 156, 255, .9); }
-.login_box.f10 ~ .login_box_minimized { background-color: rgba(  0,   0,   0, .6); }
+.login_box.f0  ~ .holder_minimize .box_minimized { background-color: rgba(  0, 156, 255, .6); }
+.login_box.f1  ~ .holder_minimize .box_minimized { background-color: rgba(  6,   0, 255, .6); }
+.login_box.f2  ~ .holder_minimize .box_minimized { background-color: rgba(121,  43, 244, .6); }
+.login_box.f3  ~ .holder_minimize .box_minimized { background-color: rgba(220,   0, 220, .6); }
+.login_box.f4  ~ .holder_minimize .box_minimized { background-color: rgba(255,   0,   0, .6); }
+.login_box.f5  ~ .holder_minimize .box_minimized { background-color: rgba(255, 138,   0, .6); }
+.login_box.f6  ~ .holder_minimize .box_minimized { background-color: rgba(255, 234,   0, .6); }
+.login_box.f7  ~ .holder_minimize .box_minimized { background-color: rgba( 30, 220,   0, .6); }
+.login_box.f8  ~ .holder_minimize .box_minimized { background-color: rgba(  0, 234, 255, .6); }
+.login_box.f9  ~ .holder_minimize .box_minimized { background-color: rgba(255, 255, 255, .6); color: rgba(  0, 156, 255, .8); text-shadow: 0 0 3px rgba(0, 156, 255, .9); }
+.login_box.f10 ~ .holder_minimize .box_minimized { background-color: rgba(  0,   0,   0, .6); }
 
-.login_box.f0  ~ .login_box_minimized:hover { background-color: rgba(  0, 156, 255, .4); }
-.login_box.f1  ~ .login_box_minimized:hover { background-color: rgba(  6,   0, 255, .4); }
-.login_box.f2  ~ .login_box_minimized:hover { background-color: rgba(121,  43, 244, .4); }
-.login_box.f3  ~ .login_box_minimized:hover { background-color: rgba(220,   0, 220, .4); }
-.login_box.f4  ~ .login_box_minimized:hover { background-color: rgba(255,   0,   0, .4); }
-.login_box.f5  ~ .login_box_minimized:hover { background-color: rgba(255, 138,   0, .4); }
-.login_box.f6  ~ .login_box_minimized:hover { background-color: rgba(255, 234,   0, .4); }
-.login_box.f7  ~ .login_box_minimized:hover { background-color: rgba( 30, 220,   0, .4); }
-.login_box.f8  ~ .login_box_minimized:hover { background-color: rgba(  0, 234, 255, .4); }
-.login_box.f9  ~ .login_box_minimized:hover { background-color: rgba(255, 255, 255, .4); }
-.login_box.f10 ~ .login_box_minimized:hover { background-color: rgba(  0,   0,   0, .4); }
-
-
-.login_box.f0  ~ .menu_btn svg path, .login_box.f0  ~ .volume svg path { fill: rgba(  0, 156, 255, .6); }
-.login_box.f1  ~ .menu_btn svg path, .login_box.f1  ~ .volume svg path { fill: rgba(  6,   0, 255, .6); }
-.login_box.f2  ~ .menu_btn svg path, .login_box.f2  ~ .volume svg path { fill: rgba(121,  43, 244, .6); }
-.login_box.f3  ~ .menu_btn svg path, .login_box.f3  ~ .volume svg path { fill: rgba(220,   0, 220, .6); }
-.login_box.f4  ~ .menu_btn svg path, .login_box.f4  ~ .volume svg path { fill: rgba(255,   0,   0, .6); }
-.login_box.f5  ~ .menu_btn svg path, .login_box.f5  ~ .volume svg path { fill: rgba(255, 138,   0, .6); }
-.login_box.f6  ~ .menu_btn svg path, .login_box.f6  ~ .volume svg path { fill: rgba(255, 234,   0, .6); }
-.login_box.f7  ~ .menu_btn svg path, .login_box.f7  ~ .volume svg path { fill: rgba( 30, 220,   0, .6); }
-.login_box.f8  ~ .menu_btn svg path, .login_box.f8  ~ .volume svg path { fill: rgba(  0, 234, 255, .6); }
-.login_box.f9  ~ .menu_btn svg path, .login_box.f9  ~ .volume svg path { fill: rgba(255, 255, 255, .6); }
-.login_box.f10 ~ .menu_btn svg path, .login_box.f10 ~ .volume svg path { fill: rgba(  0,   0,   0, .6); }
+.login_box.f0  ~ .holder_minimize .box_minimized:hover { background-color: rgba(  0, 156, 255, .4); }
+.login_box.f1  ~ .holder_minimize .box_minimized:hover { background-color: rgba(  6,   0, 255, .4); }
+.login_box.f2  ~ .holder_minimize .box_minimized:hover { background-color: rgba(121,  43, 244, .4); }
+.login_box.f3  ~ .holder_minimize .box_minimized:hover { background-color: rgba(220,   0, 220, .4); }
+.login_box.f4  ~ .holder_minimize .box_minimized:hover { background-color: rgba(255,   0,   0, .4); }
+.login_box.f5  ~ .holder_minimize .box_minimized:hover { background-color: rgba(255, 138,   0, .4); }
+.login_box.f6  ~ .holder_minimize .box_minimized:hover { background-color: rgba(255, 234,   0, .4); }
+.login_box.f7  ~ .holder_minimize .box_minimized:hover { background-color: rgba( 30, 220,   0, .4); }
+.login_box.f8  ~ .holder_minimize .box_minimized:hover { background-color: rgba(  0, 234, 255, .4); }
+.login_box.f9  ~ .holder_minimize .box_minimized:hover { background-color: rgba(255, 255, 255, .4); }
+.login_box.f10 ~ .holder_minimize .box_minimized:hover { background-color: rgba(  0,   0,   0, .4); }
 
 
-.login_box.f0  .title i.minimize { background-color: rgba(  0, 156, 255, .3); }
-.login_box.f1  .title i.minimize { background-color: rgba(  6,   0, 255, .3); }
-.login_box.f2  .title i.minimize { background-color: rgba(121,  43, 244, .3); }
-.login_box.f3  .title i.minimize { background-color: rgba(220,   0, 220, .3); }
-.login_box.f4  .title i.minimize { background-color: rgba(255,   0,   0, .3); }
-.login_box.f5  .title i.minimize { background-color: rgba(255, 138,   0, .3); }
-.login_box.f6  .title i.minimize { background-color: rgba(255, 234,   0, .3); }
-.login_box.f7  .title i.minimize { background-color: rgba( 30, 220,   0, .3); }
-.login_box.f8  .title i.minimize { background-color: rgba(  0, 234, 255, .3); }
-.login_box.f9  .title i.minimize { background-color: rgba(255, 255, 255, .3); }
-.login_box.f9  .title i.minimize:hover { background-color: rgba(255, 255, 255, .6) !important; }
-.login_box.f9  .title i.minimize span { background-color: rgba(  0, 156, 255, .6); }
-.login_box.f9  .title i.minimize:hover span { background-color: rgba(  0, 156, 255, .6); }
-.login_box.f10 .title i.minimize { background-color: rgba(  0,   0,   0, .3); }
+.login_box.f0  ~ .menu_btn svg path, .login_box.f0  ~ .holder_btn svg path, .login_box.f0  ~ .holder_btn svg rect, .login_box.f0  ~ .holder_btn svg polyline { fill: rgba(  0, 156, 255, .6); }
+.login_box.f1  ~ .menu_btn svg path, .login_box.f1  ~ .holder_btn svg path, .login_box.f1  ~ .holder_btn svg rect, .login_box.f1  ~ .holder_btn svg polyline { fill: rgba(  6,   0, 255, .6); }
+.login_box.f2  ~ .menu_btn svg path, .login_box.f2  ~ .holder_btn svg path, .login_box.f2  ~ .holder_btn svg rect, .login_box.f2  ~ .holder_btn svg polyline { fill: rgba(121,  43, 244, .6); }
+.login_box.f3  ~ .menu_btn svg path, .login_box.f3  ~ .holder_btn svg path, .login_box.f3  ~ .holder_btn svg rect, .login_box.f3  ~ .holder_btn svg polyline { fill: rgba(220,   0, 220, .6); }
+.login_box.f4  ~ .menu_btn svg path, .login_box.f4  ~ .holder_btn svg path, .login_box.f4  ~ .holder_btn svg rect, .login_box.f4  ~ .holder_btn svg polyline { fill: rgba(255,   0,   0, .6); }
+.login_box.f5  ~ .menu_btn svg path, .login_box.f5  ~ .holder_btn svg path, .login_box.f5  ~ .holder_btn svg rect, .login_box.f5  ~ .holder_btn svg polyline { fill: rgba(255, 138,   0, .6); }
+.login_box.f6  ~ .menu_btn svg path, .login_box.f6  ~ .holder_btn svg path, .login_box.f6  ~ .holder_btn svg rect, .login_box.f6  ~ .holder_btn svg polyline { fill: rgba(255, 234,   0, .6); }
+.login_box.f7  ~ .menu_btn svg path, .login_box.f7  ~ .holder_btn svg path, .login_box.f7  ~ .holder_btn svg rect, .login_box.f7  ~ .holder_btn svg polyline { fill: rgba( 30, 220,   0, .6); }
+.login_box.f8  ~ .menu_btn svg path, .login_box.f8  ~ .holder_btn svg path, .login_box.f8  ~ .holder_btn svg rect, .login_box.f8  ~ .holder_btn svg polyline { fill: rgba(  0, 234, 255, .6); }
+.login_box.f9  ~ .menu_btn svg path, .login_box.f9  ~ .holder_btn svg path, .login_box.f9  ~ .holder_btn svg rect, .login_box.f9  ~ .holder_btn svg polyline { fill: rgba(255, 255, 255, .6); }
+.login_box.f10 ~ .menu_btn svg path, .login_box.f10 ~ .holder_btn svg path, .login_box.f10 ~ .holder_btn svg rect, .login_box.f10 ~ .holder_btn svg polyline { fill: rgba(  0,   0,   0, .6); }
 
 
-.login_box.s0  .title i.minimize { background-color: rgba(  0, 156, 255, .3); }
-.login_box.s1  .title i.minimize { background-color: rgba(  6,   0, 255, .3); }
-.login_box.s2  .title i.minimize { background-color: rgba(121,  43, 244, .3); }
-.login_box.s3  .title i.minimize { background-color: rgba(220,   0, 220, .3); }
-.login_box.s4  .title i.minimize { background-color: rgba(255,   0,   0, .3); }
-.login_box.s5  .title i.minimize { background-color: rgba(255, 138,   0, .3); }
-.login_box.s6  .title i.minimize { background-color: rgba(255, 234,   0, .3); }
-.login_box.s7  .title i.minimize { background-color: rgba( 30, 220,   0, .3); }
-.login_box.s8  .title i.minimize { background-color: rgba(  0, 234, 255, .3); }
-.login_box.s9  .title i.minimize { background-color: rgba(255, 255, 255, .3); }
-.login_box.s10 .title i.minimize { background-color: rgba(  0,   0,   0, .3); }
+.login_box.f0  i.minimize { background-color: rgba(  0, 156, 255, .3); }
+.login_box.f1  i.minimize { background-color: rgba(  6,   0, 255, .3); }
+.login_box.f2  i.minimize { background-color: rgba(121,  43, 244, .3); }
+.login_box.f3  i.minimize { background-color: rgba(220,   0, 220, .3); }
+.login_box.f4  i.minimize { background-color: rgba(255,   0,   0, .3); }
+.login_box.f5  i.minimize { background-color: rgba(255, 138,   0, .3); }
+.login_box.f6  i.minimize { background-color: rgba(255, 234,   0, .3); }
+.login_box.f7  i.minimize { background-color: rgba( 30, 220,   0, .3); }
+.login_box.f8  i.minimize { background-color: rgba(  0, 234, 255, .3); }
+.login_box.f9  i.minimize { background-color: rgba(255, 255, 255, .3); }
+.login_box.f9  i.minimize:hover { background-color: rgba(255, 255, 255, .6) !important; }
+.login_box.f9  i.minimize span { background-color: rgba(  0, 156, 255, .6); }
+.login_box.f9  i.minimize:hover span { background-color: rgba(  0, 156, 255, .6); }
+.login_box.f10 i.minimize { background-color: rgba(  0,   0,   0, .3); }
+
+
+.login_box.s0  i.minimize { background-color: rgba(  0, 156, 255, .3); }
+.login_box.s1  i.minimize { background-color: rgba(  6,   0, 255, .3); }
+.login_box.s2  i.minimize { background-color: rgba(121,  43, 244, .3); }
+.login_box.s3  i.minimize { background-color: rgba(220,   0, 220, .3); }
+.login_box.s4  i.minimize { background-color: rgba(255,   0,   0, .3); }
+.login_box.s5  i.minimize { background-color: rgba(255, 138,   0, .3); }
+.login_box.s6  i.minimize { background-color: rgba(255, 234,   0, .3); }
+.login_box.s7  i.minimize { background-color: rgba( 30, 220,   0, .3); }
+.login_box.s8  i.minimize { background-color: rgba(  0, 234, 255, .3); }
+.login_box.s9  i.minimize { background-color: rgba(255, 255, 255, .3); }
+.login_box.s10 i.minimize { background-color: rgba(  0,   0,   0, .3); }
+
+
+.login_box.s0  ~ .holder_minimize .box_minimized { background-color: rgba(  0, 156, 255, .6); }
+.login_box.s1  ~ .holder_minimize .box_minimized { background-color: rgba(  6,   0, 255, .6); }
+.login_box.s2  ~ .holder_minimize .box_minimized { background-color: rgba(121,  43, 244, .6); }
+.login_box.s3  ~ .holder_minimize .box_minimized { background-color: rgba(220,   0, 220, .6); }
+.login_box.s4  ~ .holder_minimize .box_minimized { background-color: rgba(255,   0,   0, .6); }
+.login_box.s5  ~ .holder_minimize .box_minimized { background-color: rgba(255, 138,   0, .6); }
+.login_box.s6  ~ .holder_minimize .box_minimized { background-color: rgba(255, 234,   0, .6); }
+.login_box.s7  ~ .holder_minimize .box_minimized { background-color: rgba( 30, 220,   0, .6); }
+.login_box.s8  ~ .holder_minimize .box_minimized { background-color: rgba(  0, 234, 255, .6); }
+.login_box.s9  ~ .holder_minimize .box_minimized { background-color: rgba(255, 255, 255, .6); color: rgba(  0, 156, 255, .8); text-shadow: 0 0 3px rgba(0, 156, 255, .9); }
+.login_box.s10 ~ .holder_minimize .box_minimized { background-color: rgba(  0,   0,   0, .6); }
+
 
 .login_box.f1  .title {
 	background-color: rgba(255, 255, 255, .10);
 }
 
 .login_box.f9  .title,
-.login_box.f9  .signup {
+.login_box.f9  .signup,
+.login_box.f9  .max {
 	color: rgba(  0, 156, 255, .9);
 	text-shadow: 0 0 3px rgba(0, 156, 255, .9);
 }
 
+.login_box.f0 div.max.graph,
+.login_box.f1 div.max.graph,
+.login_box.f2 div.max.graph,
+.login_box.f3 div.max.graph,
+.login_box.f4 div.max.graph,
+.login_box.f5 div.max.graph,
+.login_box.f6 div.max.graph,
+.login_box.f7 div.max.graph,
+.login_box.f8 div.max.graph,
+.login_box.f10 div.max.graph {
+	background-image: url(/img/analytics.png?v=1);
+}
+
+.login_box.f9 div.max.graph {
+	background-image: url(/img/analytics_blue.png?v=1);
+}
 
 .login_box.f0 .login_input::-webkit-input-placeholder  { color: rgba( 45, 169, 249, .4); }
 .login_box.f0 .login_input:-moz-placeholder            { color: rgba( 45, 169, 249, .4); }
@@ -603,40 +746,75 @@ svg path {
 .login_box.s9  .td, .login_box.s9  .max { background-color: rgba(255, 255, 255, .6); }
 .login_box.s10 .td, .login_box.s10 .max { background-color: rgba(  0,   0,   0, .6); }
 
-.login_box.s0  ~ .menu_btn svg path, .login_box.s0  ~ .volume svg path { fill: rgba(  0, 156, 255, .6); }
-.login_box.s1  ~ .menu_btn svg path, .login_box.s1  ~ .volume svg path { fill: rgba(  6,   0, 255, .6); }
-.login_box.s2  ~ .menu_btn svg path, .login_box.s2  ~ .volume svg path { fill: rgba(121,  43, 244, .6); }
-.login_box.s3  ~ .menu_btn svg path, .login_box.s3  ~ .volume svg path { fill: rgba(220,   0, 220, .6); }
-.login_box.s4  ~ .menu_btn svg path, .login_box.s4  ~ .volume svg path { fill: rgba(255,   0,   0, .6); }
-.login_box.s5  ~ .menu_btn svg path, .login_box.s5  ~ .volume svg path { fill: rgba(255, 138,   0, .6); }
-.login_box.s6  ~ .menu_btn svg path, .login_box.s6  ~ .volume svg path { fill: rgba(255, 234,   0, .6); }
-.login_box.s7  ~ .menu_btn svg path, .login_box.s7  ~ .volume svg path { fill: rgba( 30, 220,   0, .6); }
-.login_box.s8  ~ .menu_btn svg path, .login_box.s8  ~ .volume svg path { fill: rgba(  0, 234, 255, .6); }
-.login_box.s9  ~ .menu_btn svg path, .login_box.s9  ~ .volume svg path { fill: rgba(255, 255, 255, .6); }
-.login_box.s10 ~ .menu_btn svg path, .login_box.s10 ~ .volume svg path { fill: rgba(  0,   0,   0, .6); }
+.login_box.s0  ~ .menu_btn svg path { fill: rgba(  0, 156, 255, .6); }
+.login_box.s1  ~ .menu_btn svg path { fill: rgba(  6,   0, 255, .6); }
+.login_box.s2  ~ .menu_btn svg path { fill: rgba(121,  43, 244, .6); }
+.login_box.s3  ~ .menu_btn svg path { fill: rgba(220,   0, 220, .6); }
+.login_box.s4  ~ .menu_btn svg path { fill: rgba(255,   0,   0, .6); }
+.login_box.s5  ~ .menu_btn svg path { fill: rgba(255, 138,   0, .6); }
+.login_box.s6  ~ .menu_btn svg path { fill: rgba(255, 234,   0, .6); }
+.login_box.s7  ~ .menu_btn svg path { fill: rgba( 30, 220,   0, .6); }
+.login_box.s8  ~ .menu_btn svg path { fill: rgba(  0, 234, 255, .6); }
+.login_box.s9  ~ .menu_btn svg path { fill: rgba(255, 255, 255, .6); }
+.login_box.s10 ~ .menu_btn svg path { fill: rgba(  0,   0,   0, .6); }
 
 .login_box.s1  .title {
 	background-color: rgba(255, 255, 255, .10);
 }
-.login_box.s0 .title, .login_box.s1 .title,
-.login_box.s2 .title, .login_box.s3 .title,
-.login_box.s4 .title, .login_box.s5 .title,
-.login_box.s6 .title, .login_box.s7 .title,
-.login_box.s8 .title, .login_box.s10 .title,
+
+.login_box.s0 .title,  .login_box.s1 .title,
+.login_box.s2 .title,  .login_box.s3 .title,
+.login_box.s4 .title,  .login_box.s5 .title,
+.login_box.s6 .title,  .login_box.s7 .title,
+.login_box.s8 .title,  .login_box.s10 .title,
 .login_box.s0 .signup, .login_box.s1 .signup,
 .login_box.s2 .signup, .login_box.s3 .signup,
 .login_box.s4 .signup, .login_box.s5 .signup,
 .login_box.s6 .signup, .login_box.s7 .signup,
-.login_box.s8 .signup, .login_box.s10 .signup {
+.login_box.s8 .signup, .login_box.s10 .signup,
+.login_box.s0 .max, .login_box.s1 .max,
+.login_box.s2 .max, .login_box.s3 .max,
+.login_box.s4 .max, .login_box.s5 .max,
+.login_box.s6 .max, .login_box.s7 .max,
+.login_box.s8 .max, .login_box.s10 .max {
 	color: rgba(  255, 255, 255, .9);
 	text-shadow: 0 0 3px rgba(255, 255, 255, .9);
 }
 
 .login_box.s9  .title,
-.login_box.s9  .signup {
+.login_box.s9  .signup,
+.login_box.s9  .max {
 	color: rgba(  0, 156, 255, .55);
 	text-shadow: 0 0 3px rgba(0, 156, 255, .55);
 }
+
+.login_box.s0 div.max.graph,
+.login_box.s1 div.max.graph,
+.login_box.s2 div.max.graph,
+.login_box.s3 div.max.graph,
+.login_box.s4 div.max.graph,
+.login_box.s5 div.max.graph,
+.login_box.s6 div.max.graph,
+.login_box.s7 div.max.graph,
+.login_box.s8 div.max.graph,
+.login_box.s10 div.max.graph {
+	background-image: url(/img/analytics.png?v=1);
+}
+
+.login_box.s9 div.max.graph {
+	background-image: url(/img/analytics_blue.png?v=1);
+}
+
+.login_box.s0  .login_control a,
+.login_box.s1  .login_control a,
+.login_box.s2  .login_control a,
+.login_box.s3  .login_control a,
+.login_box.s4  .login_control a,
+.login_box.s5  .login_control a,
+.login_box.s6  .login_control a,
+.login_box.s7  .login_control a,
+.login_box.s8  .login_control a,
+.login_box.s10 .login_control a { color: rgba(255, 255, 255, 1); }
 
 .login_box.s9 .login_control a { color: rgba(  0, 156, 255, .8); }
 
@@ -730,7 +908,7 @@ svg path {
 	bottom: 0;
 }
 .title i.white {
-	background-color: rgba(255,255,255,.25);
+	background-color: rgba(255,255,255,.15);
 }
 .title span { position: relative; }
 
@@ -763,6 +941,15 @@ svg path {
 .login_box .signup,
 .login_box.small .signup {
 	margin: 0;
+}
+
+.login_box.mobile.small, .login_box.mobile {
+	position: relative;
+	margin: 50px auto;
+	display: block;
+	left: 0;
+	top: 0;
+	width: 572px;
 }
 
 div.max { height: 564px; overflow: hidden; }

@@ -4,6 +4,7 @@ import (
 	"math/rand"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 const (
@@ -15,6 +16,11 @@ var (
 	re_email = regexp.MustCompile(`^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))` +
 		`@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$`)
 )
+
+func init() {
+
+	rand.Seed(time.Now().UnixNano())
+}
 
 func IsEmail(email string) bool {
 	return re_email.MatchString(email)
