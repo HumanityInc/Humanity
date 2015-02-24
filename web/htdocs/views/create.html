@@ -1,0 +1,40 @@
+<div ng-controller="createController">
+
+	<div class="login_box small" style="background-color: #ccc; display: block;">
+
+		<div class="title">
+			<i class="td"></i>
+			<i class="white"></i>
+			<span>New crowdfund</span>
+		</div>
+
+		<div id="signup_create" class="max">
+
+			<form id="form" autocomplete="off">
+
+				<input name="id" type="hidden" ng-model="form.id" value="">
+
+				<input name="name" type="text" ng-model="form.name" class="login_input" value="" placeholder="name">
+				<div class="wrong">oops</div>
+
+				<input name="goal" type="text" ng-model="form.goal" class="login_input" value="" placeholder="goal">
+				<div class="wrong">oops</div>
+
+				<input name="youtube_link" type="text" ng-model="form.video" class="login_input" value="" placeholder="youtube link">
+				<div class="wrong">oops</div>
+
+				<input id="cover" name="cover" plupload="fileUpload.url" plupload-callbacks="fileUpload.callbacks" type="text" ng-model="form.cover" class="login_input" value="" placeholder="cover">
+				<div class="wrong">oops</div>
+
+			</form>
+
+			<div class="login_control">
+				<a href="/feed">back</a>
+				<a ng-click="Login()" class="back" href="javascript:">create</a>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

@@ -1,0 +1,65 @@
+
+<div ng-controller="saveEmailController" resize class="body" style="background:transparent url('/img/poster1.jpg') no-repeat 0 0; background-size: cover;">
+
+	<div id="bg" style="opacity: 1; visibility: visible;">
+		<video class="vi" autoplay="autoplay" loop="loop">
+			<source src="/steve3.mp4" type="video/mp4">
+			Your browser does not support the video tag.
+		</video>
+	</div>
+
+	<a href="#/" class="menu_btn"></a>
+
+	<a class="volume" ng-class=""></a>
+
+	<div class="login_box" ng-class="smallBox">
+
+		<div class="title">
+			<i class="td"></i>
+			<i class="white"></i>
+			<span>hello, human! :)</span>
+		</div>
+
+		<div class="max">
+			<form autocomplete="off">
+			<input name="email" type="text" class="login_input" value="" placeholder="my email">
+			<div class="wrong">oops</div>
+			</form>
+			<div class="login_control">
+				<a ng-click="Back()">back</a>
+				<a ng-click="SaveEmail()" class="back">save</a>
+			</div>
+		</div>
+
+		<!-- <div class="max">
+			<div class="success">
+				“great success!”<br>
+				check your email!
+			</div>
+		</div>
+
+		<div class="max">
+			<div class="success" style="width: 515px">
+				We'll email your invite soon!
+			</div>
+		</div> -->
+
+		<table class="colors">
+			<tr>
+				<td data-color="0"  ng-class="" class="color c00 active"></td>
+				<td data-color="1"  ng-class="" class="color c01"></td>
+				<td data-color="2"  ng-class="" class="color c02"></td>
+				<td data-color="3"  ng-class="" class="color c03"></td>
+				<td data-color="4"  ng-class="" class="color c04"></td>
+				<td data-color="5"  ng-class="" class="color c05"></td>
+				<td data-color="6"  ng-class="" class="color c06"></td>
+				<td data-color="7"  ng-class="" class="color c07"></td>
+				<td data-color="8"  ng-class="" class="color c08"></td>
+				<td data-color="9"  ng-class="" class="color c09"></td>
+				<td data-color="10" ng-class="" class="color c10"></td>
+			</tr>
+		</table>
+
+	</div>
+
+</div>

@@ -1,0 +1,198 @@
+
+<div ng-controller="indexController" resize class="body" style="background:transparent url('/img/poster1.jpg') no-repeat 0 0; background-size: cover;">
+
+	<div id="bg" style="opacity: 1; visibility: visible;">
+		<video id="bg_video" class="vi" autoplay="autoplay" loop="loop">
+			<source src="/steve3.mp4" type="video/mp4">
+			Your browser does not support the video tag.
+		</video>
+	</div>
+
+	<a href="#/" class="menu_btn"></a>
+
+	<a class="volume" ng-class="changeVolume" ng-class="muted"></a>
+
+	<div class="login_box" ng-class="[smallBox, hoverColor, setColor]">
+
+		<div class="title">
+			<i class="td"></i>
+			<i class="white"></i>
+			<span>hello, human! :)</span>
+		</div>
+
+		<div ng-show="main">
+
+			<table class="table">
+				<tr class="tr first">
+					<td class="td"></td>
+					<td class="td"></td>
+					<td class="td"></td>
+				</tr>
+				<tr class="tr button">
+					<td class="td"></td>
+					<td class="td hole">
+						<a ng-click="GoToSignin()" class="login_button"><img alt="" src="/img/humanity.png">sign in with humanity</a>
+					</td>
+					<td class="td"></td>
+				</tr>
+				<tr class="tr">
+					<td class="td"></td>
+					<td class="td"></td>
+					<td class="td"></td>
+				</tr>
+				<tr class="tr button">
+					<td class="td"></td>
+					<td class="td hole">
+						<a href="/auth/fb" class="login_button fb"><img alt="" src="/img/facebook.png">sign in with facebook</a>
+					</td>
+					<td class="td"></td>
+				</tr>
+				<tr class="tr">
+					<td class="td"></td>
+					<td class="td"></td>
+					<td class="td"></td>
+				</tr>
+				<tr class="tr button">
+					<td class="td"></td>
+					<td class="td hole">
+						<a href="/auth/gplus" class="login_button gp"><img alt="" src="/img/gp.png">sign in with google</a>
+					</td>
+					<td class="td"></td>
+				</tr>
+				<tr class="tr">
+					<td class="td"></td>
+					<td class="td"></td>
+					<td class="td"></td>
+				</tr>
+				<tr class="tr button">
+					<td class="td"></td>
+					<td class="td hole">
+						<a href="/auth/tw" class="login_button tw"><img alt="" src="/img/twitter.png">sign in with twitter</a>
+					</td>
+					<td class="td"></td>
+				</tr>
+				<tr class="tr">
+					<td class="td"></td>
+					<td class="td"></td>
+					<td class="td"></td>
+				</tr>
+				<tr class="tr buttom">
+					<td class="td"></td>
+					<td class="td">
+						<a ng-click="GoToSignupMain()" class="signup">sign up with email address</a>
+					</td>
+					<td class="td"></td>
+				</tr>
+				<tr class="tr">
+					<td class="td"></td>
+					<td class="td"></td>
+					<td class="td"></td>
+				</tr>
+			</table>
+
+		</div>
+
+		<div ng-show="signin" class="max">
+
+			<form autocomplete="off">
+				<input name="email" type="text" class="login_input" ng-model="form.email" placeholder="my email">
+				<div class="wrong">oops</div>
+				<input name="password" type="password" class="login_input" ng-model="form.password" placeholder="my password">
+				<div class="wrong">oops</div>
+
+				<div class="login_control">
+					<a ng-click="GoToMain()">back</a>
+					<a ng-click="GoToSignupCreate()">create</a>
+					<a ng-click="Login()" class="back">sign in</a>
+				</div>
+			</form>
+
+		</div>
+
+		<div ng-show="signup_create" class="max">
+
+			<form autocomplete="off">
+			<input name="email" type="text" class="login_input" ng-model="form.email" placeholder="my email">
+			<div class="wrong">oops</div>
+			<input name="password" type="password" class="login_input" ng-model="form.password" placeholder="my password">
+			<div class="wrong">oops</div>
+			<input name="password2" type="password" class="login_input" ng-model="form.password2" placeholder="confirm password">
+			<div class="wrong">oops</div>
+			<input name="first_name" type="text" class="login_input" ng-model="form.first_name" placeholder="my first name">
+			<div class="wrong">oops</div>
+			<input name="last_name" type="text" class="login_input" ng-model="form.last_name" placeholder="my last name">
+			<div class="wrong">oops</div>
+			</form>
+
+			<div class="login_control">
+				<a ng-click="GoToSignin()">back</a>
+				<a ng-click="Create()" class="back">create</a>
+			</div>
+
+		</div>
+
+		<div ng-show="signup_main" class="max">
+
+			<form autocomplete="off">
+			<input name="email" type="text" class="login_input" ng-model="form.email" placeholder="my email">
+			<div class="wrong">oops</div>
+			<input name="password" type="password" class="login_input" ng-model="form.password" placeholder="my password">
+			<div class="wrong">oops</div>
+			<input name="password2" type="password" class="login_input" ng-model="form.password2" placeholder="confirm password">
+			<div class="wrong">oops</div>
+			<input name="first_name" type="text" class="login_input" ng-model="form.first_name" placeholder="my first name">
+			<div class="wrong">oops</div>
+			<input name="last_name" type="text" class="login_input" ng-model="form.last_name" placeholder="my last name">
+			<div class="wrong">oops</div>
+			</form>
+
+			<div class="login_control">
+				<a ng-click="GoToMain()">back</a>
+				<a ng-click="Create()" class="back">create</a>
+			</div>
+
+		</div>
+
+		<!-- <div ng-show="email" class="max">
+			<form autocomplete="off">
+			<input name="email" type="text" class="login_input" value="" placeholder="my email">
+			<div class="wrong">oops</div>
+			</form>
+			<div class="login_control">
+				<a href="#">back</a>
+				<a id="save" class="back" href="javascript:">save</a>
+			</div>
+		</div>
+
+		<div ng-show="success" class="max">
+			<div class="success">
+				“great success!”<br>
+				check your email!
+			</div>
+		</div>
+
+		<div ng-show="success2" class="max">
+			<div class="success" style="width: 515px">
+				We'll email your invite soon!
+			</div>
+		</div> -->
+
+		<table class="colors">
+			<tr>
+				<td data-color="0"  ng-class="color[0]"  ng-mouseenter="PreviewColor(0)"  ng-mouseleave="ResetColor(0)"  ng-click="SetColor(0)"  class="color c00"></td>
+				<td data-color="1"  ng-class="color[1]"  ng-mouseenter="PreviewColor(1)"  ng-mouseleave="ResetColor(1)"  ng-click="SetColor(1)"  class="color c01"></td>
+				<td data-color="2"  ng-class="color[2]"  ng-mouseenter="PreviewColor(2)"  ng-mouseleave="ResetColor(2)"  ng-click="SetColor(2)"  class="color c02"></td>
+				<td data-color="3"  ng-class="color[3]"  ng-mouseenter="PreviewColor(3)"  ng-mouseleave="ResetColor(3)"  ng-click="SetColor(3)"  class="color c03"></td>
+				<td data-color="4"  ng-class="color[4]"  ng-mouseenter="PreviewColor(4)"  ng-mouseleave="ResetColor(4)"  ng-click="SetColor(4)"  class="color c04"></td>
+				<td data-color="5"  ng-class="color[5]"  ng-mouseenter="PreviewColor(5)"  ng-mouseleave="ResetColor(5)"  ng-click="SetColor(5)"  class="color c05"></td>
+				<td data-color="6"  ng-class="color[6]"  ng-mouseenter="PreviewColor(6)"  ng-mouseleave="ResetColor(6)"  ng-click="SetColor(6)"  class="color c06"></td>
+				<td data-color="7"  ng-class="color[7]"  ng-mouseenter="PreviewColor(7)"  ng-mouseleave="ResetColor(7)"  ng-click="SetColor(7)"  class="color c07"></td>
+				<td data-color="8"  ng-class="color[8]"  ng-mouseenter="PreviewColor(8)"  ng-mouseleave="ResetColor(8)"  ng-click="SetColor(8)"  class="color c08"></td>
+				<td data-color="9"  ng-class="color[9]"  ng-mouseenter="PreviewColor(9)"  ng-mouseleave="ResetColor(9)"  ng-click="SetColor(9)"  class="color c09"></td>
+				<td data-color="10" ng-class="color[10]" ng-mouseenter="PreviewColor(10)" ng-mouseleave="ResetColor(10)" ng-click="SetColor(10)" class="color c10"></td>
+			</tr>
+		</table>
+
+	</div>
+
+</div>

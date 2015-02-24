@@ -57,6 +57,13 @@ body {
 	position: fixed;
 }
 
+#news a {
+	color: #fff;
+}
+#news a:hover {
+	font-weight: 300;
+}
+
 /* - */
 
 #bg {

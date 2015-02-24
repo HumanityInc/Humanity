@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="HumanityApp">
+<head>
+
+	<meta charset="utf-8">
+	<title>Humanity - Made In Ukraine!</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta name="keywords" content="Humanity">
+	<meta name="description" content="Humanity - The billion dollar global giant owned by YOU!">
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+
+	<meta property="fb:app_id" content="393092710870235">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://ishuman.me/">
+	<meta property="og:title" content="Humanity"> 
+	<meta property="og:image" content="https://ishuman.me/opensource/pics/emblem.png">
+	<meta property="og:description" content="Humanity - The billion dollar global giant owned by YOU!">
+
+	<link type="text/css" rel="stylesheet" href="/css/index.css">
+	<link type="text/css" rel="stylesheet" href="/css/feed.css">
+
+	<script src="/js/plupload/plupload.full.min.js"></script>
+
+	<script src="/js/angular.min.js"></script>
+	<script src="/js/angular-route.min.js"></script>
+	<script src="/js/angular-plupload.min.js"></script>
+
+	<!-- ??? -->
+	<script src="/js/hamster.js"></script>
+	<script src="/js/mousewheel.js"></script>
+
+	<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-49097764-1','ishuman.me');ga('send','pageview');</script>
+
+	<script type="text/javascript">
+		var User = {
+			picture: {{.User.Picture}}
+		};
+	</script>
+
+	<script src="/app/app.js"></script>
+	<script src="/app/directives/focus.js"></script>
+	<script src="/app/directives/resize.js"></script>
+	<script src="/app/directives/mousewheel.js"></script>
+	<script src="/app/controllers/crowdfund.js"></script>
+	<script src="/app/controllers/feed.js"></script>
+
+</head>
+<body ng-view>
+	
+</body>
+</html>

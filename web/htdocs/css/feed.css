@@ -5,6 +5,13 @@ body {
 	overflow: hidden;
 }
 
+.noselect {
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
 .wrapper {
 	position: absolute;
 	left: 0;
@@ -12,7 +19,7 @@ body {
 	top: 0;
 	bottom: 0;
 	/*background-color: rgba(255,255,0,.3);*/
-	transform: translateZ(0);
+	/*transform: translateZ(0);*/
 }
 
 .scrollable {
@@ -48,23 +55,66 @@ body {
 	right: 0;
 	bottom: 0;
 	background: url(/img/play.png) 50% 50% no-repeat;
-
+	cursor: pointer;
 	opacity: 0;
 }
+.x3 > div .play {
+	background: url(/img/play_small.png) 50% 50% no-repeat;
+}
+.x2 > div .favorit,
+.x3 > div .favorit {
+	background: url(/img/hart.png) 50% 50% no-repeat;
+	width: 31px;
+	height: 25px;
+	position: absolute;
+	display: block;
+	top: 8px;
+	right: 10px;
+	opacity: 0;
+	cursor: pointer;
+}
+.x3 > div .favorit.active {
+	opacity: 1;
+}
+.x2 > div:hover .favorit,
+.x3 > div:hover .favorit {
+	opacity: .5;
+
+	-webkit-transition: all 0.15s ease;
+	-moz-transition:    all 0.15s ease;
+	-o-transition:      all 0.15s ease;
+	-ms-transition:     all 0.15s ease;
+	transition:         all 0.15s ease;
+
+	-webkit-transition-delay: .3s;
+	-o-transition-delay:      .3s;
+	-moz-transition-delay:    .3s;
+	transition-delay:         .3s;
+}
+.x2 > div .favorit:hover,
+.x3 > div .favorit:hover {
+	opacity: .75;
+
+	-webkit-transition-delay: 0;
+	-o-transition-delay:      0;
+	-moz-transition-delay:    0;
+	transition-delay:         0;
+}
+
 .x2 > div:hover .play,
 .x3 > div:hover .play {
 	opacity: 1;
 
-	-webkit-transition: all 0.3s ease;
-	-moz-transition:    all 0.3s ease;
-	-o-transition:      all 0.3s ease;
-	-ms-transition:     all 0.3s ease;
-	transition:         all 0.3s ease;
+	-webkit-transition: all 0.15s ease;
+	-moz-transition:    all 0.15s ease;
+	-o-transition:      all 0.15s ease;
+	-ms-transition:     all 0.15s ease;
+	transition:         all 0.15s ease;
 
-	-webkit-transition-delay: .7s;
-	-o-transition-delay:      .7s;
-	-moz-transition-delay:    .7s;
-	transition-delay:         .7s;
+	-webkit-transition-delay: .3s;
+	-o-transition-delay:      .3s;
+	-moz-transition-delay:    .3s;
+	transition-delay:         .3s;
 }
 
 .x2 > div {
@@ -100,10 +150,15 @@ body {
 	display: none;
 }
 
+.hint {
+	background-color: rgba(0,156,255,.8);
+	padding-bottom: 20px;
+
+}
 
 .x2 .hint,
 .x3 .hint {
-
+	padding-bottom: 0;
 	position: absolute;
 	z-index: 10;
 	width: 100%;
@@ -117,11 +172,11 @@ body {
 	display: block;
 	overflow: hidden;
 
-	-webkit-transition: all 0.3s ease;
-	-moz-transition:    all 0.3s ease;
-	-o-transition:      all 0.3s ease;
-	-ms-transition:     all 0.3s ease;
-	transition:         all 0.3s ease;
+	-webkit-transition: all 0.10s ease;
+	-moz-transition:    all 0.10s ease;
+	-o-transition:      all 0.10s ease;
+	-ms-transition:     all 0.10s ease;
+	transition:         all 0.10s ease;
 
 	font-size: 100%;
 }
@@ -145,10 +200,10 @@ body {
 	height: 35.5%;
 	min-height: 265px;
 
-	-webkit-transition-delay: .7s;
-	-o-transition-delay:      .7s;
-	-moz-transition-delay:    .7s;
-	transition-delay:         .7s;
+	-webkit-transition-delay: .3s;
+	-o-transition-delay:      .3s;
+	-moz-transition-delay:    .3s;
+	transition-delay:         .3s;
 }
 
 .x2 .hint:hover { 
@@ -168,10 +223,10 @@ body {
 	height: 25%;
 	min-height: 185px;
 
-	-webkit-transition-delay: .7s;
-	-o-transition-delay:      .7s;
-	-moz-transition-delay:    .7s;
-	transition-delay:         .7s;
+	-webkit-transition-delay: .3s;
+	-o-transition-delay:      .3s;
+	-moz-transition-delay:    .3s;
+	transition-delay:         .3s;
 }
 
 .x3 .hint:hover {
@@ -186,6 +241,7 @@ body {
 	height: 3.4em;
 	box-sizing: border-box;
 	overflow: hidden;
+	position: relative;
 }
 
 .hint .progress {
@@ -224,7 +280,7 @@ body {
 
 
 .hint .text {
-	padding: .3em 0 .2em;
+	padding: .3em 0 .1em;
 	text-align: center;
 	font-size: 2.7em;
 	line-height: normal;
@@ -242,7 +298,7 @@ body {
 .hint .donate > div {
 	display: inline-block;
 	position: relative;
-	padding: 0 .9em;
+	padding: 0 1em;
 	margin: 0 auto;
 }
 
@@ -324,18 +380,20 @@ body {
 	background: url(/img/arrow.png) 0 0 no-repeat;
 	left: 5px;
 	bottom: 50%;
-	width: 22px;
-	height: 97px;
-	/*margin-top: -48px;*/
+	opacity: .5;
+	width: 15px;
+	height: 64px;
+	cursor: pointer;
 }
 .right {
 	left: auto;
 	right: 5px;
-	background-position: -23px 0;
+	background-position: -15px 0;
 }
-
+.left:hover, .right:hover {
+	opacity: .8;
+}
 /* = */
-
 
 .big_menu {
 	position: fixed;
@@ -343,7 +401,14 @@ body {
 	left: 50%;
 	margin-left: -286px;
 	width: 572px;
+	z-index: 100;
+	display: none;
 }
+.big_menu:hover,
+.menu_btn:hover + .big_menu {
+	display: block;
+}
+
 .big_menu .links {
 	background-color: rgba(0, 0, 0, .5);
 	text-align: center;
@@ -371,7 +436,13 @@ body {
 	height: 100%;
 }
 .big_menu .links a:hover {
-	background-color: rgba(255, 255, 255, .5);
+	background-color: rgba(255, 255, 255, .15);
+	cursor: pointer;
+}
+.big_menu .links a.gray {
+	color: #c1c1c1;
+	background-color: transparent;
+	cursor: default;
 }
 
 .big_menu .profile {
@@ -382,20 +453,38 @@ body {
 	height: 161px;
 	width: 286px;
 	float: left;
-	background-color: rgba(255, 0, 255, .5);
+	background-color: rgb(255, 255, 255);
+	box-sizing: border-box;
+	opacity: .7;
+}
+.big_menu .profile .photo:hover {
+	opacity: 1;
+	cursor: pointer;
 }
 .big_menu .profile .play {
-	background-color: rgba(255, 255, 0, .5);
+	background: rgba(0, 0, 0, .2) url(/img/music.png) 50% 35% no-repeat;
+	text-align: center;
+	color: rgba(255, 255, 255, .9);
+	font-size: 22px;
+	padding-top: 116px;
+}
+.big_menu .profile .play:hover {
+	opacity: 1;
 }
 .big_menu .find {
-	height: 0;
-	line-height: 0;
-	padding: 16px 0 16px;
+	/*height: 0;*/
+	/*line-height: 0;*/
+	padding: 3px 0;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
 	background-color: rgba(0, 0, 0, .5);
 	color: #fff;
 	font-weight: 100;
 	font-size: 22px;
 	text-align: center;
+	border: 0 none;
+	box-sizing: border-box;
+	width: 100%;
 }
 
 .big_menu .user {
