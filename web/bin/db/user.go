@@ -33,6 +33,39 @@ func hashPassword(password string) string {
 
 //
 
+func Search(str string) (list []model.User) {
+
+	// TODO use fulltext search (sphinx rt index)
+
+	rows, err := db.Query(`SELECT `+
+		`"id", "first_name", "last_name", "last_login", "registered", "activate", "last_ip", "picture" `+
+		`FROM "public"."profiles" `+
+		`WHERE "first_name" ILIKE '%' || $1 || '%' OR "last_name" ILIKE '%' || $1 || '%' LIMIT 5`, str)
+
+	if err != nil {
+		logger.Println(err)
+		return
+	}
+	defer rows.Close()
+
+	user := model.User{}
+	list = make([]model.User, 0, 32)
+
+	for rows.Next() {
+
+		if err = rows.Scan(&user.Id, &user.FirstName, &user.LastName, &user.LastLogin, &user.Registered,
+			&user.Activate, &user.LastIp, &user.Picture); err != nil {
+
+			logger.Println(err)
+			return
+		}
+
+		list = append(list, user)
+	}
+
+	return
+}
+
 func UpdatePassword(profId uint64, code, password string) (ok bool) {
 
 	var id uint64
@@ -198,11 +231,11 @@ func GetUserBySocialId(socialId string, socialNetwork int) (user_ptr *model.User
 
 	fmt.Println(socialId, socialNetwork)
 
-	err = db.QueryRow(`SELECT "id", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip" `+
+	err = db.QueryRow(`SELECT "id", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip", "picture" `+
 		`FROM "public"."profiles" `+
 		`WHERE "id"=(SELECT "user_id" FROM "public"."profiles_social" WHERE "id"=$1 AND "sn_id"=$2)`,
 		socialId, socialNetwork).Scan(&user.Id, &email, &user.FirstName, &user.LastName,
-		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp)
+		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp, &user.Picture)
 
 	if err != nil {
 		logger.Println(err)
@@ -222,10 +255,10 @@ func GetUserByEmail(email, password string, checkPassword bool) (user_ptr *model
 	user, hashedPassword := model.User{}, ""
 
 	err = db.QueryRow(`SELECT `+
-		`"id", "password", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip" `+
+		`"id", "password", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip", "picture" `+
 		`FROM "public"."profiles" `+
 		`WHERE "email"=$1`, email).Scan(&user.Id, &hashedPassword, &user.Email, &user.FirstName, &user.LastName,
-		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp)
+		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp, &user.Picture)
 
 	if err != nil {
 		logger.Println(err)
@@ -243,6 +276,18 @@ func GetUserByEmail(email, password string, checkPassword bool) (user_ptr *model
 	}
 
 	user_ptr = &user
+	return
+}
+
+func SetUserPicture(id int64, picture string) (err error) {
+
+	_, err = db.Exec(`UPDATE "public"."profiles" SET "picture"=$1 WHERE "id"=$2`,
+		picture, id)
+
+	if err != nil {
+		logger.Println(err)
+		return
+	}
 	return
 }
 
@@ -279,10 +324,10 @@ func GetUserById(id int64) (user_ptr *model.User, err error) {
 	email := sql.NullString{}
 
 	err = db.QueryRow(`SELECT `+
-		`"id", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip" `+
+		`"id", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip", "picture" `+
 		`FROM "public"."profiles" `+
 		`WHERE "id"=$1`, id).Scan(&user.Id, &email, &user.FirstName, &user.LastName,
-		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp)
+		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp, &user.Picture)
 
 	if err != nil {
 		logger.Println(err)

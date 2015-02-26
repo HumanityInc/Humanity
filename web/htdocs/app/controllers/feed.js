@@ -1,7 +1,5 @@
 
-app.controller('FeedController', function($scope, $http, $timeout, $document, $location) {
-
-	// console.log(myData);
+app.controller('FeedController', function($scope, $http, $timeout, $document, $location, $routeParams) {
 	
 	$scope.showFeed = true;
 	$scope.showCreate = false;
@@ -28,12 +26,12 @@ app.controller('FeedController', function($scope, $http, $timeout, $document, $l
 	};
 
 	$scope.avatarUpload = {
-		// url: 'http://127.0.0.1:1991/upload',
+		// url: 'http://test.ishuman.me:1991/upload',
 		url: '/upload',
 		callbacks: {
 			filesAdded: function(uploader, files) {
 
-				$scope.loading = true;
+				// $scope.loading = true;
 
 				$timeout(function() {
 					uploader.start();
@@ -41,12 +39,12 @@ app.controller('FeedController', function($scope, $http, $timeout, $document, $l
 			},
 			uploadProgress: function(uploader, file) {
 
-				$scope.loading = file.percent/100.0;
+				// $scope.loading = file.percent/100.0;
 			},
 			fileUploaded: function(uploader, file, response) {
 
 				var res = angular.fromJson(response.response);
-				$scope.loading = false;
+				// $scope.loading = false;
 
 				$scope.avatar = {
 					"background": "url("+res.cover+") 50% 50% no-repeat",
@@ -69,13 +67,14 @@ app.controller('FeedController', function($scope, $http, $timeout, $document, $l
 			},
 			error: function(uploader, error) {
 
-				$scope.loading = false;
+				// $scope.loading = false;
 				alert(error.message);
 			}
 		}
 	};
 
 	$scope.fileUpload = {
+		// url: 'http://test.ishuman.me:1991/upload',
 		url: '/upload',
 		callbacks: {
 			filesAdded: function(uploader, files) {
@@ -88,7 +87,7 @@ app.controller('FeedController', function($scope, $http, $timeout, $document, $l
 			},
 			uploadProgress: function(uploader, file) {
 
-				$scope.loading = file.percent/100.0;
+				$scope.percent = (file.percent | 0) + "%";
 			},
 			fileUploaded: function(uploader, file, response) {
 
@@ -135,6 +134,24 @@ app.controller('FeedController', function($scope, $http, $timeout, $document, $l
 		return (item.collected + item.min).toLocaleString("en-US", {style: "currency", currency: "USD", minimumFractionDigits: 2});
 	};
 
+	$scope.Favorit = function(item) {
+		item.favorit = !item.favorit;
+
+		$http({
+			method: 'POST',
+			url: "j_favorit",
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			transformRequest: function(obj) {
+				var str=[]; for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+				return str.join("&");
+			},
+			data: {
+				id: item.id,
+				flag: item.favorit
+			}
+		});
+	}
+
 	// ==
 
 	$scope.SearchFocus = function() {
@@ -142,6 +159,31 @@ app.controller('FeedController', function($scope, $http, $timeout, $document, $l
 	};
 	$scope.SearchBlure = function() {
 		$scope.search.placeholder = "find (person, topic, interest, song, movie, place, biz, etc.)";
+	};
+
+	$scope.found = [];
+
+	// {"id":12,"email":"","first_name":"firstName","last_name":"lastName","picture":""}
+
+	$scope.SearchChange = function(text) {
+		
+		$http({
+			method: 'POST',
+			url: "j_search",
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			transformRequest: function(obj) {
+				var str=[]; for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+				return str.join("&");
+			},
+			data: {
+				q: text
+			}
+		})
+		.success(function(data) {
+			if (data.res == 0) {
+				$scope.found = data.data;
+			}
+		});
 	};
 
 	// ==
@@ -156,15 +198,34 @@ app.controller('FeedController', function($scope, $http, $timeout, $document, $l
 
 	$scope.Create = function() {
 
-		// alert($scope.form.cover)
+		$scope.form.oopsName = $scope.form.oopsGoal = $scope.form.oopsVideo = $scope.form.oopsCover = false;
+
+		if ($scope.form.name == "") {
+			$scope.form.oopsName = true;
+			return;
+		}
+
+		if (($scope.form.goal|0) == 0) {
+			$scope.form.oopsGoal = true;
+			return;
+		}
+
+		if ($scope.form.video == "") {
+			$scope.form.oopsVideo = true;
+			return;
+		}
+
+		if ($scope.form.cover == "") {
+			$scope.form.oopsCover = true;
+			return;
+		}
 
 		$http({
 			method: 'POST',
 			url: "j_crowdfund",
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 			transformRequest: function(obj) {
-				var str=[];
-				for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+				var str=[]; for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
 			data: {
@@ -177,9 +238,15 @@ app.controller('FeedController', function($scope, $http, $timeout, $document, $l
 		.success(function(data) {
 
 			if (data.res == 0) {
+
 				// $scope.form.crowdfundId = data.data.id;
 				$scope.HideCreate();
 				$scope.Load();
+
+				$scope.form.goal  = "";
+				$scope.form.name  = "";
+				$scope.form.video = "";
+				$scope.form.cover = "";
 			}
 		});
 	};
@@ -196,6 +263,7 @@ app.controller('FeedController', function($scope, $http, $timeout, $document, $l
 				return str.join("&");
 			},
 			data: {
+				prof_id: $routeParams.id,
 			}
 		})
 		.success(function(data) {
@@ -213,7 +281,9 @@ app.controller('FeedController', function($scope, $http, $timeout, $document, $l
 						id: item.id,
 						cover: item.cover,
 						goal: item.goal,
+						name: item.name,
 						collected: item.сollected,
+						favorit: item.favorit,
 						min: 0
 					};
 
@@ -267,6 +337,14 @@ app.controller('FeedController', function($scope, $http, $timeout, $document, $l
 
 		raw.scrollLeft -= delta;
 		event.preventDefault();
+	}
+
+	$scope.Touch = function(id) {
+		if (id) {
+			$location.path("/"+id);
+		} else {
+			$location.path("/"+User.id);
+		}
 	}
 
 	$scope.GotoCrowdfund = function(item) {

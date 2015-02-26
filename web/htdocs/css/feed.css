@@ -73,9 +73,6 @@ body {
 	opacity: 0;
 	cursor: pointer;
 }
-.x3 > div .favorit.active {
-	opacity: 1;
-}
 .x2 > div:hover .favorit,
 .x3 > div:hover .favorit {
 	opacity: .5;
@@ -99,6 +96,10 @@ body {
 	-o-transition-delay:      0;
 	-moz-transition-delay:    0;
 	transition-delay:         0;
+}
+.x2 > div:hover .favorit.active,
+.x3 > div:hover .favorit.active {
+	opacity: 1;
 }
 
 .x2 > div:hover .play,
@@ -338,7 +339,7 @@ body {
 .hint .empower {
 	text-align: center;
 }
-.hint .empower > a {
+.hint .empower input[type="submit"] {
 	display: inline-block;
 	font-size: 2.4em;
 	line-height: normal;
@@ -347,6 +348,9 @@ body {
 	background-color: rgba(255,255,255,.25);
 	padding: 0 .4em 0.1em;
 	margin: .2em auto 0;
+	border: 0 none;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
 }
 
 /* = */
@@ -430,7 +434,7 @@ body {
 	text-decoration: none;
 	color: #fff;
 	font-weight: 100;
-	font-size: 22px;
+	font-size: 21px;
 	display: block;
 	width: 100%;
 	height: 100%;
@@ -440,7 +444,7 @@ body {
 	cursor: pointer;
 }
 .big_menu .links a.gray {
-	color: #c1c1c1;
+	color: #d1d1d1;
 	background-color: transparent;
 	cursor: default;
 }
@@ -457,8 +461,11 @@ body {
 	box-sizing: border-box;
 	opacity: .7;
 }
+.big_menu .profile .photo {
+	opacity: .85;
+}
 .big_menu .profile .photo:hover {
-	opacity: 1;
+	opacity: .9;
 	cursor: pointer;
 }
 .big_menu .profile .play {
@@ -495,12 +502,20 @@ body {
 	float: left;
 	width: 158px;
 	height: 89px;
-	background-color: rgba(0, 100, 0, .5);
+	/*background-color: rgba(255, 255, 255, .15);*/
+	cursor: pointer;
 }
 .big_menu .user .info {
 	margin-left: 158px;
 	height: 89px;
-	background-color: rgba(255, 255, 255, .15);
 	box-sizing: border-box;
 	padding: 20px;
+	color: #fff;
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	width: 414px;
+}
+.big_menu .user.odd {
+	background-color: rgba(255, 255, 255, .15);
 }

@@ -32,7 +32,7 @@ app.directive('mousewheel', function($window, $document) {
 
 		el.on('DOMMouseScroll', handler);
 		scope.$on('$destroy', function() {
-			return el.off('DOMMouseScroll', handlerFF);
+			return el.off('DOMMouseScroll', handler);
 		});
 	};
 });

@@ -42,11 +42,16 @@ function cloneObj(obj) {
 
 // = = =
 
-var app = angular.module('HumanityApp', ['ngRoute', 'angular-plupload', 'filters-module', 'monospaced.mousewheel']);
+var app = angular.module('HumanityApp', ['ngRoute', 'angular-plupload', 'filters-module']);
 
 app.config(function($routeProvider, pluploadOptionProvider) {
 
 	$routeProvider.when('/', {
+		controller: 'FeedController',
+		templateUrl: '/views/feed.html'
+	});
+
+	$routeProvider.when('/:id', {
 		controller: 'FeedController',
 		templateUrl: '/views/feed.html'
 	});

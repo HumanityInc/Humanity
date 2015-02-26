@@ -72,7 +72,7 @@ func init() {
 
 func (m *MailReset) Send(email string) {
 
-	err := send("reset.txt", email, "Reset password", m)
+	err := send("reset.txt", email, "Reset your Humanity password!", m)
 
 	if err != nil {
 		logger.Println(err)

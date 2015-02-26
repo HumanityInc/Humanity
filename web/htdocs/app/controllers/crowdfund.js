@@ -3,6 +3,7 @@ app.controller('CrowdfundController', function($scope, $http, $timeout, $routePa
 
 	$scope.showMenu = true;
 	$scope.embedLink = "";
+	$scope.cover = "";
 	$scope.next = 0;
 	$scope.prev = 0;
 	$scope.step = 25;
@@ -11,6 +12,7 @@ app.controller('CrowdfundController', function($scope, $http, $timeout, $routePa
 		id: 0,
 		cover: "",
 		goal: 0,
+		name: "",
 		collected: 0,
 		min: 0
 	};
@@ -21,7 +23,7 @@ app.controller('CrowdfundController', function($scope, $http, $timeout, $routePa
 	};
 
 	$scope.avatarUpload = {
-		// url: 'http://127.0.0.1:1991/upload',
+		// url: 'http://test.ishuman.me:1991/upload',
 		url: '/upload',
 		callbacks: {
 			filesAdded: function(uploader, files) {
@@ -51,8 +53,7 @@ app.controller('CrowdfundController', function($scope, $http, $timeout, $routePa
 					url: "j_avatar",
 					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 					transformRequest: function(obj) {
-						var str=[];
-						for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+						var str=[]; for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 						return str.join("&");
 					},
 					data: {
@@ -117,8 +118,7 @@ app.controller('CrowdfundController', function($scope, $http, $timeout, $routePa
 			url: "j_crowdfund_info",
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 			transformRequest: function(obj) {
-				var str=[];
-				for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+				var str=[]; for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
 			data: {
@@ -135,12 +135,14 @@ app.controller('CrowdfundController', function($scope, $http, $timeout, $routePa
 
 				$scope.item = {
 					id: $routeParams.id,
-					cover: "",
+					cover: data.data.cover,
+					name: data.data.name,
 					goal: data.data.goal,
 					collected: data.data.сollected,
 					min: 0
 				};
 
+				$scope.cover       = data.data.cover;
 				$scope.embedLink   = data.data.video;
 				$scope.next        = data.data.next;
 				$scope.prev        = data.data.prev;
@@ -148,4 +150,8 @@ app.controller('CrowdfundController', function($scope, $http, $timeout, $routePa
 			}
 		});
 	};
+
+	$scope.Touch = function() {
+		$location.path("/"+User	.id);
+	}
 });

@@ -10,12 +10,15 @@ const ()
 type (
 	Crowdfund struct {
 		Id         int64    `json:"id"`
+		NextId     int64    `json:"next"`
+		PrevId     int64    `json:"prev"`
 		OwnerId    int64    `json:"owner"`
 		CreateTime int64    `json:"ctime"`
 		UpdateTime int64    `json:"utime"`
 		Goal       int64    `json:"goal"`
 		Сollected  int64    `json:"сollected"`
 		Visible    int16    `json:"visible"`
+		Favorit    bool     `json:"favorit"`
 		Name       string   `json:"name"`
 		Video      string   `json:"video"`
 		Cover      string   `json:"cover"`
@@ -32,10 +35,13 @@ func getYoutubeId(link string) (id string) {
 	case "www.youtube.com", "youtube.com":
 
 		if id = values.Get("v"); id == "" {
+
 			parts := strings.Split(info.RequestURI(), "?")
 			if len(parts) > 0 {
+
 				uri := strings.Trim(parts[0], "/")
 				if strings.Index(uri, "embed/") == 0 {
+
 					id = uri[6:]
 				}
 			}
@@ -45,6 +51,7 @@ func getYoutubeId(link string) (id string) {
 
 		parts := strings.Split(info.RequestURI(), "?")
 		if len(parts) > 0 {
+
 			id = strings.Trim(parts[0], "/")
 		}
 	}
@@ -61,8 +68,11 @@ func (cf *Crowdfund) EmbedLink() (link string) {
 		param.Add("controls", "0")
 		param.Add("showinfo", "0")
 		param.Add("autohide", "1")
+		param.Add("rel", "0")
+
 		link = "https://youtube.com/embed/" + id + "?" + param.Encode()
 	}
+
 	return
 }
 

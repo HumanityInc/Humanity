@@ -5,6 +5,7 @@ package app
 import (
 	"../config"
 	"../model"
+	"../paypal"
 	"../session"
 	"../template_cache"
 	"./ajax"
@@ -41,24 +42,29 @@ var mc *memcache.Client
 func init() {
 
 	page_callback = map[string]cb_fn{
-		``:            Index,
-		`index_ng`:    IndexNg,
-		`feed`:        Feed,
-		`crowdfund`:   Crowdfund,
-		`create`:      Create,
-		`auth`:        oauth.Auth,
-		`j_login`:     ajax.Login,
-		`j_logout`:    ajax.Logout,
-		`j_register`:  ajax.Register,
-		`j_setemail`:  ajax.SetEmail,
-		`j_whoami`:    ajax.Whoami,
-		`j_feed`:      ajax.Feed,
-		`j_crowdfund`: ajax.CrowdfundSave,
-		`test_menu`:   TestMenu,
-		`feed_ng`:     FeedNg,
-		`j_reset`:     ajax.ResetPasswd,
-		`j_resetlink`: ajax.SendResetLink,
-		`reset`:       ResetPasswd,
+		``:                 Index,
+		`index_ng`:         IndexNg,
+		`feed`:             Feed,
+		`crowdfund`:        Crowdfund,
+		`create`:           Create,
+		`auth`:             oauth.Auth,
+		`j_login`:          ajax.Login,
+		`j_logout`:         ajax.Logout,
+		`j_register`:       ajax.Register,
+		`j_setemail`:       ajax.SetEmail,
+		`j_whoami`:         ajax.Whoami,
+		`j_feed`:           ajax.Feed,
+		`j_crowdfund`:      ajax.CrowdfundSave,
+		`test_menu`:        TestMenu,
+		`feed_ng`:          FeedNg,
+		`j_reset`:          ajax.ResetPasswd,
+		`j_resetlink`:      ajax.SendResetLink,
+		`j_crowdfund_info`: ajax.CrowdfundInfo,
+		`j_avatar`:         ajax.SaveAvatar,
+		`j_favorit`:        ajax.Favorit,
+		`j_search`:         ajax.Search,
+		`reset`:            ResetPasswd,
+		`paypal`:           paypal.InstantPaymentNotification,
 	}
 
 	conf := config.GetConfig()

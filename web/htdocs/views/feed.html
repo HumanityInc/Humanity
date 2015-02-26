@@ -26,7 +26,7 @@
 
 				<div ng-repeat-start="item in cf.items" style="background: url({{item.cover}}) 50% 50% /cover no-repeat;">
 					<a ng-click="GotoCrowdfund(item)" class="play"></a>
-					<a ng-click="Favorit(item)" class="favorit"></a>
+					<a ng-click="Favorit(item)" ng-class="{active: item.favorit}" class="favorit"></a>
 				</div>
 
 				<div class="hint noselect" ng-repeat-end>
@@ -58,7 +58,31 @@
 						</div>
 					</div>
 
-					<div class="empower"><a href="javascript:">empower</a></div>
+					<div class="empower">
+
+						<form action='https://www.sandbox.paypal.com/cgi-bin/webscr' method='post' target='_top'>
+
+						<!-- <form action='http://test.ishuman.me:2001/paypal' method='post' target='_top'> -->
+
+							<input type='hidden' name='cmd' value='_donations'>
+							<input type='hidden' name='business' value='this@ishuman.me'>
+							<input type='hidden' name='item_name' value='{{item.name}}'>
+							<input type='hidden' name='amount' value='{{item.min}}'>
+							<input type='hidden' name='item_number' value='{{item.id}}'>
+							<input type='hidden' name='no_note' value='0'>
+							<input type='hidden' name='currency_code' value='USD'>
+
+							<input type='hidden' name='notify_url' value='https://ishuman.me/paypal/ipn'>
+							<input type='hidden' name='return' value='https://ishuman.me/'>
+							<input type='hidden' name='cancel_return' value='https://ishuman.me/'>
+
+							<input type="submit" name="submit" value="empower">
+
+						</form>
+
+						<!-- <a href="javascript:">empower</a> -->
+
+					</div>
 
 				</div>
 
@@ -67,8 +91,8 @@
 		</div>
 
 	</div>
-	<a class="menu_btn" style="z-index: 20; display: block;" ng-show="showMenu">
 
+	<a class="menu_btn" style="z-index:20; display:block;" ng-show="showMenu">
 		<svg version="1.1" baseProfile="basic"
 			 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="30px"
 			 viewBox="0 0 391 347" xml:space="preserve">
@@ -79,20 +103,19 @@
 				c4.295-8.105,11.674-8.321,19-13c-1.418-11.647-8.329-12.456-9-26c9.219-17.271,39.463-18.61,53-32
 				c19.445-19.233,19.333-59.116,41-76c13.68-10.66,30.624-16.867,51-21C185.666,2,195.334,1,205,0z"></path>
 		</svg>
-
 	</a>
 
 	<div class="big_menu" ng-mouseover="showMenu=false;">
 
 		<ul class="links">
 			<li><a href="javascript:">discover</a></li>
-			<li><a href="javascript:">touch</a></li>
-			<li><a href="javascript:" class="gray">explore</a></li>
-			<li><a href="javascript:" class="gray">learn</a></li>
-			<li><a href="javascript:" class="gray">grow</a></li>
-			<li><a href="javascript:" class="gray">change</a></li>
-			<li><a href="javascript:">empower</a></li>
-			<li><a href="javascript:" class="gray">trade</a></li>
+			<li><a ng-click="Touch()">touch</a></li>
+			<li><a class="gray">explore</a></li>
+			<li><a class="gray">learn</a></li>
+			<li><a class="gray">grow</a></li>
+			<li><a class="gray">change</a></li>
+			<li><a href="#/">empower</a></li>
+			<li><a class="gray">trade</a></li>
 		</ul>
 
 		<div class="profile">
@@ -102,17 +125,16 @@
 			</div>
 		</div>
 
-		
-		<input class="find" ng-focus="SearchFocus()" ng-blur="SearchBlure()" placeholder="{{search.placeholder}}">
+		<input class="find" ng-change="SearchChange(searchText)" ng-model="searchText" ng-focus="SearchFocus()" ng-blur="SearchBlure()" placeholder="{{search.placeholder}}">
+
+		<div ng-repeat="user in found" class="user" ng-class-odd="'odd'">
+			<div class="photo" ng-click="Touch(user.id)" style="background: url({{user.picture}}) 50% 50% /cover no-repeat;"></div>
+			<div class="info">{{user.first_name}} {{user.last_name}}</div>
+		</div>
 
 		<ul class="links">
 			<li><a href="javascript:" ng-click="ShowCreate()">new crowdfund</a></li>
 		</ul>
-
-		<!-- <div class="user">
-			<div class="photo"></div>
-			<div class="info"></div>
-		</div> -->
 
 	</div>
 
@@ -131,16 +153,18 @@
 				<input name="id" type="hidden" ng-model="form.id" value="">
 
 				<input name="name" type="text" ng-model="form.name" class="login_input" value="" placeholder="my crowdfund name">
-				<div class="wrong">oops</div>
+				<div class="wrong" style="display: block" ng-show="form.oopsName">oops</div>
 
 				<input name="goal" type="text" ng-model="form.goal" class="login_input" value="" placeholder="my goal">
-				<div class="wrong">oops</div>
+				<div class="wrong" style="display: block" ng-show="form.oopsGoal">oops</div>
 
 				<input name="youtube_link" type="text" ng-model="form.video" class="login_input" value="" placeholder="my video">
-				<div class="wrong">oops</div>
+				<div class="wrong" style="display: block" ng-show="form.oopsVideo">oops</div>
 
-				<input id="cover" name="cover" plupload="fileUpload.url" plupload-callbacks="fileUpload.callbacks" type="button" class="login_input" value="my cover photo">
-
+				<input name="cover" plupload="fileUpload.url" plupload-callbacks="fileUpload.callbacks" type="button" class="login_input" value="my cover photo">
+				<div class="wrong" style="display: block" ng-show="form.oopsCover">oops</div>
+				<div class="wrong" style="display: block" ng-show="loading">{{percent}}</div>
+				
 			</form>
 
 			<div class="login_control">

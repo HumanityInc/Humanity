@@ -5,10 +5,10 @@ import (
 	"../model"
 	_ "../session"
 	"../utils"
-	// "fmt"
+	_ "fmt"
 	"html/template"
 	"io/ioutil"
-	// "strings"
+	"strings"
 )
 
 func Index(c *model.Client) {
@@ -66,16 +66,27 @@ func ResetPasswd(c *model.Client) {
 
 func FeedNg(c *model.Client) {
 
-	page := Render{
-		res:  c.Res,
-		tmpl: "feed_ng/index.html",
-		data: struct {
-			User *model.User
-		}{
-			User: c.User,
-		},
+	if c.User == nil {
+		c.Redirect("/")
+		return
 	}
-	page.Render()
+
+	if db.Invitee[strings.ToLower(c.User.Email)] == 1 {
+
+		page := Render{
+			res:  c.Res,
+			tmpl: "feed_ng/index.html",
+			data: struct {
+				User *model.User
+			}{
+				User: c.User,
+			},
+		}
+		page.Render()
+		return
+	}
+
+	c.Redirect("/")
 }
 
 func IndexNg(c *model.Client) {
@@ -108,20 +119,25 @@ func TestMenu(c *model.Client) {
 
 func Feed(c *model.Client) {
 
-	crowdfunds := db.Crowdfunds(0, 100)
+	// if c.User == nil {
+	// 	c.WriteJson(&Result{Res: 1, Error: errNotAuth})
+	// 	return
+	// }
 
-	page := Render{
-		res:  c.Res,
-		tmpl: "feed/index.html",
-		data: struct {
-			User       *model.User
-			Crowdfunds []model.Crowdfund
-		}{
-			User:       c.User,
-			Crowdfunds: crowdfunds,
-		},
-	}
-	page.Render()
+	// crowdfunds := db.Crowdfunds(0, 100)
+
+	// page := Render{
+	// 	res:  c.Res,
+	// 	tmpl: "feed/index.html",
+	// 	data: struct {
+	// 		User       *model.User
+	// 		Crowdfunds []model.Crowdfund
+	// 	}{
+	// 		User:       c.User,
+	// 		Crowdfunds: crowdfunds,
+	// 	},
+	// }
+	// page.Render()
 }
 
 func Crowdfund(c *model.Client) {
