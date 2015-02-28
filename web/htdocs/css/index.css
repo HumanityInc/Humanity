@@ -58,9 +58,12 @@ body {
 }
 
 #news a {
-	color: #fff;
+	color: inherit;
+	text-decoration: none;
+	/*font-weight: normal;*/
 }
 #news a:hover {
+	/*font-weight: bold;*/
 	font-weight: 300;
 }
 
@@ -247,7 +250,7 @@ svg path {
 
 .login_box.left div.max.graph {
 	height: 135px;
-	background-image: url(/img/analytics.png?v=1);
+	background-image: url(/img/analytics.png?v=3);
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -364,7 +367,7 @@ svg path {
 }
 .login_box.small .login_control a {
 	font-size: 22px;
-	padding: 17px 21px 17px 21px;
+	padding: 16px 21px 17px 21px;
 }
 .login_box .login_control a:hover {
 	background-color: rgba(255, 255, 255, .15);
@@ -395,27 +398,29 @@ svg path {
 	position: relative;
 	width: 447px;
 	height: 84px;
-	background: rgba(65, 200, 245, 1); /*url(/img/social_network.png) 14px 15px no-repeat;*/
+	background: rgba(65, 200, 245, .85); /*url(/img/social_network.png) 14px 15px no-repeat;*/
 	margin: 40px auto 0;
 	line-height: 0;
 	text-align: center;
 	padding: 42px 0 42px 65px;
 	font-size: 34px;
 	box-sizing: border-box;
-	color: #fff;
+	/*color: #fff;*/
 	text-decoration: none;
 	text-shadow: 0 0 6px rgba(255, 255, 255, .55);
 	cursor: pointer;
+	color: rgba(255, 255, 255, .85);
 
 	-webkit-transition: background-color 0.3s ease;
 	-moz-transition:    background-color 0.3s ease;
 	-o-transition:      background-color 0.3s ease;
 	-ms-transition:     background-color 0.3s ease;
 	transition:         background-color 0.3s ease;
-	opacity: .85;
+	/*opacity: .85;*/
 }
 .login_box .login_button:hover {
-	opacity: 1;
+	background: rgba(65, 200, 245, 1);
+	color: rgba(255, 255, 255, 1);
 }
 .login_box.small .login_button {
 	margin-top: 26px;
@@ -423,7 +428,7 @@ svg path {
 	height: 55px;
 	padding: 27px 0 27px 47px;
 	font-size: 22px;
-	background: rgba(65, 200, 245, 1); /* url(/img/social_network_small.png) 12px 10px no-repeat;*/
+	background: rgba(65, 200, 245, .85); /* url(/img/social_network_small.png) 12px 10px no-repeat;*/
 }
 .login_box .login_button > img {
 	display: block;
@@ -439,17 +444,17 @@ svg path {
 	left: 14px;
 	width: 36px;
 }
-/*.login_box .login_button:hover {
+.login_box .login_button:hover {
 	background-color: rgba(65, 200, 245, 1) !important;
-}*/
+}
 
 .login_box .login_button.fb {
 	margin-top: 32px;
-	background: rgba(40, 112, 244, 1); /*url(/img/social_network.png) 14px -103px no-repeat;*/
+	background: rgba(40, 112, 244, .85); /*url(/img/social_network.png) 14px -103px no-repeat;*/
 }
 .login_box.small .login_button.fb {
 	margin-top: 21px;
-	background: rgba(40, 112, 244, 1); /*url(/img/social_network_small.png) 12px -68px no-repeat;*/
+	background: rgba(40, 112, 244, .85); /*url(/img/social_network_small.png) 12px -68px no-repeat;*/
 }
 .login_box .login_button.fb > img {
 	top: 15px;
@@ -463,17 +468,17 @@ svg path {
 	height: 36px;
 	width: auto;
 }
-/*.login_box .login_button.fb:hover {
+.login_box .login_button.fb:hover {
 	background-color: rgba(40, 112, 244, 1) !important;
-}*/
+}
 
 .login_box .login_button.gp {
 	margin-top: 32px;
-	background: rgba(228, 66, 88, 1); /*url(/img/social_network.png) 14px -219px no-repeat;*/
+	background: rgba(228, 66, 88, .85); /*url(/img/social_network.png) 14px -219px no-repeat;*/
 }
 .login_box.small .login_button.gp {
 	margin-top: 21px;
-	background: rgba(228, 66, 88, 1); /*url(/img/social_network_small.png) 12px -144px no-repeat;*/
+	background: rgba(228, 66, 88, .85); /*url(/img/social_network_small.png) 12px -144px no-repeat;*/
 }
 .login_box .login_button.gp > img {
 	top: 14px;
@@ -487,17 +492,17 @@ svg path {
 	height: 36px;
 	width: auto;
 }
-/*.login_box .login_button.gp:hover {
+.login_box .login_button.gp:hover {
 	background-color: rgba(228, 66, 88, 1) !important;
-}*/
+}
 
 .login_box .login_button.tw {
 	margin-top: 32px;
-	background: rgba(75, 204, 230, 1);/* url(/img/social_network.png) 14px -333px no-repeat;*/
+	background: rgba(75, 204, 230, .85);/* url(/img/social_network.png) 14px -333px no-repeat;*/
 }
 .login_box.small .login_button.tw {
 	margin-top: 21px;
-	background: rgba(75, 204, 230, 1); /* url(/img/social_network_small.png) 12px -219px no-repeat;*/
+	background: rgba(75, 204, 230, .85); /* url(/img/social_network_small.png) 12px -219px no-repeat;*/
 }
 .login_box .login_button.tw > img {
 	top: 18px;
@@ -511,9 +516,9 @@ svg path {
 	height: auto;
 	width: 36px;
 }
-/*.login_box .login_button.tw:hover {
+.login_box .login_button.tw:hover {
 	background-color: rgba(75, 204, 230, 1) !important;
-}*/
+}
 
 .login_box .signup {
 	text-decoration: none;
@@ -709,35 +714,49 @@ svg path {
 .login_box.f7 div.max.graph,
 .login_box.f8 div.max.graph,
 .login_box.f10 div.max.graph {
-	background-image: url(/img/analytics.png?v=1);
+	background-image: url(/img/analytics.png?v=3);
 }
 
 .login_box.f9 div.max.graph {
-	background-image: url(/img/analytics_blue.png?v=1);
+	background-image: url(/img/analytics_blue.png?v=3);
 }
 
-.login_box.f0 .login_input::-webkit-input-placeholder  { color: rgba( 45, 169, 249, .4); }
-.login_box.f0 .login_input:-moz-placeholder            { color: rgba( 45, 169, 249, .4); }
-.login_box.f1 .login_input::-webkit-input-placeholder  { color: rgba(  6,   0, 255, .4); }
-.login_box.f1 .login_input:-moz-placeholder            { color: rgba(  6,   0, 255, .4); }
-.login_box.f2 .login_input::-webkit-input-placeholder  { color: rgba(121,  43, 244, .4); }
-.login_box.f2 .login_input:-moz-placeholder            { color: rgba(121,  43, 244, .4); }
-.login_box.f3 .login_input::-webkit-input-placeholder  { color: rgba(220,   0, 220, .4); }
-.login_box.f3 .login_input:-moz-placeholder            { color: rgba(220,   0, 220, .4); }
-.login_box.f4 .login_input::-webkit-input-placeholder  { color: rgba(255,   0,   0, .4); }
-.login_box.f4 .login_input:-moz-placeholder            { color: rgba(255,   0,   0, .4); }
-.login_box.f5 .login_input::-webkit-input-placeholder  { color: rgba(255, 138,   0, .4); }
-.login_box.f5 .login_input:-moz-placeholder            { color: rgba(255, 138,   0, .4); }
-.login_box.f6 .login_input::-webkit-input-placeholder  { color: rgba(255, 234,   0, .4); }
-.login_box.f6 .login_input:-moz-placeholder            { color: rgba(255, 234,   0, .4); }
-.login_box.f7 .login_input::-webkit-input-placeholder  { color: rgba( 30, 220,   0, .4); }
-.login_box.f7 .login_input:-moz-placeholder            { color: rgba( 30, 220,   0, .4); }
-.login_box.f8 .login_input::-webkit-input-placeholder  { color: rgba(  0, 234, 255, .4); }
-.login_box.f8 .login_input:-moz-placeholder            { color: rgba(  0, 234, 255, .4); }
-.login_box.f9 .login_input::-webkit-input-placeholder  { color: rgba(  0, 156, 255, .4); }
-.login_box.f9 .login_input:-moz-placeholder            { color: rgba(  0, 156, 255, .4); }
-.login_box.f10 .login_input::-webkit-input-placeholder { color: rgba(  0,   0,   0, .4); }
-.login_box.f10 .login_input:-moz-placeholder           { color: rgba(  0,   0,   0, .4); }
+
+.login_box.f0  .ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y { background-color: rgba(255, 255, 255, .2) !important; }
+.login_box.f1  .ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y { background-color: rgba(255, 255, 255, .2) !important; }
+.login_box.f2  .ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y { background-color: rgba(255, 255, 255, .2) !important; }
+.login_box.f3  .ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y { background-color: rgba(255, 255, 255, .2) !important; }
+.login_box.f4  .ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y { background-color: rgba(255, 255, 255, .2) !important; }
+.login_box.f5  .ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y { background-color: rgba(255, 255, 255, .2) !important; }
+.login_box.f6  .ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y { background-color: rgba(255, 255, 255, .2) !important; }
+.login_box.f7  .ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y { background-color: rgba(255, 255, 255, .2) !important; }
+.login_box.f8  .ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y { background-color: rgba(255, 255, 255, .2) !important; }
+.login_box.f9  .ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y { background-color: rgba(  0, 156, 255, .4) !important; }
+.login_box.f10 .ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y { background-color: rgba(255, 255, 255, .2) !important; }
+
+
+.login_box.f0 .login_input::-webkit-input-placeholder  { color: rgba( 45, 169, 249, .5); }
+.login_box.f0 .login_input:-moz-placeholder            { color: rgba( 45, 169, 249, .5); }
+.login_box.f1 .login_input::-webkit-input-placeholder  { color: rgba(  6,   0, 255, .5); }
+.login_box.f1 .login_input:-moz-placeholder            { color: rgba(  6,   0, 255, .5); }
+.login_box.f2 .login_input::-webkit-input-placeholder  { color: rgba(121,  43, 244, .5); }
+.login_box.f2 .login_input:-moz-placeholder            { color: rgba(121,  43, 244, .5); }
+.login_box.f3 .login_input::-webkit-input-placeholder  { color: rgba(220,   0, 220, .5); }
+.login_box.f3 .login_input:-moz-placeholder            { color: rgba(220,   0, 220, .5); }
+.login_box.f4 .login_input::-webkit-input-placeholder  { color: rgba(255,   0,   0, .5); }
+.login_box.f4 .login_input:-moz-placeholder            { color: rgba(255,   0,   0, .5); }
+.login_box.f5 .login_input::-webkit-input-placeholder  { color: rgba(255, 138,   0, .5); }
+.login_box.f5 .login_input:-moz-placeholder            { color: rgba(255, 138,   0, .5); }
+.login_box.f6 .login_input::-webkit-input-placeholder  { color: rgba(255, 234,   0, .5); }
+.login_box.f6 .login_input:-moz-placeholder            { color: rgba(255, 234,   0, .5); }
+.login_box.f7 .login_input::-webkit-input-placeholder  { color: rgba( 30, 220,   0, .5); }
+.login_box.f7 .login_input:-moz-placeholder            { color: rgba( 30, 220,   0, .5); }
+.login_box.f8 .login_input::-webkit-input-placeholder  { color: rgba(  0, 234, 255, .5); }
+.login_box.f8 .login_input:-moz-placeholder            { color: rgba(  0, 234, 255, .5); }
+.login_box.f9 .login_input::-webkit-input-placeholder  { color: rgba(  0, 156, 255, .5); }
+.login_box.f9 .login_input:-moz-placeholder            { color: rgba(  0, 156, 255, .5); }
+.login_box.f10 .login_input::-webkit-input-placeholder { color: rgba(  0,   0,   0, .5); }
+.login_box.f10 .login_input:-moz-placeholder           { color: rgba(  0,   0,   0, .5); }
 
 .login_box.f9 .login_control a { color: rgba(  0, 156, 255, .8); }
 
@@ -805,11 +824,11 @@ svg path {
 .login_box.s7 div.max.graph,
 .login_box.s8 div.max.graph,
 .login_box.s10 div.max.graph {
-	background-image: url(/img/analytics.png?v=1);
+	background-image: url(/img/analytics.png?v=3);
 }
 
 .login_box.s9 div.max.graph {
-	background-image: url(/img/analytics_blue.png?v=1);
+	background-image: url(/img/analytics_blue.png?v=3);
 }
 
 .login_box.s0  .login_control a,
@@ -838,28 +857,28 @@ svg path {
 
 .login_box.s9 .title i.minimize span { background-color: rgba(  0, 156, 255, .6); }
 
-.login_box.s0 .login_input::-webkit-input-placeholder  { color: rgba( 45, 169, 249, .4); }
-.login_box.s0 .login_input:-moz-placeholder            { color: rgba( 45, 169, 249, .4); }
-.login_box.s1 .login_input::-webkit-input-placeholder  { color: rgba(  6,   0, 255, .4); }
-.login_box.s1 .login_input:-moz-placeholder            { color: rgba(  6,   0, 255, .4); }
-.login_box.s2 .login_input::-webkit-input-placeholder  { color: rgba(121,  43, 244, .4); }
-.login_box.s2 .login_input:-moz-placeholder            { color: rgba(121,  43, 244, .4); }
-.login_box.s3 .login_input::-webkit-input-placeholder  { color: rgba(220,   0, 220, .4); }
-.login_box.s3 .login_input:-moz-placeholder            { color: rgba(220,   0, 220, .4); }
-.login_box.s4 .login_input::-webkit-input-placeholder  { color: rgba(255,   0,   0, .4); }
-.login_box.s4 .login_input:-moz-placeholder            { color: rgba(255,   0,   0, .4); }
-.login_box.s5 .login_input::-webkit-input-placeholder  { color: rgba(255, 138,   0, .4); }
-.login_box.s5 .login_input:-moz-placeholder            { color: rgba(255, 138,   0, .4); }
-.login_box.s6 .login_input::-webkit-input-placeholder  { color: rgba(255, 234,   0, .4); }
-.login_box.s6 .login_input:-moz-placeholder            { color: rgba(255, 234,   0, .4); }
-.login_box.s7 .login_input::-webkit-input-placeholder  { color: rgba( 30, 220,   0, .4); }
-.login_box.s7 .login_input:-moz-placeholder            { color: rgba( 30, 220,   0, .4); }
-.login_box.s8 .login_input::-webkit-input-placeholder  { color: rgba(  0, 234, 255, .4); }
-.login_box.s8 .login_input:-moz-placeholder            { color: rgba(  0, 234, 255, .4); }
-.login_box.s9 .login_input::-webkit-input-placeholder  { color: rgba(  0, 156, 255, .4); }
-.login_box.s9 .login_input:-moz-placeholder            { color: rgba(  0, 156, 255, .4); }
-.login_box.s10 .login_input::-webkit-input-placeholder { color: rgba(  0,   0,   0, .4); }
-.login_box.s10 .login_input:-moz-placeholder           { color: rgba(  0,   0,   0, .4); }
+.login_box.s0 .login_input::-webkit-input-placeholder  { color: rgba( 45, 169, 249, .5); }
+.login_box.s0 .login_input:-moz-placeholder            { color: rgba( 45, 169, 249, .5); }
+.login_box.s1 .login_input::-webkit-input-placeholder  { color: rgba(  6,   0, 255, .5); }
+.login_box.s1 .login_input:-moz-placeholder            { color: rgba(  6,   0, 255, .5); }
+.login_box.s2 .login_input::-webkit-input-placeholder  { color: rgba(121,  43, 244, .5); }
+.login_box.s2 .login_input:-moz-placeholder            { color: rgba(121,  43, 244, .5); }
+.login_box.s3 .login_input::-webkit-input-placeholder  { color: rgba(220,   0, 220, .5); }
+.login_box.s3 .login_input:-moz-placeholder            { color: rgba(220,   0, 220, .5); }
+.login_box.s4 .login_input::-webkit-input-placeholder  { color: rgba(255,   0,   0, .5); }
+.login_box.s4 .login_input:-moz-placeholder            { color: rgba(255,   0,   0, .5); }
+.login_box.s5 .login_input::-webkit-input-placeholder  { color: rgba(255, 138,   0, .5); }
+.login_box.s5 .login_input:-moz-placeholder            { color: rgba(255, 138,   0, .5); }
+.login_box.s6 .login_input::-webkit-input-placeholder  { color: rgba(255, 234,   0, .5); }
+.login_box.s6 .login_input:-moz-placeholder            { color: rgba(255, 234,   0, .5); }
+.login_box.s7 .login_input::-webkit-input-placeholder  { color: rgba( 30, 220,   0, .5); }
+.login_box.s7 .login_input:-moz-placeholder            { color: rgba( 30, 220,   0, .5); }
+.login_box.s8 .login_input::-webkit-input-placeholder  { color: rgba(  0, 234, 255, .5); }
+.login_box.s8 .login_input:-moz-placeholder            { color: rgba(  0, 234, 255, .5); }
+.login_box.s9 .login_input::-webkit-input-placeholder  { color: rgba(  0, 156, 255, .5); }
+.login_box.s9 .login_input:-moz-placeholder            { color: rgba(  0, 156, 255, .5); }
+.login_box.s10 .login_input::-webkit-input-placeholder { color: rgba(  0,   0,   0, .5); }
+.login_box.s10 .login_input:-moz-placeholder           { color: rgba(  0,   0,   0, .5); }
 
 .c00 { background-color: rgba(  0, 156, 255, .6); }
 .c01 { background-color: rgba(  6,   0, 255, .6); }
@@ -961,3 +980,8 @@ svg path {
 
 div.max { height: 564px; overflow: hidden; }
 .small div.max { height: 371px; }
+
+.ps-container>.ps-scrollbar-y-rail {
+	background-color: transparent !important;
+	/*opacity: 1;*/
+}

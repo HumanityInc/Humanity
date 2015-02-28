@@ -85,31 +85,32 @@ $(document).load(function() {
 $(function() {
 	'use strict';
 
-	var ut = 1424227463 + 24*60*60 + 11*60*60 + 12*60 + 59*60 - 6*60*60 - 54*60;
+	var ut = 1424332883; //1424227463 + 24*60*60 + 11*60*60 + 12*60 + 59*60 - 6*60*60 - 54*60;
 
 	function setCounter() {
 
-		var h = 0, m = 0, s = 0, ct = (new Date().getTime()/1000)|0;
+		var h = 0, m = 0, s = 0, d = 0, day = 0, ct = (new Date().getTime()/1000)|0;
 
-		if (ut > ct) {
-			var d = ut - ct;
-			h = Math.floor(d / 3600);
-			m = Math.floor((d - (h * 3600)) / 60);
-			s = d - (h * 3600) - (m * 60);
-		} else {
-			var d = ct - ut;
-			h = Math.floor(d / 3600);
-			m = Math.floor((d - (h * 3600)) / 60);
-			s = d - (h * 3600) - (m * 60);
-		}
+		if (ut > ct) d = ut - ct;
+		else d = ct - ut;
+		
+		day = Math.floor(d / 86400);
+		d -= day * 86400;
+		h = Math.floor(d / 3600);
+		d -= h * 3600;
+		m = Math.floor(d / 60);
+		d -= m * 60;
+		s = d;
 
 		if(h<10)h='0'+h;
 		if(m<10)m='0'+m;
 		if(s<10)s='0'+s;
 
-		var str = (h=="00"?"":h+":")+m+":"+s;
+		// 8d14h45m26s
+		// var str = (day==0?'':day+'.')+(h=="00"?"":h+":")+m+":"+s;
+		var str = (day==0?'':day+'<span>d</span>')+(h=="00"?"":h+"<span>h</span>")+m+"<span>m</span>"+s+"<span>s</span>";
 
-		$("#rtime").text(str);		
+		$("#rtime").html(str);		
 	}
 
 	setInterval(setCounter, 1000);
@@ -228,7 +229,7 @@ $(function() {
 
 			var cur_box = $('.minimize[data-type="'+type+'"]').closest('.login_box').show();
 
-			cur_box.find('.title').show().next().show();
+			if(type == "0") cur_box.find('.title').show().next().show();
 
 			$login_box.not(cur_box).removeClass('center');
 

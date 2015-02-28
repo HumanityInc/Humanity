@@ -17,20 +17,20 @@
 	<meta property="og:image" content="https://ishuman.me/opensource/pics/emblem.png">
 	<meta property="og:description" content="Humanity - The BILLION Dollar GLOBAL Giant YOU Own!">
 
-	<link type="text/css" rel="stylesheet" href="/css/index.css?v=29">
 	<link rel="shortcut icon" href="/favicon_2.ico" type="image/x-icon"/>
-
 
 	<script src="/js/jquery-1.11.2.min.js"></script>
 
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.5.9/perfect-scrollbar.min.css" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.5.9/perfect-scrollbar.min.js"></script>
 
+	<link type="text/css" rel="stylesheet" href="/css/index.css?v=33">
+
 	<script src="/js/underscore.min.js"></script>
 	<script src="/js/backbone.min.js"></script>
 	<script src="/js/moment.js"></script>
 
-	<script src="/js/index.js?v=29"></script>
+	<script src="/js/index.js?v=33"></script>
 
 	{{if .ProfId}}
 		<script type="text/javascript">
@@ -237,6 +237,14 @@
 
 	#news b {
 		font-weight: 500;
+	}
+
+	#rtime {
+		font-size: 56px;
+	}
+	#rtime span {
+		font-size: 38px;
+		font-weight: 300;
 	}
 
 	</style>
@@ -495,7 +503,10 @@
 			</div>
 
 			<div class="max graph">
-				<span>30 days</span>
+				<span>
+					30 days<br>
+					1,396/day max
+				</span>
 				<i class="minimize" data-type="3"><span></span></i>
 			</div>
 		</div>

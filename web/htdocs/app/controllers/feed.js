@@ -2,9 +2,15 @@
 app.controller('FeedController', function($scope, $http, $timeout, $document, $location, $routeParams) {
 	
 	$scope.showFeed = true;
-	$scope.showCreate = false;
+	// $scope.showCreate = false;
+	// $scope.showProfile = false;
+	$scope.showWindow = 0;
 	$scope.showMenu = true;
 	$scope.showCrowdfund = false;
+
+	$scope.profile = {};
+	$scope.profile.firstName = User.firstName;
+	$scope.profile.lastName = User.lastName;
 
 	$scope.feed = [];
 	$scope.feedX2Count = 0;
@@ -189,12 +195,54 @@ app.controller('FeedController', function($scope, $http, $timeout, $document, $l
 	// ==
 
 	$scope.ShowCreate = function() {
-		$scope.showCreate = true;
+		$scope.showWindow = 1;
 	};
-	$scope.HideCreate = function() {
-		$scope.showCreate = false;
+	$scope.HideWindow = function() {
+		$scope.showWindow = 0;
 	};
 
+	$scope.ShowProfile = function() {
+		$scope.showWindow = 2;
+	};
+
+	$scope.SaveProfile = function() {
+
+		$scope.profile.oopsFirstName = $scope.profile.oopsLastName = false;
+
+		if ($scope.profile.lastName == "" && $scope.profile.firstName == "") {
+
+			if ($scope.profile.firstName == "") {
+				$scope.profile.oopsFirstName = true;
+				return;
+			}
+
+			if ($scope.profile.lastName == "") {
+				$scope.profile.oopsLastName = true;
+				return;
+			}
+		}
+
+		$http({
+			method: 'POST',
+			url: "j_username",
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			transformRequest: function(obj) {
+				var str=[]; for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+				return str.join("&");
+			},
+			data: {
+				first_name: $scope.profile.firstName,
+				last_name: $scope.profile.lastName
+			}
+		})
+		.success(function(data) {
+
+			if (data.res == 0) {
+
+				$scope.HideWindow();
+			}
+		});
+	};
 
 	$scope.Create = function() {
 
