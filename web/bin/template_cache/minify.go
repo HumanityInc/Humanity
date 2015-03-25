@@ -3,25 +3,38 @@ package template_cache
 import (
 	"fmt"
 	"github.com/tdewolff/minify"
+	"github.com/tdewolff/minify/css"
+	"github.com/tdewolff/minify/html"
+	"github.com/tdewolff/minify/js"
+	// "github.com/tdewolff/minify/trim"
 )
+
+// go get -u github.com/tdewolff/minify
+// go get -u github.com/tdewolff/parse
 
 var (
-	MinifyOn = true
+	MinifyOn = !false
 )
 
-func HtmlMinify(html *string) string {
+func HtmlMinify(text *string) string {
 
 	if MinifyOn {
 
-		minify_html, err := minify.NewMinifierDefault().MinifyString("text/html", *html)
-		if err != nil {
+		m := minify.New()
 
+		m.AddFunc("text/html", html.Minify)
+		m.AddFunc("text/css", css.Minify)
+		m.AddFunc("text/js", js.Minify)
+		// m.Add("*/*", trim.Minify)
+
+		minify_html, err := minify.String(m, "text/html", *text)
+		if err != nil {
 			fmt.Println("MinifyString:", err)
-			return *html
+			return *text
 		}
 
 		return minify_html
 	}
 
-	return *html
+	return *text
 }

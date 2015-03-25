@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"golang.org/x/crypto/bcrypt"
+	"strings"
 	"time"
 )
 
@@ -29,6 +30,45 @@ func hashPassword(password string) string {
 		return ""
 	}
 	return string(hashedPassword)
+}
+
+//
+
+func CheckUserPassword(userId int64, password string) (ok bool) {
+
+	hashedPassword := ""
+
+	err := db.QueryRow(`SELECT "password" FROM "public"."profiles" WHERE "id"=?`, userId).Scan(&hashedPassword)
+
+	if err != nil {
+		logger.Println(err)
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+
+	if err != nil {
+		return
+	}
+
+	ok = true
+	return
+}
+
+func UpdateUserPassword(userId int64, password string) (ok bool) {
+
+	hash := hashPassword(password)
+
+	_, err := db.Exec(`UPDATE "public"."profiles" SET "password"=$1 WHERE "id"=$2`,
+		hash, userId)
+
+	if err != nil {
+		logger.Println(err)
+		return
+	}
+
+	ok = true
+	return
 }
 
 //
@@ -59,6 +99,9 @@ func Search(str string) (list []model.User) {
 			logger.Println(err)
 			return
 		}
+
+		user.FirstName = strings.Title(user.FirstName)
+		user.LastName = strings.Title(user.LastName)
 
 		list = append(list, user)
 	}
@@ -231,11 +274,11 @@ func GetUserBySocialId(socialId string, socialNetwork int) (user_ptr *model.User
 
 	fmt.Println(socialId, socialNetwork)
 
-	err = db.QueryRow(`SELECT "id", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip", "picture" `+
+	err = db.QueryRow(`SELECT "id", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip", "picture", "location" `+
 		`FROM "public"."profiles" `+
 		`WHERE "id"=(SELECT "user_id" FROM "public"."profiles_social" WHERE "id"=$1 AND "sn_id"=$2)`,
 		socialId, socialNetwork).Scan(&user.Id, &email, &user.FirstName, &user.LastName,
-		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp, &user.Picture)
+		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp, &user.Picture, &user.Location)
 
 	if err != nil {
 		logger.Println(err)
@@ -246,6 +289,9 @@ func GetUserBySocialId(socialId string, socialNetwork int) (user_ptr *model.User
 		user.Email = email.String
 	}
 
+	user.FirstName = strings.Title(user.FirstName)
+	user.LastName = strings.Title(user.LastName)
+
 	user_ptr = &user
 	return
 }
@@ -255,10 +301,10 @@ func GetUserByEmail(email, password string, checkPassword bool) (user_ptr *model
 	user, hashedPassword := model.User{}, ""
 
 	err = db.QueryRow(`SELECT `+
-		`"id", "password", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip", "picture" `+
+		`"id", "password", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip", "picture", "location" `+
 		`FROM "public"."profiles" `+
 		`WHERE "email"=$1`, email).Scan(&user.Id, &hashedPassword, &user.Email, &user.FirstName, &user.LastName,
-		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp, &user.Picture)
+		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp, &user.Picture, &user.Location)
 
 	if err != nil {
 		logger.Println(err)
@@ -275,7 +321,34 @@ func GetUserByEmail(email, password string, checkPassword bool) (user_ptr *model
 		}
 	}
 
+	user.FirstName = strings.Title(user.FirstName)
+	user.LastName = strings.Title(user.LastName)
+
 	user_ptr = &user
+	return
+}
+
+func SetUserLocation(id int64, location string) (err error) {
+
+	_, err = db.Exec(`UPDATE "public"."profiles" SET "location"=$1 WHERE "id"=$2`,
+		location, id)
+
+	if err != nil {
+		logger.Println(err)
+		return
+	}
+	return
+}
+
+func SetUserName(id int64, firstName, lastName string) (err error) {
+
+	_, err = db.Exec(`UPDATE "public"."profiles" SET "first_name"=$1, "last_name"=$2 WHERE "id"=$3`,
+		firstName, lastName, id)
+
+	if err != nil {
+		logger.Println(err)
+		return
+	}
 	return
 }
 
@@ -324,10 +397,10 @@ func GetUserById(id int64) (user_ptr *model.User, err error) {
 	email := sql.NullString{}
 
 	err = db.QueryRow(`SELECT `+
-		`"id", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip", "picture" `+
+		`"id", "email", "first_name", "last_name", "last_login", "registered", "activate", "last_ip", "picture", "location" `+
 		`FROM "public"."profiles" `+
 		`WHERE "id"=$1`, id).Scan(&user.Id, &email, &user.FirstName, &user.LastName,
-		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp, &user.Picture)
+		&user.LastLogin, &user.Registered, &user.Activate, &user.LastIp, &user.Picture, &user.Location)
 
 	if err != nil {
 		logger.Println(err)
@@ -337,6 +410,9 @@ func GetUserById(id int64) (user_ptr *model.User, err error) {
 	if email.Valid {
 		user.Email = email.String
 	}
+
+	user.FirstName = strings.Title(user.FirstName)
+	user.LastName = strings.Title(user.LastName)
 
 	user_ptr = &user
 	return

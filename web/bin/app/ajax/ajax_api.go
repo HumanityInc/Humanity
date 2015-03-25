@@ -47,6 +47,60 @@ func Feed(c *model.Client) {
 	}
 }
 
+func SaveUserName(c *model.Client) {
+
+	if c.User == nil {
+		c.WriteJson(&Result{Res: 1, Error: errNotAuth})
+		return
+	}
+
+	firstName := c.Req.FormValue("first_name")
+	lastName := c.Req.FormValue("last_name")
+	location := c.Req.FormValue("location")
+
+	password := c.Req.FormValue("password")
+	passwordNew1 := c.Req.FormValue("password_new1")
+	passwordNew2 := c.Req.FormValue("password_new2")
+
+	c.User.FirstName = firstName
+	c.User.LastName = lastName
+	c.User.Location = location
+
+	ukey := session.GetSession(c.Req)
+	session.SetUser(*c.User, ukey)
+
+	db.SetUserName(c.User.Id, firstName, lastName)
+	db.SetUserLocation(c.User.Id, location)
+
+	if password != "" {
+
+		if db.CheckUserPassword(c.User.Id, password) {
+
+			if passwordNew1 == passwordNew2 {
+
+				if db.UpdateUserPassword(c.User.Id, passwordNew1) {
+
+					//
+
+				} else {
+
+					// error
+				}
+
+			} else {
+
+				// error
+			}
+
+		} else {
+
+			// error
+		}
+	}
+
+	c.WriteJson(&Result{})
+}
+
 func SaveAvatar(c *model.Client) {
 
 	if c.User == nil {

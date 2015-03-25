@@ -15,6 +15,7 @@ type (
 		Password   string `json:"-"`
 		FirstName  string `json:"first_name"`
 		LastName   string `json:"last_name"`
+		Location   string `json:"location"`
 		Picture    string `json:"picture"`
 		Activate   string `json:"-"`
 		Registered string `json:"-"`
