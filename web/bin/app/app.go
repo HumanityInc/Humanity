@@ -42,10 +42,14 @@ var mc *memcache.Client
 func init() {
 
 	page_callback = map[string]cb_fn{
-		``:                 Index,
-		`index_ng`:         IndexNg,
-		`feed`:             Feed,
-		`crowdfund`:        Crowdfund,
+		``:          Index,
+		`index_ng`:  FeedNg,
+		`grid`:      FeedNg,
+		`crowdfund`: FeedNg,
+		`touch`:     FeedNg,
+
+		// `feed`:             Feed,
+		// `crowdfund`:        Crowdfund,
 		`create`:           Create,
 		`auth`:             oauth.Auth,
 		`j_login`:          ajax.Login,
@@ -56,6 +60,7 @@ func init() {
 		`j_feed`:           ajax.Feed,
 		`j_crowdfund`:      ajax.CrowdfundSave,
 		`test_menu`:        TestMenu,
+		`test_scroll`:      TestScroll,
 		`feed_ng`:          FeedNg,
 		`j_reset`:          ajax.ResetPasswd,
 		`j_resetlink`:      ajax.SendResetLink,
@@ -63,6 +68,7 @@ func init() {
 		`j_avatar`:         ajax.SaveAvatar,
 		`j_favorit`:        ajax.Favorit,
 		`j_search`:         ajax.Search,
+		`j_username`:       ajax.SaveUserName,
 		`reset`:            ResetPasswd,
 		`paypal`:           paypal.InstantPaymentNotification,
 	}

@@ -3,6 +3,7 @@ package main
 import (
 	"./app"
 	"./config"
+	"./db"
 	"./scgi"
 	"fmt"
 	"net"
@@ -14,8 +15,8 @@ import (
 )
 
 const (
-	VERSION       = `0.0.1`
-	NAME          = `Humanity`
+	VERSION       = `0.1.0`
+	NAME          = `ishuman`
 	PROTOCOL_HTTP = "http"
 	PROTOCOL_FCGI = "fcgi"
 	PROTOCOL_SCGI = "scgi"

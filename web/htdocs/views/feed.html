@@ -122,6 +122,13 @@
 			<div class="photo" ng-style="avatar" plupload="avatarUpload.url" plupload-callbacks="avatarUpload.callbacks"></div>
 			<div class="play">
 				Classic Trance Channel
+				<ul class="links">
+					<li><a ng-click="ShowCreate()" class="btn01">&nbsp;</a></li>
+					<li><a ng-click="ShowProfile()" ng-click="" class="btn02">&nbsp;</a></li>
+					<li><a ng-click="" class="btn03">&nbsp;</a></li>
+					<li><a ng-click="" class="btn04">&nbsp;</a></li>
+					<li><a ng-click="" class="btn05">&nbsp;</a></li>
+				</ul>
 			</div>
 		</div>
 
@@ -132,13 +139,46 @@
 			<div class="info">{{user.first_name}} {{user.last_name}}</div>
 		</div>
 
-		<ul class="links">
+		<!-- <ul class="links">
 			<li><a href="javascript:" ng-click="ShowCreate()">new crowdfund</a></li>
-		</ul>
+		</ul> -->
 
 	</div>
 
-	<div ng-show="showCreate" class="login_box f0" resize ng-class="[smallBox]" style="position:fixed; z-index: 300;">
+	<!--  -->
+
+	<div ng-show="showWindow == 2" class="login_box f0" resize ng-class="[smallBox]" style="position:fixed; z-index: 300;">
+
+		<div class="title">
+			<i class="td"></i>
+			<i class="white"></i>
+			<span>my profile! :)</span>
+		</div>
+
+		<div class="max">
+
+			<form autocomplete="off">
+
+				<input name="name" type="text" ng-model="profile.firstName" class="login_input" value="" placeholder="my first name">
+				<div class="wrong" style="display: block" ng-show="profile.oopsFirstName">oops</div>
+
+				<input name="goal" type="text" ng-model="profile.lastName" class="login_input" value="" placeholder="my last name">
+				<div class="wrong" style="display: block" ng-show="profile.oopsLastName">oops</div>
+				
+			</form>
+
+			<div class="login_control">
+				<a ng-click="HideWindow()">back</a>
+				<a ng-click="SaveProfile()" class="back" href="javascript:">save</a>
+			</div>
+
+		</div>
+
+	</div>
+
+	<!--  -->
+
+	<div ng-show="showWindow == 1" class="login_box f0" resize ng-class="[smallBox]" style="position:fixed; z-index: 300;">
 
 		<div class="title">
 			<i class="td"></i>
@@ -148,7 +188,7 @@
 
 		<div class="max">
 
-			<form id="form" autocomplete="off">
+			<form autocomplete="off">
 
 				<input name="id" type="hidden" ng-model="form.id" value="">
 
@@ -168,7 +208,7 @@
 			</form>
 
 			<div class="login_control">
-				<a ng-click="HideCreate()">back</a>
+				<a ng-click="HideWindow()">back</a>
 				<a ng-click="Create()" class="back" href="javascript:">create</a>
 			</div>
 

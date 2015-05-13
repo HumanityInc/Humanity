@@ -117,6 +117,20 @@ func TestMenu(c *model.Client) {
 	page.Render()
 }
 
+func TestScroll(c *model.Client) {
+
+	page := Render{
+		res:  c.Res,
+		tmpl: "test_scroll/index.html",
+		data: struct {
+			User *model.User
+		}{
+			User: c.User,
+		},
+	}
+	page.Render()
+}
+
 func Feed(c *model.Client) {
 
 	// if c.User == nil {
