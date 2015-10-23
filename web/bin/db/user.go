@@ -73,14 +73,60 @@ func UpdateUserPassword(userId int64, password string) (ok bool) {
 
 //
 
-func Search(str string) (list []model.User) {
+func Search(q, ip string) (list []model.User) {
 
-	// TODO use fulltext search (sphinx rt index)
+	opts := &sphinx.Options{
+		Host:       "127.0.0.1",
+		Port:       9312,
+		MatchMode:  sphinx.SPH_MATCH_ANY,
+		Timeout:    500,
+		MaxMatches: 1000,
+	}
 
-	rows, err := db.Query(`SELECT `+
-		`"id", "first_name", "last_name", "last_login", "registered", "activate", "last_ip", "picture" `+
-		`FROM "public"."profiles" `+
-		`WHERE "first_name" ILIKE '%' || $1 || '%' OR "last_name" ILIKE '%' || $1 || '%' LIMIT 5`, str)
+	userIdsInt64 := []int64{}
+	userIds := []string{}
+
+	if sphinxClient := sphinx.NewClient(opts); sphinxClient != nil {
+
+		defer sphinxClient.Close()
+
+		sphinxClient.SetLimits(0, 24, 300, 0)
+
+		if result, err := sphinxClient.Query(q, "src1", ip); err == nil {
+
+			fmt.Println(result.Matches, err)
+
+			resultCount := len(result.Matches)
+
+			userIds = make([]string, 0, resultCount)
+
+			for _, match := range result.Matches {
+
+				userIdsInt64 = append(userIdsInt64, int64(match.DocId))
+				userIds = append(userIds, fmt.Sprintf("%d", match.DocId))
+			}
+
+		} else {
+
+			fmt.Println("[SEARCH]", err)
+			userIdsInt64 = []int64{8, 11, 13}
+			userIds = []string{"8", "11", "13"}
+		}
+	}
+
+	if len(userIds) == 0 {
+		return
+	}
+
+	if len(userIds) > 5 {
+		userIdsInt64 = userIdsInt64[:5]
+		userIds = userIds[:5]
+	}
+
+	rows, err := db.Query(`SELECT ` +
+		`"id", "first_name", "last_name", "last_login", "registered", "activate", "last_ip", "picture" ` +
+		`FROM "public"."profiles" ` +
+		`WHERE "id" IN (` + strings.Join(userIds, ",") + `) `)
 
 	if err != nil {
 		logger.Println(err)
@@ -105,6 +151,18 @@ func Search(str string) (list []model.User) {
 
 		list = append(list, user)
 	}
+
+	tmp := make([]model.User, 0, len(list))
+
+	for _, id := range userIdsInt64 {
+		for _, u := range list {
+			if u.Id == id {
+				tmp = append(tmp, u)
+			}
+		}
+	}
+
+	list = tmp
 
 	return
 }

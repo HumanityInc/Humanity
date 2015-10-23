@@ -4,6 +4,7 @@ package app
 
 import (
 	"../config"
+	"../index"
 	"../model"
 	"../paypal"
 	"../session"
@@ -83,6 +84,8 @@ func init() {
 	}
 
 	session.Init(mc)
+
+	index.Run()
 }
 
 func Bind(base string, cb_fn func(cb *model.Client)) (ok bool) {
